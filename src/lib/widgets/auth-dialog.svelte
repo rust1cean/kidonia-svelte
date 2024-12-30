@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import * as m from '$lib/paraglide/messages';
-	import { defaults, superForm, type SuperForm } from 'sveltekit-superforms';
+	import { defaults, superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 
@@ -12,40 +11,18 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { loginFormSchema, signUp, signupFormSchema } from '$lib/api/auth';
-	import { logIn } from '$lib/api/auth';
+	import { logIn, loginFormSchema, signupFormSchema } from '$lib/state/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
-
-	const handleSubmit = async ({
-		action,
-		form,
-		formData
-	}: {
-		formData: FormData;
-		action: (data: any) => Promise<any>;
-		form: SuperForm<any, any>;
-	}) => {
-		const { valid, errors } = await form.validateForm();
-
-		if (valid) {
-			const data = Object.fromEntries(formData.entries());
-
-			action(data)
-				.then((_) => toast.message(m.login_successful()))
-				.catch((error) => toast.error(error.message));
-		} else {
-			const [[firstErrorFromGroup]] = Object.values(errors) as any;
-			toast.error(firstErrorFromGroup);
-		}
-	};
 
 	const loginForm = superForm(defaults(valibot(loginFormSchema)), {
 		SPA: true,
 		resetForm: true,
 		validators: valibot(loginFormSchema),
 		onSubmit({ formData }) {
-			handleSubmit({ formData, action: logIn, form: loginForm });
+			logIn({ formData, form: loginForm })
+				.then((_) => toast.message(m.login_successful()))
+				.catch((error) => toast.error(error.toString()));
 		}
 	});
 
@@ -54,10 +31,9 @@
 		resetForm: true,
 		validators: valibot(signupFormSchema),
 		onSubmit({ formData }) {
-			handleSubmit({ formData, action: signUp, form: signupForm });
+			// handleSubmit({ formData, action: signUp, form: signupForm });
 		}
 	});
-	const submit = () => (tab === 'login' ? loginForm : signupForm).submit();
 
 	let tab = $state<'signup' | 'login'>('login');
 </script>
@@ -130,7 +106,7 @@
 				<AppleIcon />
 			</Button>
 		</div>
-		<Button class={tab === 'signup' ? 'bg-green-600 hover:bg-green-600/90' : ''} onclick={submit}>
+		<Button class={tab === 'signup' ? 'bg-green-600 hover:bg-green-600/90' : ''} type="submit">
 			{tab === 'signup' ? m.signup() : m.login()}
 		</Button>
 	</Dialog.Footer>

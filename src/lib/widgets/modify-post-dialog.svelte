@@ -67,7 +67,6 @@
 			<form
 				class="flex flex-col gap-2"
 				method="POST"
-				action="?/create_post"
 				enctype="multipart/form-data"
 				use:postForm.enhance
 			>
@@ -158,7 +157,9 @@
 
 		<Dialog.Footer>
 			<ToggleField dir="ltr" form={postForm} field="draft" label={m.to_drafts()} />
-			<Form.Button>{updatePost ? m.modify_post() : m.create_post()}</Form.Button>
+			<Form.Button>
+				{updatePost ? m.modify_post() : m.create_post()}
+			</Form.Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
