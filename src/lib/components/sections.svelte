@@ -4,7 +4,7 @@
 	import { pushState, replaceState } from '$app/navigation';
 	import type { Snippet } from 'svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { pushPath, replacePath } from '$lib/shared/url';
+	import { pushPath, replacePath } from '$lib/utils/url';
 
 	const {
 		tabs,

@@ -1,6 +1,6 @@
-import type { Id } from "../types";
+import type { Id } from '$lib/utils/types';
 
 export type CreateFavoritePayload = {
-  author_id: Id;
-  post_id: Id;
+	author_id: Id;
+	post_id: Id;
 };

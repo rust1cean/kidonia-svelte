@@ -4,4 +4,4 @@
 	import PostList from '$lib/widgets/post-list.svelte';
 </script>
 
-<PostList categoryName={$page.url.searchParams.get('q') || ''} />
+<PostList title={$page.url.searchParams.get('q') || ''} />

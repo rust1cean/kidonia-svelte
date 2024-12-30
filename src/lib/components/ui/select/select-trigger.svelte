@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Select as SelectPrimitive, type WithoutChild } from "bits-ui";
 	import ChevronDown from "lucide-svelte/icons/chevron-down";
-	import { cn } from "$lib/shared/utils/style-utils.js";
+	import { cn } from "$lib/shared/style-utils/style-utils.js";
 
 	let {
 		ref = $bindable(null),

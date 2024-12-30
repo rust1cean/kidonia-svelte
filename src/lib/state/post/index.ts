@@ -1,1 +1,2 @@
-export type { PostModel } from "./post-model"
+export * from './post-model';
+export * from './post-store.svelte';

@@ -14,18 +14,18 @@
 	<User />
 	<Sections tabs={['favorites', 'posts', 'drafts']} defaultTab="favorites">
 		<Tabs.Content value="favorites">
-			<PostList categoryName="Favorites" />
+			<PostList title="Favorites" />
 		</Tabs.Content>
 		<Tabs.Content value="posts">
 			<!-- TODO: Set editor mode only for author! -->
 			<PostList
 				editorMode={true}
-				categoryName="Posts"
+				title="Posts"
 				openModifyPostDialog={() => (openPostDialog = true)}
 			/>
 		</Tabs.Content>
 		<Tabs.Content value="drafts">
-			<PostList categoryName="Drafts" />
+			<PostList title="Drafts" />
 		</Tabs.Content>
 	</Sections>
 </div>

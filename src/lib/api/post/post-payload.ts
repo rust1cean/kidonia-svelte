@@ -1,5 +1,5 @@
-import type { Id } from "../types";
-import type { PostCategory } from "./post-constants";
+import type { Id } from '$lib/utils/types';
+import type { PostCategory } from './post-constants';
 
 export type CreatePostPayload = {
 	address?: string | null;

@@ -1,9 +1,10 @@
 import type { Merge } from 'type-fest';
 import type { PostEntity } from '.';
 import { db } from '..';
-import type { Id, BaseFetchOptions } from '../types';
+import type { BaseFetchOptions } from '../types';
 import type { CreatePostPayload, EditPostPayload, FetchPostsPayload } from './post-payload';
 import { MAX_AGE, MIN_AGE } from '.';
+import type { Id } from '$lib/utils/types';
 
 export const fetchPosts = async ({
 	offset = 0,

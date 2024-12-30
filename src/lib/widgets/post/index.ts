@@ -8,12 +8,12 @@ export type PostProps = {
 	address?: string | null;
 	phone?: string | null;
 	education?: string | null;
-	minAge?: string | number;
-	maxAge?: string | number;
+	minAge?: number | null;
+	maxAge?: number | null;
 	price?: number | null | string;
 	author: {
 		id: string | number;
 		avatar?: string | null;
 		name: string;
 	};
-}
+};

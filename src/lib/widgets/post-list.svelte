@@ -14,7 +14,7 @@
 	// 	phone: ''
 	// }).then(console.log);
 
-	const genRandomPosts = (count: number = 64): PostModel[] =>
+	const genRandomPosts = async (count: number = 64): Promise<PostModel[]> =>
 		Array.from(
 			Array.from(Array(count).keys()).map((i) => ({
 				id: i.toString(),
@@ -44,17 +44,14 @@
 		);
 
 	let {
-		categoryName,
+		title,
 		openModifyPostDialog,
 		editorMode = false,
 		posts = [],
-		requestPosts = async () =>
-			new Promise((res) => {
-				setTimeout(() => res(genRandomPosts()), 500);
-			})
+		requestPosts = genRandomPosts as any
 	}: {
 		editorMode?: boolean;
-		categoryName?: string;
+		title?: string;
 		posts?: Array<PostModel>;
 		requestPosts?: () => Promise<typeof posts>;
 		openModifyPostDialog?: (post?: PostModel) => any;
@@ -72,7 +69,7 @@
 	{#if loaded}
 		<header class="flex w-full items-center justify-between">
 			<div class="flex gap-4">
-				<h3>{categoryName}</h3>
+				<h3>{title}</h3>
 				{#if editorMode}
 					<Button variant="outline">
 						<Pencil />

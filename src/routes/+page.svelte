@@ -2,5 +2,5 @@
 	import PostList from '$lib/widgets/post-list.svelte';
 </script>
 
-<PostList categoryName="Test category 1" />
-<PostList categoryName="Test category 2" />
+<PostList title="Test category 1" />
+<PostList title="Test category 2" />

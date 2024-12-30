@@ -11,7 +11,7 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { logIn, loginFormSchema, signupFormSchema } from '$lib/state/auth';
+	import { signIn, loginFormSchema, signupFormSchema, signUp } from '$lib/state/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
 
@@ -20,7 +20,7 @@
 		resetForm: true,
 		validators: valibot(loginFormSchema),
 		onSubmit({ formData }) {
-			logIn({ formData, form: loginForm })
+			signIn({ formData, form: loginForm })
 				.then((_) => toast.message(m.login_successful()))
 				.catch((error) => toast.error(error.toString()));
 		}
@@ -31,7 +31,9 @@
 		resetForm: true,
 		validators: valibot(signupFormSchema),
 		onSubmit({ formData }) {
-			// handleSubmit({ formData, action: signUp, form: signupForm });
+			signUp({ formData, form: loginForm })
+				.then((_) => toast.message(m.signup_successful()))
+				.catch((error) => toast.error(error.toString()));
 		}
 	});
 

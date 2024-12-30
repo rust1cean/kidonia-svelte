@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Switch as SwitchPrimitive, type WithoutChildrenOrChild } from "bits-ui";
-	import { cn } from "$lib/shared/utils/style-utils.js";
+	import { cn } from "$lib/shared/style-utils/style-utils.js";
 
 	let {
 		ref = $bindable(null),
