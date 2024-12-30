@@ -5,3 +5,4 @@ export type PostEntity = Merge<Tables<'post'>, { author: Tables<'user'> }>;
 
 export * from "./post-service"
 export * from "./post-constants"
+export * from "./post-form-schema"

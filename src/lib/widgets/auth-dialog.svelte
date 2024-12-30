@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import * as m from '$lib/paraglide/messages';
-	import { superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { defaults, superForm, type SuperForm } from 'sveltekit-superforms';
+	import { valibot } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 
 	import * as Tabs from '$lib/components/ui/tabs';
@@ -12,26 +12,54 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { loginFormSchema, signupFormSchema } from '$lib/api/auth/auth-form-schema';
+	import { loginFormSchema, signUp, signupFormSchema } from '$lib/api/auth';
+	import { logIn } from '$lib/api/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
 
-	const loginForm = superForm(page.data.loginForm, {
-		validators: zodClient(loginFormSchema),
-		resetForm: true
+	const handleSubmit = async ({
+		action,
+		form,
+		formData
+	}: {
+		formData: FormData;
+		action: (data: any) => Promise<any>;
+		form: SuperForm<any, any>;
+	}) => {
+		const { valid, errors } = await form.validateForm();
+
+		if (valid) {
+			const data = Object.fromEntries(formData.entries());
+
+			action(data)
+				.then((_) => toast.message(m.login_successful()))
+				.catch((error) => toast.error(error.message));
+		} else {
+			const [[firstErrorFromGroup]] = Object.values(errors) as any;
+			toast.error(firstErrorFromGroup);
+		}
+	};
+
+	const loginForm = superForm(defaults(valibot(loginFormSchema)), {
+		SPA: true,
+		resetForm: true,
+		validators: valibot(loginFormSchema),
+		onSubmit({ formData }) {
+			handleSubmit({ formData, action: logIn, form: loginForm });
+		}
 	});
-	const signupForm = superForm(page.data.signupForm, {
-		validators: zodClient(signupFormSchema),
-		resetForm: true
+
+	const signupForm = superForm(defaults(valibot(signupFormSchema)), {
+		SPA: true,
+		resetForm: true,
+		validators: valibot(signupFormSchema),
+		onSubmit({ formData }) {
+			handleSubmit({ formData, action: signUp, form: signupForm });
+		}
 	});
 	const submit = () => (tab === 'login' ? loginForm : signupForm).submit();
-	const { message: loginMessage } = loginForm;
 
 	let tab = $state<'signup' | 'login'>('login');
-
-	loginMessage.subscribe((msg) => {
-		toast.success(msg);
-	});
 </script>
 
 <Dialog.Root bind:open>
@@ -48,7 +76,7 @@
 			</Dialog.Description>
 
 			<Tabs.Content value="login">
-				<form method="POST" action="/api?/login" class="flex flex-col gap-2" use:loginForm.enhance>
+				<form method="POST" class="flex flex-col gap-2" use:loginForm.enhance>
 					<TextField form={loginForm} field="email" type="email" label={m.email()} />
 					<TextField form={loginForm} field="password" type="password" label={m.password()} />
 					{@render footer()}
@@ -59,7 +87,6 @@
 				<form
 					method="POST"
 					enctype="multipart/form-data"
-					action="/api?/signup"
 					class="flex flex-col gap-2"
 					use:signupForm.enhance
 				>
