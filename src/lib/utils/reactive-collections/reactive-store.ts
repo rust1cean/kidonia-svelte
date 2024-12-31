@@ -1,20 +1,20 @@
 import { onDestroy } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
-import { NotificationFactory, type Subscriber } from '../notifications';
+import { Notifier, type Subscriber } from '../notifications';
+import type { Id } from '../types';
 
 export type StoreEvents = 'set' | 'remove';
 
 export abstract class ReactiveStore<
-	Key,
-	Value extends { id: Key },
+	Item extends { id: Id },
 	ExtendedEvents extends string = never
 > {
-	protected store: SvelteMap<Key, Value>;
-	protected notifications: NotificationFactory<StoreEvents | ExtendedEvents>;
+	protected store: SvelteMap<Item['id'], Item>;
+	protected notifications: Notifier<StoreEvents | ExtendedEvents>;
 
 	constructor(selfDestroy = () => {}) {
 		this.store = new SvelteMap();
-		this.notifications = new NotificationFactory();
+		this.notifications = new Notifier();
 
 		onDestroy(() => {
 			this.store.clear();
@@ -23,7 +23,11 @@ export abstract class ReactiveStore<
 		});
 	}
 
-	public get all(): MapIterator<Value> {
+	public get items(): Item[] {
+		return Array.from(this.store.values());
+	}
+
+	public get iterator(): MapIterator<Item> {
 		return this.store.values();
 	}
 
@@ -36,21 +40,21 @@ export abstract class ReactiveStore<
 		return this;
 	}
 
-	public set(...values: Value[]): this {
+	public set(...values: Item[]): this {
 		values.forEach((value) => this.store.set(value.id, value));
 		this.notifications.notify('set', ...values);
 
 		return this;
 	}
 
-	public remove(...ids: Key[]): this {
+	public remove(...ids: Array<Item['id']>): this {
 		ids.forEach((id) => this.store.delete(id));
 		this.notifications.notify('remove', ...ids);
 
 		return this;
 	}
 
-	public has(id: Key): boolean {
+	public has(id: Item['id']): boolean {
 		return this.store.has(id);
 	}
 }

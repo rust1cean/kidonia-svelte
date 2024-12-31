@@ -1,4 +1,4 @@
-import type { PostEntity } from '$lib/api/post';
+import type { PostEntity } from '$lib/data/post';
 import type { PostModel } from './post-model';
 
 export const entityToModel = (entity: PostEntity): PostModel => ({

@@ -1,5 +1,5 @@
 import type { SuperForm } from 'sveltekit-superforms';
-import { signInRequest, signUpRequest } from '$lib/api/auth';
+import { signInRequest, signUpRequest } from '$lib/data/auth';
 
 export type FormInfo = {
 	formData: FormData;

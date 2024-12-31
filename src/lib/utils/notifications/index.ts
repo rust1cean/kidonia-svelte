@@ -1,13 +1,13 @@
-export class NotificationFactory<NotificationEvent> {
-	constructor(private factory: Map<NotificationEvent, NotificationPipeline<any>> = new Map()) {}
+export class Notifier<NotificationEvent> {
+	constructor(private factory: Map<NotificationEvent, NotifierPipeline<any>> = new Map()) {}
 
 	public selfDestroy() {
 		this.factory.clear();
 	}
 
-	public subscribe<Item>(event: NotificationEvent, subscriber: Subscriber<Item>): this {
+	public subscribe<Item>(event: NotificationEvent, subscriber: NotificationSubscriber<Item>): this {
 		if (!this.factory.has(event)) {
-			this.factory.set(event, new NotificationPipeline());
+			this.factory.set(event, new NotifierPipeline());
 		}
 		this.factory.get(event)!.subscribe(subscriber);
 		return this;
@@ -34,10 +34,10 @@ export class NotificationFactory<NotificationEvent> {
 	}
 }
 
-export class NotificationPipeline<Item> {
-	constructor(private pipeline: Array<Subscriber<Item>> = []) {}
+export class NotifierPipeline<Item> {
+	constructor(private pipeline: Array<NotificationSubscriber<Item>> = []) {}
 
-	public subscribe(subscriber: Subscriber<Item>): this {
+	public subscribe(subscriber: NotificationSubscriber<Item>): this {
 		this.pipeline.push(subscriber);
 		return this;
 	}
@@ -58,4 +58,4 @@ export class NotificationPipeline<Item> {
 	}
 }
 
-export type Subscriber<Item> = (...args: Item[]) => any;
+export type NotificationSubscriber<Item> = (...args: Item[]) => any;
