@@ -32,7 +32,7 @@ export type EditPostPayload = {
 	title?: string;
 };
 
-export type FetchPostsPayload = Identify<
+export type FilterPostsPayload = Identify<
 	{
 		query?: string | null;
 	} & PostsFilters

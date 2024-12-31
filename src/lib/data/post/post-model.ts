@@ -1,10 +1,10 @@
 import { POSTS_PER_ONCE, type PostCategory } from '$lib/data/post/post-constants';
 import { ArithmeticMean } from '$lib/utils/arithmetic-mean';
 import { Notifier } from '$lib/utils/notifier';
-import type { Id } from '$lib/utils/types';
+import type { Id, Identify } from '$lib/utils/types';
 import type { SetOptional } from 'type-fest';
 import type { FetchRange } from '../types';
-import type { FetchPostsPayload } from './post-payload';
+import type { FilterPostsPayload } from './post-payload';
 import { entityToModel } from './post-mapper';
 import { fetchPosts } from './post-service';
 
@@ -29,7 +29,9 @@ export type PostModel = {
 	updatedAt?: string;
 };
 
-export type PostStoreEvent = 'on-request' | 'on-set' | 'on-remove';
+export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
+export type PostStoreUpdateEvent = 'on-set' | 'on-drop';
+export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
 
 export class PostStore extends Notifier<PostStoreEvent> {
 	constructor(
@@ -46,17 +48,23 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		return this.store.values();
 	}
 
-	public get allPosts(): Array<PostModel> {
+	public get all(): Array<PostModel> {
 		return Array.from(this[Symbol.iterator]());
 	}
 
-	public async requestPosts(
-		options: SetOptional<FetchPostsPayload, 'offset' | 'limit'> = {}
+	public async request(
+		options: SetOptional<FilterPostsPayload, 'offset' | 'limit'> = {}
 	): Promise<Array<PostModel> | Error> {
+		this.notify('on-request');
+
 		options.offset ??= this.requestRange.offset;
 		options.limit ??= this.requestRange.limit.intArithmeticMean;
 
-		const postEntities = await fetchPosts(options as FetchPostsPayload);
+		const postEntities = await fetchPosts(options as FilterPostsPayload).catch((error) => {
+			this.notify('on-reject', error);
+			throw error;
+		});
+
 		this.requestRange.limit.recalculate(options.limit);
 
 		const postModels = postEntities.map((postEntity) => {
@@ -65,10 +73,13 @@ export class PostStore extends Notifier<PostStoreEvent> {
 			return postModel;
 		});
 
+		this.notify('on-set', postModels);
+		this.notify('on-response', postModels);
+
 		return postModels;
 	}
 
-	private async requestPostsIfNeeded(): Promise<void | Error> {
+	private async requestIfNeeded(): Promise<void | Error> {
 		const {
 			store,
 			requestRange: { offset, limit }
@@ -78,26 +89,26 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		const averageRequests = limit.intArithmeticMean;
 
 		if (diff > averageRequests) {
-			this.requestPosts();
+			this.request();
 		}
 	}
 
-	public getPosts({
-		offset,
-		limit
-	}: {
-		offset: FetchRange['offset'];
-		limit?: FetchRange['limit'];
-	}) {
+	public getMany({ offset, limit }: { offset: FetchRange['offset']; limit?: FetchRange['limit'] }) {
 		if (!limit) {
 			limit = this.requestRange.limit.intArithmeticMean;
 		}
-		this.requestPostsIfNeeded().catch(console.error);
+		this.requestIfNeeded().catch(console.error);
 
-		return this.allPosts.slice(offset, limit);
+		return this.all.slice(offset, limit);
 	}
 
-	public getPostById(id: PostModel['id']): PostModel | undefined {
+	public getSingle(id: PostModel['id']): PostModel | undefined {
 		return this.store.get(id);
+	}
+
+	public drop(id: Id): this {
+		this.store.delete(id);
+		this.notify('on-drop', id);
+		return this;
 	}
 }
