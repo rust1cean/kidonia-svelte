@@ -1,25 +1,18 @@
 import { fetchPosts, type FetchPostsPayload } from '$lib/api/post';
-import { Store } from '$lib/utils/store';
+import { ReactiveStore } from '$lib/utils/reactive-collections';
 import type { Id } from '$lib/utils/types';
+import { entityToModel } from './post-mapper';
 import type { PostModel } from './post-model';
 
-export class PostStore extends Store<Id, PostModel> {
-	constructor() {
-		super();
-
-		this.subscribe<PostModel>('set', (...posts) => this.onNewPosts(...posts));
-		this.subscribe<Id>('remove', (...ids) => this.onRemovePosts(...ids));
-	}
-
-	protected onDestroy() {}
-
-	private onNewPosts(...posts: PostModel[]) {}
-
-	private onRemovePosts(...ids: Id[]) {}
-
+export class PostStore extends ReactiveStore<Id, PostModel> {
 	public requestPosts(options: FetchPostsPayload = {}) {
-		fetchPosts(options).then((posts) => {
-			this.set(...posts);
-		});
+		fetchPosts(options)
+			.then((posts) => {
+				this.set(...posts.map(entityToModel));
+			})
+			.catch((error) => {
+				console.error('Failed to fetch posts.');
+				throw error;
+			});
 	}
 }

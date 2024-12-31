@@ -19,5 +19,5 @@ export type PostModel = {
 	phone: string;
 	postcode?: number | null;
 	price?: number | null;
-	updated_at?: string;
+	updatedAt?: string;
 };
