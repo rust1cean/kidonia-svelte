@@ -1,7 +1,5 @@
-// Post fetch
-export const POSTS_PER_REQUEST: number = 40;
+export const POSTS_PER_ONCE: number = 40;
 
-// Post options
 export const PostCategories = [
 	'sport',
 	'math',

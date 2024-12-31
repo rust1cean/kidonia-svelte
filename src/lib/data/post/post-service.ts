@@ -1,21 +1,21 @@
 import type { PostEntity } from '.';
 import { db } from '..';
 import type { CreatePostPayload, EditPostPayload, FetchPostsPayload } from './post-payload';
-import { MAX_AGE, MIN_AGE, POSTS_PER_REQUEST } from '.';
+import { MAX_AGE, MIN_AGE, POSTS_PER_ONCE } from '.';
 import type { Id } from '$lib/utils/types';
 
 export const fetchPosts = async ({
-	offset = 0,
-	limit = POSTS_PER_REQUEST,
+	offset,
+	limit = POSTS_PER_ONCE,
 	draft = false,
 	minAge = MIN_AGE,
 	maxAge = MAX_AGE,
 	categories = [],
-	authorId = null,
-	address = null,
-	postcode = null,
-	query = null
-}: FetchPostsPayload = {}): Promise<PostEntity[]> => {
+	authorId,
+	address,
+	postcode,
+	query
+}: FetchPostsPayload): Promise<PostEntity[]> => {
 	let q = db.from('post').select('*, author(*)').range(offset, limit);
 
 	if (query) q = q.ilike('title', `%${query}%`);

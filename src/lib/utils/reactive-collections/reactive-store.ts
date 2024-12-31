@@ -1,6 +1,6 @@
 import { onDestroy } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
-import { Notifier, type Subscriber } from '../notifications';
+import { Notifier, type Subscriber } from '../notifier';
 import type { Id } from '../types';
 
 export type StoreEvents = 'set' | 'remove';

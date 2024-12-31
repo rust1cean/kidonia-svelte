@@ -1,20 +1,20 @@
 export class Notifier<NotificationEvent> {
-	constructor(private factory: Map<NotificationEvent, NotifierPipeline<any>> = new Map()) {}
+	constructor(private notifier: Map<NotificationEvent, NotifierPipeline<any>> = new Map()) {}
 
 	public selfDestroy() {
-		this.factory.clear();
+		this.notifier.clear();
 	}
 
 	public subscribe<Item>(event: NotificationEvent, subscriber: NotificationSubscriber<Item>): this {
-		if (!this.factory.has(event)) {
-			this.factory.set(event, new NotifierPipeline());
+		if (!this.notifier.has(event)) {
+			this.notifier.set(event, new NotifierPipeline());
 		}
-		this.factory.get(event)!.subscribe(subscriber);
+		this.notifier.get(event)!.subscribe(subscriber);
 		return this;
 	}
 
 	public async notify<Item>(notificationEvent: NotificationEvent, ...args: Item[]): Promise<this> {
-		const pipeline = this.factory.get(notificationEvent);
+		const pipeline = this.notifier.get(notificationEvent);
 
 		if (pipeline) {
 			await pipeline.notifyAll(...args);
@@ -24,9 +24,9 @@ export class Notifier<NotificationEvent> {
 	}
 
 	public async notifyAll<Item>(...args: Item[]): Promise<this> {
-		const factory = this.factory.values();
+		const notifier = this.notifier.values();
 
-		for (const pipeline of factory) {
+		for (const pipeline of notifier) {
 			await pipeline.notifyAll(...args);
 		}
 
