@@ -93,7 +93,13 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		}
 	}
 
-	public getMany({ offset, limit }: { offset: FetchRange['offset']; limit?: FetchRange['limit'] }) {
+	public getSlice({
+		offset,
+		limit
+	}: {
+		offset: FetchRange['offset'];
+		limit?: FetchRange['limit'];
+	}) {
 		if (!limit) {
 			limit = this.requestRange.limit.intArithmeticMean;
 		}
