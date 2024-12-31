@@ -1,4 +1,5 @@
-import type { Id } from '$lib/utils/types';
+import type { Id, Identify } from '$lib/utils/types';
+import type { BaseFetchOptions } from '../types';
 import type { PostCategory } from './post-constants';
 
 export type CreatePostPayload = {
@@ -31,13 +32,16 @@ export type EditPostPayload = {
 	title?: string;
 };
 
-export type FetchPostsPayload = {
-	author_id?: Id;
-	min_age?: number | null;
-	max_age?: number | null;
-	address?: string | null;
-	price?: number | null;
-	draft?: boolean | null;
-	postcode?: number | null;
-	categories?: Array<PostCategory>;
-};
+export type FetchPostsPayload = Identify<
+	BaseFetchOptions & {
+		query?: string | null;
+		authorId?: Id | null;
+		minAge?: number | null;
+		maxAge?: number | null;
+		address?: string | null;
+		price?: number | null;
+		draft?: boolean | null;
+		postcode?: number | null;
+		categories?: Array<PostCategory>;
+	}
+>;

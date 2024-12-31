@@ -1,16 +1,16 @@
 import { onDestroy } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
-import { Notifier, type Subsriber } from '../notifier';
+import { NotifierFactory, type Subscriber } from '../notifier';
 
 export type StoreEvents = 'set' | 'remove';
 
 export abstract class Store<Key, Value extends { id: Key }, ExtendedEvents extends string = never> {
 	protected map: SvelteMap<Key, Value>;
-	protected notifier: Notifier<StoreEvents | ExtendedEvents>;
+	protected notifier: NotifierFactory<StoreEvents | ExtendedEvents>;
 
 	constructor() {
 		this.map = new SvelteMap();
-		this.notifier = new Notifier();
+		this.notifier = new NotifierFactory();
 
 		onDestroy(() => {
 			this.map.clear();
@@ -21,7 +21,7 @@ export abstract class Store<Key, Value extends { id: Key }, ExtendedEvents exten
 
 	protected abstract onDestroy(): any;
 
-	public subscribe(event: StoreEvents | ExtendedEvents, subscriber: Subsriber): this {
+	public subscribe<Item>(event: StoreEvents | ExtendedEvents, subscriber: Subscriber<Item>): this {
 		this.notifier.subscribe(event, subscriber);
 		return this;
 	}
