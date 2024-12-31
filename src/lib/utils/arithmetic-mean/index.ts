@@ -8,13 +8,16 @@ export class ArithmeticMean {
 		return new ArithmeticMean(sum, count);
 	}
 
-	public get arithmeticMean(): number {
+	public get floatArithmeticMean(): number {
 		return this.sum / this.count;
 	}
 
-	public recalculate(term: number): ArithmeticMean['arithmeticMean'] {
+	public get intArithmeticMean(): number {
+		return Math.round(this.sum / this.count);
+	}
+
+	public recalculate(term: number) {
 		this.sum += term;
 		this.count += 1;
-		return this.arithmeticMean;
 	}
 }

@@ -4,8 +4,8 @@ import { Notifier } from '$lib/utils/notifier';
 import type { Id } from '$lib/utils/types';
 import type { SetOptional } from 'type-fest';
 import type { FetchRange } from '../types';
-import { entityToModel } from './post-mapper';
 import type { FetchPostsPayload } from './post-payload';
+import { entityToModel } from './post-mapper';
 import { fetchPosts } from './post-service';
 
 export type PostModel = {
@@ -54,7 +54,7 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		options: SetOptional<FetchPostsPayload, 'offset' | 'limit'> = {}
 	): Promise<Array<PostModel> | Error> {
 		options.offset ??= this.requestRange.offset;
-		options.limit ??= this.requestRange.limit.arithmeticMean;
+		options.limit ??= this.requestRange.limit.intArithmeticMean;
 
 		const postEntities = await fetchPosts(options as FetchPostsPayload);
 		this.requestRange.limit.recalculate(options.limit);
@@ -68,14 +68,14 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		return postModels;
 	}
 
-	private async fetchPostsIfNeeded(): Promise<void | Error> {
+	private async requestPostsIfNeeded(): Promise<void | Error> {
 		const {
 			store,
 			requestRange: { offset, limit }
 		} = this;
 
 		const diff = store.size - offset;
-		const averageRequests = limit.arithmeticMean;
+		const averageRequests = limit.intArithmeticMean;
 
 		if (diff > averageRequests) {
 			this.requestPosts();
@@ -90,9 +90,9 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		limit?: FetchRange['limit'];
 	}) {
 		if (!limit) {
-			limit = this.requestRange.limit.arithmeticMean;
+			limit = this.requestRange.limit.intArithmeticMean;
 		}
-		this.fetchPostsIfNeeded().catch(console.error);
+		this.requestPostsIfNeeded().catch(console.error);
 
 		return this.allPosts.slice(offset, limit);
 	}
