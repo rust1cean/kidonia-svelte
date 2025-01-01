@@ -1,4 +1,4 @@
-import type { PostEntity } from '$lib/data/post';
+import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/data/post';
 import type { PostModel } from './post-model';
 
 export const entityToModel = (entity: PostEntity): PostModel => ({
@@ -19,5 +19,27 @@ export const entityToModel = (entity: PostEntity): PostModel => ({
 	phone: entity.phone,
 	postcode: entity.postcode,
 	price: entity.price,
-	updatedAt: entity.updated_at
+	updatedAt: entity.updated_at!
+});
+
+export const modelToEntity = (model: PostModel): PostEntity => ({
+	id: model.id as string,
+	author: {
+		id: model.id as string,
+		avatar_url: model.author.avatar!,
+		name: model.author.name,
+		role: 'author'
+	},
+	title: model.title,
+	image_path: model.gallery[0],
+	description: model.description ?? '',
+	address: model.address!,
+	category: model.category!,
+	draft: model.draft ?? false,
+	max_age: model.maxAge ?? MAX_AGE,
+	min_age: model.minAge ?? MIN_AGE,
+	phone: model.phone,
+	postcode: model.postcode!,
+	price: model.price!,
+	updated_at: model.updatedAt!
 });
