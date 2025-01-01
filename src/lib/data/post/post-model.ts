@@ -30,7 +30,7 @@ export type PostModel = {
 };
 
 export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
-export type PostStoreUpdateEvent = 'on-set' | 'on-drop';
+export type PostStoreUpdateEvent = 'on-drop';
 export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
 
 export class PostStore extends Notifier<PostStoreEvent> {
@@ -60,7 +60,7 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		options.offset ??= this.requestRange.offset;
 		options.limit ??= this.requestRange.limit.intArithmeticMean;
 
-		const postEntities = await fetchPosts(options as FilterPostsPayload).catch((error) => {
+		const postEntities = await fetchPosts(options as FilterPostsPayload).catch((error: Error) => {
 			this.notify('on-reject', error);
 			throw error;
 		});
@@ -73,7 +73,6 @@ export class PostStore extends Notifier<PostStoreEvent> {
 			return postModel;
 		});
 
-		this.notify('on-set', postModels);
 		this.notify('on-response', postModels);
 
 		return postModels;
@@ -85,10 +84,10 @@ export class PostStore extends Notifier<PostStoreEvent> {
 			requestRange: { offset, limit }
 		} = this;
 
-		const diff = store.size - offset;
-		const averageRequests = limit.intArithmeticMean;
+		const postsRemainder = store.size - offset;
+		const averagePostsLimit = limit.intArithmeticMean;
 
-		if (diff > averageRequests) {
+		if (postsRemainder > averagePostsLimit) {
 			this.request();
 		}
 	}
