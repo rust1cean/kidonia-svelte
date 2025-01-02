@@ -7,22 +7,27 @@ import type { FetchRange } from '../types';
 import type { FilterPostsPayload } from './post-payload';
 import { entityToModel } from './post-mapper';
 import { fetchPosts } from './post-service';
-import type { PostModel } from './post-model';
+import type { PostId, PostModel } from './post-model';
 
-export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
-export type PostStoreUpdateEvent = 'on-drop';
-export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
+type PostFilters = SetOptional<FilterPostsPayload, 'offset' | 'limit'>;
 
-export class PostStore extends Notifier<PostStoreEvent> {
+export interface IPostStore {
+	[Symbol.iterator](): MapIterator<PostModel>;
+	get all(): Array<PostModel>;
+	request(options: PostFilters): Promise<Array<PostModel> | Error>;
+	getSlice(slice: SetOptional<FetchRange, 'limit'>): Array<PostModel>;
+	getSingle(id: PostId): PostModel | undefined;
+	drop(id: Id): this;
+}
+
+export class PostStore implements IPostStore {
 	constructor(
-		private store = new Map<PostModel['id'], PostModel>(),
-		private requestRange = {
+		private store: Map<PostId, PostModel> = new Map(),
+		private requestRange: { offset: number; limit: ArithmeticMean } = {
 			offset: 0,
 			limit: ArithmeticMean.from(POSTS_PER_ONCE)
 		}
-	) {
-		super();
-	}
+	) {}
 
 	[Symbol.iterator](): MapIterator<PostModel> {
 		return this.store.values();
@@ -35,27 +40,24 @@ export class PostStore extends Notifier<PostStoreEvent> {
 	public async request(
 		options: SetOptional<FilterPostsPayload, 'offset' | 'limit'> = {}
 	): Promise<Array<PostModel> | Error> {
-		this.notify('on-request');
+		try {
+			options.offset ??= this.requestRange.offset;
+			options.limit ??= this.requestRange.limit.intArithmeticMean;
 
-		options.offset ??= this.requestRange.offset;
-		options.limit ??= this.requestRange.limit.intArithmeticMean;
+			const postEntities = await fetchPosts(options as FilterPostsPayload);
 
-		const postEntities = await fetchPosts(options as FilterPostsPayload).catch((error: Error) => {
-			this.notify('on-reject', error);
+			this.requestRange.limit.recalculate(options.limit);
+
+			const postModels = postEntities.map((postEntity) => {
+				const postModel = entityToModel(postEntity);
+				this.store.set(postModel.id, postModel);
+				return postModel;
+			});
+
+			return postModels;
+		} catch (error) {
 			throw error;
-		});
-
-		this.requestRange.limit.recalculate(options.limit);
-
-		const postModels = postEntities.map((postEntity) => {
-			const postModel = entityToModel(postEntity);
-			this.store.set(postModel.id, postModel);
-			return postModel;
-		});
-
-		this.notify('on-response', postModels);
-
-		return postModels;
+		}
 	}
 
 	private async requestIfNeeded(): Promise<void | Error> {
@@ -78,7 +80,7 @@ export class PostStore extends Notifier<PostStoreEvent> {
 	}: {
 		offset: FetchRange['offset'];
 		limit?: FetchRange['limit'];
-	}) {
+	}): PostModel[] {
 		if (!limit) {
 			limit = this.requestRange.limit.intArithmeticMean;
 		}
@@ -87,15 +89,61 @@ export class PostStore extends Notifier<PostStoreEvent> {
 		return this.all.slice(offset, limit);
 	}
 
-	public getSingle(id: PostModel['id']): PostModel | undefined {
+	public getSingle(id: PostId): PostModel | undefined {
 		return this.store.get(id);
 	}
 
 	public drop(id: Id): this {
 		this.store.delete(id);
-		this.notify('on-drop', id);
 		return this;
 	}
 }
 
 export const postStore = new PostStore();
+
+export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
+export type PostStoreUpdateEvent = 'on-drop';
+export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
+
+export class NotifiablePostStore extends Notifier<PostStoreEvent> implements IPostStore {
+	constructor(private store = new PostStore()) {
+		super();
+	}
+
+	[Symbol.iterator](): MapIterator<PostModel> {
+		return this.store[Symbol.iterator]();
+	}
+
+	public get all(): Array<PostModel> {
+		return this.store.all;
+	}
+
+	public async request(options: PostFilters = {}): Promise<Array<PostModel> | Error> {
+		this.notify('on-request');
+
+		try {
+			const postModels = await this.store.request(options);
+			this.notify('on-response', postModels);
+			return postModels;
+		} catch (error) {
+			this.notify('on-reject', error);
+			throw error;
+		}
+	}
+
+	public getSlice(slice: SetOptional<FetchRange, 'limit'>) {
+		return this.store.getSlice(slice);
+	}
+
+	public getSingle(id: PostId): PostModel | undefined {
+		return this.store.getSingle(id);
+	}
+
+	public drop(id: Id): this {
+		this.store.drop(id);
+		this.notify('on-drop', id);
+		return this;
+	}
+}
+
+export const notifiablePostStore = new NotifiablePostStore(postStore);

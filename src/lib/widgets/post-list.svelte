@@ -5,7 +5,7 @@
 	import PartialView from '$lib/components/partial-view.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Post } from '$lib/widgets/post';
-	import type { PostModel } from '$lib/state/post';
+	import type { PostVModel } from '$lib/state/post';
 
 	// createPost({
 	// 	author: "7178b695-ef82-4688-915f-24f6f7535521",
@@ -14,7 +14,7 @@
 	// 	phone: ''
 	// }).then(console.log);
 
-	const genRandomPosts = async (count: number = 64): Promise<PostModel[]> =>
+	const genRandomPosts = async (count: number = 64): Promise<PostVModel[]> =>
 		Array.from(
 			Array.from(Array(count).keys()).map((i) => ({
 				id: i.toString(),
@@ -38,8 +38,7 @@
 				price: Math.random() > 0.5 ? 79.89 : 0,
 				minAge: 0,
 				maxAge: 18,
-				draft: Math.random() > 0.3,
-				updatedAt: new Date()
+				draft: Math.random() > 0.3
 			}))
 		);
 
@@ -52,9 +51,9 @@
 	}: {
 		editorMode?: boolean;
 		title?: string;
-		posts?: Array<PostModel>;
+		posts?: Array<PostVModel>;
 		requestPosts?: () => Promise<typeof posts>;
-		openModifyPostDialog?: (post?: PostModel) => any;
+		openModifyPostDialog?: (post?: PostVModel) => any;
 	} = $props();
 
 	let loaded: boolean = $state(false);

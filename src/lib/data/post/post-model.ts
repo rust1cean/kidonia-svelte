@@ -1,6 +1,8 @@
 import { type PostCategory } from '$lib/data/post/post-constants';
 import type { Id } from '$lib/utils/types';
 
+export type PostId = PostModel['id'];
+
 export type PostModel = {
 	id: Id;
 	author: {

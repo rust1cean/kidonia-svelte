@@ -15,7 +15,7 @@ export type CreatePostPayload = {
 	postcode?: number | null;
 	price?: number | null;
 	title: string;
-	updated_at?: string;
+	updated_at?: string | null;
 };
 
 export type EditPostPayload = {
