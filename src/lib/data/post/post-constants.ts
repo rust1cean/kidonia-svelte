@@ -1,4 +1,4 @@
-// IoC
+// IoC interfaces
 export const POST_DEPENDENCY_ID = {
 	PostProvider: Symbol.for('PostProvider')
 };
