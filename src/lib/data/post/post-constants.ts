@@ -1,5 +1,12 @@
+// IoC
+export const POST_DEPENDENCY_ID = {
+	PostProvider: Symbol.for('PostProvider')
+};
+
+// Fetch control
 export const POSTS_PER_ONCE: number = 40;
 
+// Post restrictions
 export const PostCategories = [
 	'sport',
 	'math',

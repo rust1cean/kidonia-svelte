@@ -1,10 +1,10 @@
 import { SvelteMap } from 'svelte/reactivity';
 import type { PostId, PostVModel } from './post-model';
-import { localPostStore, type LocalPostStore } from '$lib/data/post';
+import { type PostProvider } from '$lib/data/post';
 
-export class ReactivePostStore<LocalStore extends LocalPostStore> {
+export class ReactivePostStore<Store extends PostProvider> {
 	constructor(
-		private store: LocalStore = localPostStore,
+		private store: Store = localPostStore,
 		private posts: SvelteMap<PostId, PostVModel> = new SvelteMap()
 	) {}
 }

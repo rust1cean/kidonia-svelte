@@ -1,4 +1,4 @@
-import { POSTS_PER_ONCE } from '$lib/data/post/post-constants';
+import { POSTS_PER_ONCE, POST_DEPENDENCY_ID } from '$lib/data/post/post-constants';
 import type { Id, Identify } from '$lib/utils/types';
 import { ArithmeticMean } from '$lib/utils/arithmetic-mean';
 import { Notifier } from '$lib/utils/notifier';
@@ -8,10 +8,11 @@ import type { FilterPostsPayload } from './post-payload';
 import { entityToModel } from './post-mapper';
 import { fetchPosts } from './post-service';
 import type { PostId, PostModel } from './post-model';
+import { inject, injectable } from 'inversify';
 
 type PostFilters = SetOptional<FilterPostsPayload, 'offset' | 'limit'>;
 
-export interface IPostStore {
+export interface PostProvider {
 	[Symbol.iterator](): MapIterator<PostModel>;
 	get all(): Array<PostModel>;
 	request(options: PostFilters): Promise<Array<PostModel> | Error>;
@@ -20,7 +21,8 @@ export interface IPostStore {
 	drop(id: Id): this;
 }
 
-export class PostStore implements IPostStore {
+@injectable()
+export class PostStore implements PostProvider {
 	constructor(
 		private store: Map<PostId, PostModel> = new Map(),
 		private requestRange: { offset: number; limit: ArithmeticMean } = {
@@ -105,8 +107,9 @@ export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
 export type PostStoreUpdateEvent = 'on-drop';
 export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
 
-export class NotifiablePostStore extends Notifier<PostStoreEvent> implements IPostStore {
-	constructor(private store = new PostStore()) {
+@injectable()
+export class NotifiablePostStore extends Notifier<PostStoreEvent> implements PostProvider {
+	constructor(@inject(POST_DEPENDENCY_ID.PostProvider) private store: PostProvider) {
 		super();
 	}
 
@@ -120,10 +123,10 @@ export class NotifiablePostStore extends Notifier<PostStoreEvent> implements IPo
 
 	public async request(options: PostFilters = {}): Promise<Array<PostModel> | Error> {
 		this.notify('on-request');
-
 		try {
 			const postModels = await this.store.request(options);
 			this.notify('on-response', postModels);
+
 			return postModels;
 		} catch (error) {
 			this.notify('on-reject', error);
