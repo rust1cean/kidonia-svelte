@@ -1,8 +1,9 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages';
 	import SuperDebug, { defaults, superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
+	import { toast } from 'svelte-sonner';
 
+	import * as m from '$lib/paraglide/messages';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import type { PostProps } from './post';
@@ -11,11 +12,10 @@
 	import ToggleField from '$lib/components/toggle-field.svelte';
 	import SelectField from '$lib/components/select-field.svelte';
 	import UploadField from '$lib/components/upload-field.svelte';
-	import { createPost, modifyPostFormSchema } from '$lib/api/post';
-	import { MAX_AGE, MIN_AGE, PostCategories } from '$lib/api/post';
+	import { MAX_AGE, MIN_AGE, PostCategories } from '$lib/data/post';
 	import { Slider } from '$lib/components/ui/slider';
 	import { Label } from '$lib/components/ui/label';
-	import { toast } from 'svelte-sonner';
+	import { modifyPostFormSchema } from '$lib/state/post/post-form-schema';
 
 	const {
 		open,

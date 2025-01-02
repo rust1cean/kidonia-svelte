@@ -1,5 +1,10 @@
 import * as v from 'valibot';
-import { GREEK_PHONE_REGEXP, MAX_AGE, MIN_AGE, PostCategories } from './post-constants';
+import {
+	GREEK_PHONE_REGEXP,
+	MAX_AGE,
+	MIN_AGE,
+	PostCategories
+} from '$lib/data/post/post-constants';
 
 export type ModifyPostFormSchema = typeof modifyPostFormSchema;
 
