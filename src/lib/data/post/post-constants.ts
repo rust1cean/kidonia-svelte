@@ -1,6 +1,8 @@
 // IoC interfaces
 export const POST_DEPENDENCY_ID = {
-	PostProvider: Symbol.for('PostProvider')
+	EventProvider: Symbol.for('EventProvider'),
+	PostProvider: Symbol.for('PostProvider'),
+	NotifiablePostProvider: Symbol.for('NotifiablePostProvider')
 };
 
 // Fetch control

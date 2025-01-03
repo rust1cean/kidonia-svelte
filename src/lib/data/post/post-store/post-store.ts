@@ -11,19 +11,20 @@ import type { PostFilters, PostProvider } from './';
 
 @injectable()
 export class PostStore implements PostProvider {
-	constructor(
-		private store: Map<PostId, PostModel> = new Map(),
-		private requestRange: { offset: number; limit: ArithmeticMean } = {
+	private requestRange: { offset: number; limit: ArithmeticMean };
+
+	constructor(protected store: Map<PostId, PostModel> = new Map()) {
+		this.requestRange = {
 			offset: 0,
 			limit: ArithmeticMean.from(POSTS_PER_ONCE)
-		}
-	) {}
+		};
+	}
 
 	[Symbol.iterator](): MapIterator<PostModel> {
 		return this.store.values();
 	}
 
-	public get all(): Array<PostModel> {
+	public get allPosts(): Array<PostModel> {
 		return Array.from(this[Symbol.iterator]());
 	}
 
@@ -70,7 +71,7 @@ export class PostStore implements PostProvider {
 		}
 		this.requestIfNeeded().catch(console.error);
 
-		return this.all.slice(offset, limit);
+		return this.allPosts.slice(offset, limit);
 	}
 
 	public getSingle(id: PostId): PostModel | undefined {

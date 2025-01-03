@@ -1,39 +1,52 @@
-import type { Id, Identify } from '$lib/utils/types';
-import type { SetOptional } from 'type-fest';
 import { inject, injectable } from 'inversify';
+import type { SetOptional } from 'type-fest';
+import type { Id } from '$lib/utils/types';
 import type { PostId, PostModel } from '../post-model';
-import type { PostFilters, PostProvider } from './';
-import { Notifier } from '$lib/utils/notifier';
+import {
+	type NotifiablePostProvider,
+	type PostFilters,
+	type PostProvider,
+	type PostStoreEvent
+} from './';
 import { POST_DEPENDENCY_ID } from '../post-constants';
 import type { FetchRange } from '$lib/data/types';
-
-export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
-export type PostStoreUpdateEvent = 'on-drop';
-export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
+import { type EventProvider, type EventSubscriber } from '$lib/utils/notifier';
 
 @injectable()
-export class NotifiablePostStore extends Notifier<PostStoreEvent> implements PostProvider {
-	constructor(@inject(POST_DEPENDENCY_ID.PostProvider) private store: PostProvider) {
-		super();
+export class NotifiablePostStore implements NotifiablePostProvider {
+	constructor(
+		@inject(POST_DEPENDENCY_ID.PostProvider) private store: PostProvider,
+		@inject(POST_DEPENDENCY_ID.EventProvider) private notifier: EventProvider<PostStoreEvent>
+	) {}
+
+	public subscribe<Arg>(event: PostStoreEvent, subscriber: EventSubscriber<Arg>): this {
+		this.notifier.subscribe(event, subscriber);
+		return this;
 	}
 
-	[Symbol.iterator](): MapIterator<PostModel> {
-		return this.store[Symbol.iterator]();
+	public async notify<Arg>(event: PostStoreEvent, ...args: Arg[]): Promise<this> {
+		this.notifier.notify(event, ...args);
+		return this;
 	}
 
-	public get all(): Array<PostModel> {
-		return this.store.all;
+	public async notifyAll<Arg>(...args: Arg[]): Promise<this> {
+		this.notifier.notifyAll(...args);
+		return this;
+	}
+
+	public get allPosts(): Array<PostModel> {
+		return this.store.allPosts;
 	}
 
 	public async request(options: PostFilters = {}): Promise<Array<PostModel> | Error> {
-		this.notify('on-request');
+		this.notifier.notify('on-request');
 		try {
 			const postModels = await this.store.request(options);
-			this.notify('on-response', postModels);
+			this.notifier.notify('on-response', postModels);
 
 			return postModels;
 		} catch (error) {
-			this.notify('on-reject', error);
+			this.notifier.notify('on-reject', error);
 			throw error;
 		}
 	}
@@ -48,7 +61,7 @@ export class NotifiablePostStore extends Notifier<PostStoreEvent> implements Pos
 
 	public drop(id: Id): this {
 		this.store.drop(id);
-		this.notify('on-drop', id);
+		this.notifier.notify('on-drop', id);
 		return this;
 	}
 }

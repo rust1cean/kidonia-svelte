@@ -11,15 +11,15 @@ export const entityToModel = (entity: PostEntity): PostModel => ({
 	title: entity.title,
 	gallery: [entity.image_path ?? ''],
 	description: entity.description,
-	address: entity.address,
+	address: entity.address ?? '',
 	category: entity.category,
 	draft: entity.draft,
-	maxAge: entity.max_age,
-	minAge: entity.min_age,
+	minAge: entity.min_age ?? MIN_AGE,
+	maxAge: entity.max_age ?? MAX_AGE,
 	phone: entity.phone,
 	postcode: entity.postcode,
-	price: entity.price,
-	updatedAt: entity.updated_at!
+	price: entity.price ?? 0,
+	updatedAt: new Date(Number(entity.updated_at!))
 });
 
 export const modelToEntity = (model: PostModel): PostEntity => ({
@@ -41,5 +41,5 @@ export const modelToEntity = (model: PostModel): PostEntity => ({
 	phone: model.phone,
 	postcode: model.postcode!,
 	price: model.price!,
-	updated_at: model.updatedAt!
+	updated_at: model.updatedAt.toString()
 });
