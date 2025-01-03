@@ -15,7 +15,7 @@ export interface PostProvider {
 	drop(id: Id): this;
 }
 
-export type PostRepositoryRequestEvent = 'on-request' | 'on-reject' | 'on-response';
+export type PostRepositoryRequestEvent = 'on-request' | 'on-request-reject' | 'on-request-response';
 export type PostRepositoryUpdateEvent = 'on-drop';
 export type PostRepositoryEvent = Identify<PostRepositoryRequestEvent | PostRepositoryUpdateEvent>;
 

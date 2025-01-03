@@ -42,11 +42,11 @@ export class NotifiablePostRepository implements NotifiablePostProvider {
 		this.notifier.notify('on-request');
 		try {
 			const postModels = await this.store.request(options);
-			this.notifier.notify('on-response', postModels);
+			this.notifier.notify('on-request-response', postModels);
 
 			return postModels;
 		} catch (error) {
-			this.notifier.notify('on-reject', error);
+			this.notifier.notify('on-request-reject', error);
 			throw error;
 		}
 	}

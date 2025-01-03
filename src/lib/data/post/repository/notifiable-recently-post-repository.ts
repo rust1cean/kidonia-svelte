@@ -16,7 +16,7 @@ export class NotifiableRecentlyPostRepository {
 		@inject(POST_TYPES.NotifiablePostProvider) private store: NotifiablePostProvider,
 		private posts: Array<PostModel> = []
 	) {
-		this.store.subscribe('on-response', async (...newPosts: PostModel[]) => {
+		this.store.subscribe('on-request-response', async (...newPosts: PostModel[]) => {
 			this.posts = await this.sortByDate(newPosts);
 		});
 	}
