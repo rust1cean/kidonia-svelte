@@ -66,9 +66,11 @@ export class PostRepository implements PostProvider {
 	}
 
 	public getSlice({ offset, limit }: PostFilters): PostModel[] {
+		offset ??= this.requestRange.offset
 		if (!limit) {
 			limit = this.requestRange.limit.intArithmeticMean;
 		}
+
 		this.requestIfNeeded().catch(console.error);
 
 		return this.allPosts.slice(offset, limit);
