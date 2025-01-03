@@ -3,7 +3,7 @@ import type { Id } from '$lib/utils/types';
 import { ArithmeticMean } from '$lib/utils/arithmetic-mean';
 import type { SetOptional } from 'type-fest';
 import { injectable } from 'inversify';
-import type { PostId, PostModel } from '../model';
+import type { PostId, PostModel } from '../../../service/post/model';
 import type { FilterPostsPayload } from '../payload';
 import { fetchPosts } from '../service';
 import { entityToModel } from '../mapper';
@@ -37,6 +37,7 @@ export class PostRepository implements PostProvider {
 
 			const postEntities = await fetchPosts(options as FilterPostsPayload);
 
+			this.requestRange.offset += postEntities.length
 			this.requestRange.limit.recalculate(options.limit);
 
 			const postModels = postEntities.map((postEntity) => {

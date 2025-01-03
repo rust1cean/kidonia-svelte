@@ -1,6 +1,14 @@
+import type { Merge, SetOptional } from 'type-fest';
+import type { Tables } from '../types';
 import type { Identify } from '$lib/utils/types';
-import type { PostsFilters } from '../types';
-import type { PostCategory } from './constants';
+import type { Id } from '$lib/common';
+import type { PostCategory } from '$lib/common/post';
+import type { FetchRange } from '../types';
+
+export type PostEntity = Merge<
+	Tables<'post'>,
+	{ author: SetOptional<Tables<'user'>, 'created_at'> }
+>;
 
 export type CreatePostPayload = {
 	address?: string | null;
@@ -33,7 +41,15 @@ export type EditPostPayload = {
 };
 
 export type FilterPostsPayload = Identify<
-	{
+	Partial<FetchRange> & {
 		query?: string | null;
-	} & PostsFilters
+		authorId?: Id | null;
+		minAge?: number | null;
+		maxAge?: number | null;
+		address?: string | null;
+		price?: number | null;
+		draft?: boolean | null;
+		postcode?: number | null;
+		categories?: Array<PostCategory>;
+	}
 >;

@@ -1,7 +1,7 @@
 import type { SetOptional } from 'type-fest';
 import type { FilterPostsPayload } from '../payload';
-import type { PostId, PostModel } from '../model';
-import type { FetchRange } from '$lib/data/types';
+import type { PostId, PostModel } from '../../../service/post/model';
+import type { FetchRange } from '$lib/api/types';
 import type { Id, Identify } from '$lib/utils/types';
 import { type EventSubscriber } from '$lib/utils/notifier';
 

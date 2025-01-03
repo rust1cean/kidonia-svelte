@@ -5,9 +5,9 @@ import type {
 	PostFilters,
 	PostRepositoryEvent
 } from './interfaces';
-import type { PostId, PostModel } from '../model';
+import type { PostId, PostModel } from '../../../service/post/model';
 import type { SetOptional } from 'type-fest';
-import type { FetchRange } from '$lib/data/types';
+import type { FetchRange } from '$lib/api/types';
 import type { Id } from '$lib/utils/types';
 import type { EventSubscriber } from '$lib/utils/notifier';
 

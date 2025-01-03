@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import type { SetOptional } from 'type-fest';
 import type { Id } from '$lib/utils/types';
-import type { PostId, PostModel } from '../model';
+import type { PostId, PostModel } from '../../../service/post/model';
 import {
 	type NotifiablePostProvider,
 	type PostFilters,
@@ -9,7 +9,7 @@ import {
 	type PostRepositoryEvent
 } from '.';
 import { POST_TYPES } from '../constants';
-import type { FetchRange } from '$lib/data/types';
+import type { FetchRange } from '$lib/api/types';
 import { type EventProvider, type EventSubscriber } from '$lib/utils/notifier';
 
 @injectable()

@@ -1,4 +1,4 @@
-import { db } from '..';
+import { db } from '../../api';
 import type { AuthError } from '@supabase/supabase-js';
 import type { CreateUserPayload } from './payload';
 
