@@ -1,6 +1,6 @@
 import type { PostEntity } from '.';
 import { db } from '..';
-import type { CreatePostPayload, EditPostPayload, FilterPostsPayload } from './post-payload';
+import type { CreatePostPayload, EditPostPayload, FilterPostsPayload } from './payload';
 import { MAX_AGE, MIN_AGE, POSTS_PER_ONCE } from '.';
 import type { Id } from '$lib/utils/types';
 

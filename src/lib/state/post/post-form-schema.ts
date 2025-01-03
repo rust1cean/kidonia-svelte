@@ -4,7 +4,7 @@ import {
 	MAX_AGE,
 	MIN_AGE,
 	PostCategories
-} from '$lib/data/post/post-constants';
+} from '$lib/data/post/constants';
 
 export type ModifyPostFormSchema = typeof modifyPostFormSchema;
 

@@ -1,6 +1,6 @@
 import type { SetOptional } from 'type-fest';
-import type { FilterPostsPayload } from '../post-payload';
-import type { PostId, PostModel } from '../post-model';
+import type { FilterPostsPayload } from '../payload';
+import type { PostId, PostModel } from '../model';
 import type { FetchRange } from '$lib/data/types';
 import type { Id, Identify } from '$lib/utils/types';
 import { type EventSubscriber } from '$lib/utils/notifier';
@@ -15,12 +15,12 @@ export interface PostProvider {
 	drop(id: Id): this;
 }
 
-export type PostStoreRequestEvent = 'on-request' | 'on-reject' | 'on-response';
-export type PostStoreUpdateEvent = 'on-drop';
-export type PostStoreEvent = Identify<PostStoreRequestEvent | PostStoreUpdateEvent>;
+export type PostRepositoryRequestEvent = 'on-request' | 'on-reject' | 'on-response';
+export type PostRepositoryUpdateEvent = 'on-drop';
+export type PostRepositoryEvent = Identify<PostRepositoryRequestEvent | PostRepositoryUpdateEvent>;
 
 export interface NotifiablePostProvider extends PostProvider {
-	subscribe<Arg>(event: PostStoreEvent, subscriber: EventSubscriber<Arg>): this;
-	notify<Arg>(event: PostStoreEvent, ...args: Arg[]): Promise<this>;
+	subscribe<Arg>(event: PostRepositoryEvent, subscriber: EventSubscriber<Arg>): this;
+	notify<Arg>(event: PostRepositoryEvent, ...args: Arg[]): Promise<this>;
 	notifyAll<Arg>(...args: Arg[]): Promise<this>;
 }

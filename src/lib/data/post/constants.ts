@@ -1,5 +1,5 @@
 // IoC interfaces
-export const POST_DEPENDENCY_ID = {
+export const POST_TYPES = {
 	EventProvider: Symbol.for('EventProvider'),
 	PostProvider: Symbol.for('PostProvider'),
 	NotifiablePostProvider: Symbol.for('NotifiablePostProvider')

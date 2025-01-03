@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
 import type { EventProvider, EventSubscriber, OneEventProvider } from './interfaces';
-import { NOTIFIER_DEPENDENCY_ID } from './constants';
+import { NOTIFIER_TYPES } from './constants';
 
 @injectable()
 export class EventNotifier<NotificationEvent> implements EventProvider<NotificationEvent> {
 	constructor(
-		@inject(NOTIFIER_DEPENDENCY_ID.OneEventProviderFactory)
+		@inject(NOTIFIER_TYPES.OneEventProviderFactory)
 		private providerFactory: () => OneEventProvider,
 		private notifier: Map<NotificationEvent, OneEventProvider> = new Map()
 	) {}

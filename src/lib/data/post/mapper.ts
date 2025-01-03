@@ -1,5 +1,5 @@
 import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/data/post';
-import type { PostModel } from './post-model';
+import type { PostModel } from './model';
 
 export const entityToModel = (entity: PostEntity): PostModel => ({
 	id: entity.id,

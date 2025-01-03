@@ -1,6 +1,6 @@
 import type { Identify } from '$lib/utils/types';
 import type { PostsFilters } from '../types';
-import type { PostCategory } from './post-constants';
+import type { PostCategory } from './constants';
 
 export type CreatePostPayload = {
 	address?: string | null;

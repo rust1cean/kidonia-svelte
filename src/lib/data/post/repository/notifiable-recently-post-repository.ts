@@ -1,19 +1,19 @@
 import { inject } from 'inversify';
-import { POST_DEPENDENCY_ID } from '../post-constants';
+import { POST_TYPES } from '../constants';
 import type {
 	NotifiablePostProvider,
 	PostFilters,
-	PostStoreEvent
-} from './post-store-interfaces';
-import type { PostId, PostModel } from '../post-model';
+	PostRepositoryEvent
+} from './interfaces';
+import type { PostId, PostModel } from '../model';
 import type { SetOptional } from 'type-fest';
 import type { FetchRange } from '$lib/data/types';
 import type { Id } from '$lib/utils/types';
 import type { EventSubscriber } from '$lib/utils/notifier';
 
-export class NotifiableRecentlyPostStore {
+export class NotifiableRecentlyPostRepository {
 	constructor(
-		@inject(POST_DEPENDENCY_ID.NotifiablePostProvider) private store: NotifiablePostProvider,
+		@inject(POST_TYPES.NotifiablePostProvider) private store: NotifiablePostProvider,
 		private posts: Array<PostModel> = []
 	) {
 		this.store.subscribe('on-response', async (...newPosts: PostModel[]) => {
@@ -27,7 +27,7 @@ export class NotifiableRecentlyPostStore {
 		});
 	}
 
-	public subscribe<Arg>(event: PostStoreEvent, subscriber: EventSubscriber<Arg>): this {
+	public subscribe<Arg>(event: PostRepositoryEvent, subscriber: EventSubscriber<Arg>): this {
 		this.store.subscribe(event, subscriber);
 		return this;
 	}

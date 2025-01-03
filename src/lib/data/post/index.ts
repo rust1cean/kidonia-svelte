@@ -7,8 +7,9 @@ export type PostEntity = Merge<
 	{ author: SetOptional<Tables<'user'>, 'created_at'> }
 >;
 
-export * from './post-service';
-export * from './post-constants';
-export * from './post-payload';
-export * from './post-mapper';
-export * from './post-store';
+export { default as postContainer } from './di';
+export * from './service';
+export * from './constants';
+export * from './payload';
+export * from './mapper';
+export * from './repository';

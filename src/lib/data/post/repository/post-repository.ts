@@ -1,16 +1,16 @@
-import { POSTS_PER_ONCE } from '$lib/data/post/post-constants';
+import { POSTS_PER_ONCE } from '$lib/data/post/constants';
 import type { Id } from '$lib/utils/types';
 import { ArithmeticMean } from '$lib/utils/arithmetic-mean';
 import type { SetOptional } from 'type-fest';
 import { injectable } from 'inversify';
-import type { PostId, PostModel } from '../post-model';
-import type { FilterPostsPayload } from '../post-payload';
-import { fetchPosts } from '../post-service';
-import { entityToModel } from '../post-mapper';
-import type { PostFilters, PostProvider } from './';
+import type { PostId, PostModel } from '../model';
+import type { FilterPostsPayload } from '../payload';
+import { fetchPosts } from '../service';
+import { entityToModel } from '../mapper';
+import type { PostFilters, PostProvider } from '.';
 
 @injectable()
-export class PostStore implements PostProvider {
+export class PostRepository implements PostProvider {
 	private requestRange: { offset: number; limit: ArithmeticMean };
 
 	constructor(protected store: Map<PostId, PostModel> = new Map()) {

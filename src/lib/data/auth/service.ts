@@ -1,6 +1,6 @@
 import { db } from '..';
 import type { AuthError } from '@supabase/supabase-js';
-import type { CreateUserPayload } from './auth-payload';
+import type { CreateUserPayload } from './payload';
 
 export const signInRequest = async (credentials: { email: string; password: string }) => {
 	const { data, error } = await db.auth.signInWithPassword(credentials);
