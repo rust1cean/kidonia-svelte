@@ -1,17 +1,8 @@
 import { Container } from 'inversify';
-import { PostRepositoryImpl } from '$lib/infrastructure/post';
-import { type PostRepository, type PostService, PostServiceImpl } from '$lib/application/post';
-
-export const TYPES = {
-	PostRepository: Symbol.for('PostRepository'),
-	PostService: Symbol.for('PostService')
-};
+import postContainer from './post-container';
 
 const container = new Container();
 
-container.bind<PostRepository>(TYPES.PostRepository).to(PostRepositoryImpl).inSingletonScope();
-container
-	.bind<PostService>(TYPES.PostService)
-	.toConstantValue(new PostServiceImpl(container.get<PostRepository>(TYPES.PostRepository)));
+Container.merge(container, postContainer);
 
 export default container;

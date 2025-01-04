@@ -11,10 +11,13 @@ import { db } from '../db';
 import type { PostId } from '$lib/domain/common/repository';
 import type { PostEntity } from '$lib/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 @injectable()
-export class PostRepositoryImpl implements PostRepository {
-	constructor() {}
+export class RemotePostRepositoryImpl implements PostRepository {
+	constructor(
+		private db: SupabaseClient
+	) {}
 
 	public async fetchPosts({
 		offset,
@@ -28,7 +31,7 @@ export class PostRepositoryImpl implements PostRepository {
 		categories,
 		address
 	}: FetchPostsOptions): Promise<PostEntity[]> {
-		let q = db.from('post').select('*, author(*)');
+		let q = this.db.from('post').select('*, author(*)');
 
 		if (title) q = q.ilike('title', `%${title}%`);
 		if (description) q = q.ilike('description', `%${description}%`);
@@ -67,7 +70,7 @@ export class PostRepositoryImpl implements PostRepository {
 	}
 
 	public async createPost(post: CreatePostData): Promise<void> {
-		const { error } = await db.from('post').insert({
+		const { error } = await this.db.from('post').insert({
 			...snakecaseKeys(post),
 			author: post.author.id
 		});
@@ -89,7 +92,7 @@ export class PostRepositoryImpl implements PostRepository {
 	}
 
 	public async deletePost(postId: PostId): Promise<void> {
-		const { error } = await db.from('post').delete().eq('id', postId);
+		const { error } = await this.db.from('post').delete().eq('id', postId);
 
 		if (error) {
 			throw error;
