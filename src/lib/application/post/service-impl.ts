@@ -1,6 +1,6 @@
 import type { PostId } from '$lib/domain/common/repository';
 import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/domain/post';
-import type { CreatePostPayload, GetAuthorPostsPayload, SearchPostsPayload, UpdatePostPayload } from './payload';
+import type { CreatePostPayload, GetAuthorPostsPayload, SearchPostsPayload, EditPostPayload } from './payload';
 import type { PostRepository } from './repository';
 import type { PostService, PostStatus } from './service';
 
@@ -74,7 +74,7 @@ export class PostServiceImpl implements PostService {
 		});
 	}
 
-	public async editPost(postId: PostId, request: UpdatePostPayload, status: PostStatus): Promise<void> {
+	public async editPost(postId: PostId, request: EditPostPayload, status: PostStatus): Promise<void> {
 		return this.repository.updatePost(postId, {
 			...request,
 			draft: isDraft(status)

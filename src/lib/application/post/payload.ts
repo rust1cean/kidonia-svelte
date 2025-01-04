@@ -29,7 +29,7 @@ export type CreatePostPayload = {
 	category?: PostCategory | null;
 };
 
-export type UpdatePostPayload = {
+export type EditPostPayload = {
 	title?: string;
 	zipcode?: number;
 	address?: string;

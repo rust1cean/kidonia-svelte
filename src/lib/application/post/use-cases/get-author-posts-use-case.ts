@@ -1,18 +1,11 @@
-import type { FetchRange, PostId } from '$lib/domain/common/repository';
 import type { PostEntity } from '$lib/domain/post';
-import type { Identify } from '$lib/utils/types';
-import type { PostRepository } from '../repository';
+import type { GetAuthorPostsPayload } from '../payload';
+import type { PostService } from '../service';
 
 export class GetAuthorPostsUseCase {
-	constructor(private repository: PostRepository) {}
+	constructor(private service: PostService) {}
 
-	public async execute({ offset, limit, authorId }: GetAuthorPostsRequest): Promise<PostEntity[]> {
-		return this.repository.fetchPosts({
-			draft: false,
-			offset,
-			limit,
-			authorId
-		});
+	public async execute(payload: GetAuthorPostsPayload): Promise<PostEntity[]> {
+		return this.service.getAuthorPosts(payload, 'published');
 	}
 }
-
