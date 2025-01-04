@@ -1,3 +1,2 @@
 export * from './di';
-export * from './constants';
-export * from './model';
+export * from './post-repository-impl';
