@@ -1,13 +1,16 @@
-import type { Identify } from '$lib/utils/types';
-import type { FetchRange, PostId } from '../common/repository';
-import { MAX_AGE, MIN_AGE, type PostCategory } from './constants';
-import type { PostEntity } from './entity';
+import type { PostId } from '$lib/domain/common/repository';
+import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/domain/post';
 import type { PostRepository } from './repository';
+import type { CreatePostRequest, GetAuthorDraftsRequest, GetAuthorPostsRequest, SearchPostsRequest, UpdatePostRequest } from './service';
 
 export class PostService {
 	constructor(private repository: PostRepository) {}
 
-	public async getAuthorPosts({ offset, limit, authorId }: GetAuthorPostsRequest): Promise<PostEntity[]> {
+	public async getAuthorPosts({
+		offset,
+		limit,
+		authorId
+	}: GetAuthorPostsRequest): Promise<PostEntity[]> {
 		return this.repository.fetchPosts({
 			draft: false,
 			offset,
@@ -16,7 +19,11 @@ export class PostService {
 		});
 	}
 
-	public async getAuthorDrafts({ offset, limit, authorId }: GetAuthorPostsRequest): Promise<PostEntity[]> {
+	public async getAuthorDrafts({
+		offset,
+		limit,
+		authorId
+	}: GetAuthorDraftsRequest): Promise<PostEntity[]> {
 		return this.repository.fetchPosts({
 			draft: true,
 			offset,
@@ -45,7 +52,7 @@ export class PostService {
 			maxAge,
 			categories,
 			address,
-			zipcode,
+			zipcode
 		});
 	}
 
@@ -125,37 +132,3 @@ export class PostService {
 		return this.repository.deletePost(postId);
 	}
 }
-
-export type GetAuthorPostsRequest = Identify<
-	FetchRange & {
-		authorId: PostId;
-	}
->;
-
-export type SearchPostsRequest = Identify<
-	FetchRange & {
-		query: string;
-		minAge?: number;
-		maxAge?: number;
-		categories?: PostCategory[];
-		address?: string;
-		zipcode?: number;
-	}
->;
-
-export type CreatePostRequest = {
-	title: string;
-	authorId: string;
-	zipcode: number;
-	address: string;
-	phone: string;
-	description?: string;
-	draft?: boolean;
-	imagePath?: string;
-	maxAge?: number;
-	minAge?: number;
-	price?: number | null;
-	category?: PostCategory | null;
-};
-
-export type UpdatePostRequest = Partial<CreatePostRequest>;
