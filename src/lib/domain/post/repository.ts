@@ -7,8 +7,8 @@ export interface PostRepository {
 	fetchPosts(options: FetchPostsOptions): Promise<PostEntity[]>;
 	fetchPostById(postId: Id): Promise<PostEntity | null>;
 	createPost(postData: CreatePostData): Promise<void>;
-	editPost(postId: Id, postData: EditPostData): Promise<void>;
-	deletePostById(postId: Id): Promise<void | Error>;
+	updatePost(postId: Id, postData: UpdatePostData): Promise<void>;
+	deletePost(postId: Id): Promise<void>;
 }
 
 export type FetchPostsOptions = Identify<
@@ -30,14 +30,14 @@ export type CreatePostData = {
 	description: string;
 	authorId: Id;
 	address: string;
-	category?: PostCategory | null;
 	draft: boolean;
 	imagePath: string;
 	minAge: number;
 	maxAge: number;
 	phone: string;
-	zipcode?: number | null;
-	price: number;
+	zipcode: number;
+	price: number | null;
+	category: PostCategory | null;
 };
 
-export type EditPostData = Partial<CreatePostData>;
+export type UpdatePostData = Partial<CreatePostData>;

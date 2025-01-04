@@ -48,7 +48,81 @@ export class PostService {
 		});
 	}
 
-	public async createPost({}: CreatePostRequest): Promise<void> {}
+	public async createPost({
+		title,
+		authorId,
+		zipcode,
+		address,
+		phone,
+		description = '',
+		imagePath = '',
+		maxAge = MAX_AGE,
+		minAge = MIN_AGE,
+		price = null,
+		category = null
+	}: CreatePostRequest): Promise<void> {
+		return this.repository.createPost({
+			title,
+			authorId,
+			zipcode,
+			address,
+			phone,
+			category,
+			description,
+			imagePath,
+			price,
+			maxAge,
+			minAge,
+			draft: false
+		});
+	}
+
+	public async createDraft({
+		title,
+		authorId,
+		zipcode,
+		address,
+		phone,
+		description = '',
+		imagePath = '',
+		maxAge = MAX_AGE,
+		minAge = MIN_AGE,
+		price = null,
+		category = null
+	}: CreatePostRequest): Promise<void> {
+		return this.repository.createPost({
+			title,
+			authorId,
+			zipcode,
+			address,
+			phone,
+			category,
+			description,
+			imagePath,
+			price,
+			maxAge,
+			minAge,
+			draft: true
+		});
+	}
+
+	public async editPost(postId: Id, request: UpdatePostRequest): Promise<void> {
+		return this.repository.updatePost(postId, {
+			...request,
+			draft: false
+		});
+	}
+
+	public async editDraft(postId: Id, request: UpdatePostRequest): Promise<void> {
+		return this.repository.updatePost(postId, {
+			...request,
+			draft: true
+		});
+	}
+
+	public async deletePost(postId: Id): Promise<void> {
+		return this.repository.deletePost(postId);
+	}
 }
 
 export type GetPostsRequest = Identify<
@@ -60,25 +134,27 @@ export type GetPostsRequest = Identify<
 export type SearchPostsRequest = Identify<
 	FetchRange & {
 		query: string;
-		minAge: number;
-		maxAge: number;
-		categories: PostCategory[];
-		address: string;
-		zipcode: number;
+		minAge?: number;
+		maxAge?: number;
+		categories?: PostCategory[];
+		address?: string;
+		zipcode?: number;
 	}
 >;
 
 export type CreatePostRequest = {
 	title: string;
-	description?: string | null;
 	authorId: string;
-	address?: string | null;
-	category?: PostCategory | null;
-	draft?: boolean | null;
-	imagePath?: string | null;
-	maxAge?: number | null;
-	minAge?: number | null;
+	zipcode: number;
+	address: string;
 	phone: string;
-	zipcode?: number | null;
+	description?: string;
+	draft?: boolean;
+	imagePath?: string;
+	maxAge?: number;
+	minAge?: number;
 	price?: number | null;
+	category?: PostCategory | null;
 };
+
+export type UpdatePostRequest = Partial<CreatePostRequest>;
