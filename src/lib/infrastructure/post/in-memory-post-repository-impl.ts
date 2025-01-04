@@ -10,7 +10,7 @@ import type { PostEntity } from '$lib/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
 
 @injectable()
-export class LocalPostRepositoryImpl implements PostRepository {
+export class InMemoryPostRepository implements PostRepository {
 	constructor(private repository: { [key: PostId]: PostEntity } = {}) {}
 
 	public get allPosts(): Array<PostEntity> {
