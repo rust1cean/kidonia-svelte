@@ -14,4 +14,4 @@ container
 	.bind<PostService>(TYPES.PostService)
 	.toConstantValue(new PostServiceImpl(container.get<PostRepository>(TYPES.PostRepository)));
 
-export { container as postContainer };
+export default container;
