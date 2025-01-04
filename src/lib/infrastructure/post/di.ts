@@ -1,7 +1,10 @@
 import { Container } from 'inversify';
-import { TYPES } from './constants';
 import { PostRepositoryImpl } from './post-repository-impl';
-import type { PostRepository } from '$lib/domain/post';
+import type { PostRepository } from '$lib/application/post';
+
+export const TYPES =  {
+  PostRepository: Symbol.for("PostRepository")
+}
 
 const container = new Container();
 

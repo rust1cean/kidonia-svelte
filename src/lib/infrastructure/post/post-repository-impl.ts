@@ -3,12 +3,12 @@ import camelize from 'camelize-ts';
 import type {
 	CreatePostData,
 	FetchPostsOptions,
-	PostEntity,
 	PostRepository,
 	UpdatePostData
-} from '$lib/domain/post';
+} from '$lib/application/post';
 import { db } from '../db';
 import type { PostId } from '$lib/domain/common/repository';
+import type { PostEntity } from '$lib/domain/post';
 
 export const POSTS_PER_REQUEST_LIMIT: number = 40;
 
