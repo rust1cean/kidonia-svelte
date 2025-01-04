@@ -1,6 +1,12 @@
 import { injectable } from 'inversify';
 import camelize from 'camelize-ts';
-import type { FetchPostsOptions, PostEntity, PostRepository } from '$lib/domain/post';
+import type {
+	CreatePostData,
+	FetchPostsOptions,
+	PostEntity,
+	PostRepository,
+	UpdatePostData
+} from '$lib/domain/post';
 import { db } from '../db';
 import type { PostId } from '$lib/domain/common/repository';
 
@@ -55,42 +61,30 @@ export class PostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data != null ? camelize(data) as PostEntity : null;
+		return data != null ? (camelize(data) as PostEntity) : null;
 	}
 
-	public async createPost(post: CreatePostPayload): Promise<CreatePostPayload | null> {
-		const { data, error } = await db
-			.from('post')
-			.insert(post as never)
-			.select()
-			.limit(1)
-			.maybeSingle();
+	public async createPost(post: CreatePostData): Promise<void> {
+		const { error } = await db.from('post').insert(post as never);
 
 		if (error) {
 			throw error;
 		}
-
-		return data;
 	}
 
-	public async editPost(id: Id, post: EditPostPayload): Promise<EditPostPayload | null> {
-		const { data, error } = await db
+	public async updatePost(postId: PostId, post: UpdatePostData): Promise<void> {
+		const { error } = await db
 			.from('post')
 			.update(post as never)
-			.eq('id', id)
-			.select()
-			.limit(1)
-			.maybeSingle();
+			.eq('id', postId);
 
 		if (error) {
 			throw error;
 		}
-
-		return data;
 	}
 
-	public async deletePostById(id: Id): Promise<void | Error> {
-		const { error } = await db.from('post').delete().eq('id', id);
+	public async deletePost(postId: PostId): Promise<void> {
+		const { error } = await db.from('post').delete().eq('id', postId);
 
 		if (error) {
 			throw error;
