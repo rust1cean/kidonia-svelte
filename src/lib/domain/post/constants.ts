@@ -1,3 +1,7 @@
+export const TYPES = {
+	PostService: Symbol.for('PostService')
+};
+
 export const PostCategories = [
 	'sport',
 	'math',

@@ -7,4 +7,4 @@ const container = new Container();
 
 container.bind<PostRepository>(TYPES.PostRepository).to(PostRepositoryImpl).inSingletonScope();
 
-export { container as postContainer };
+export default container;
