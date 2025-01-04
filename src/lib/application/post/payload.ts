@@ -1,5 +1,5 @@
-import type { AuthorId, FetchRange, PostId } from '$lib/domain/common/repository';
-import { type PostCategory } from '$lib/domain/post';
+import type { FetchRange, PostId } from '$lib/domain/common/repository';
+import { type AuthorEntity, type PostCategory } from '$lib/domain/post';
 import type { Identify } from '$lib/utils/types';
 
 export type GetAuthorPostsPayload = Identify<FetchRange & { authorId: PostId }>;
@@ -17,7 +17,7 @@ export type SearchPostsPayload = Identify<
 
 export type CreatePostPayload = {
 	title: string;
-	authorId: AuthorId;
+	author: AuthorEntity;
 	zipcode: number;
 	address: string;
 	phone: string;

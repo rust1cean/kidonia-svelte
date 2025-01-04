@@ -1,23 +1,26 @@
 import type { PostId } from '$lib/domain/common/repository';
-import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/domain/post';
-import type { CreatePostPayload, GetAuthorPostsPayload, SearchPostsPayload, EditPostPayload } from './payload';
+import { MAX_AGE, MIN_AGE, type DetailedPostEntity } from '$lib/domain/post';
+import type {
+	CreatePostPayload,
+	GetAuthorPostsPayload,
+	SearchPostsPayload,
+	EditPostPayload
+} from './payload';
 import type { PostRepository } from './repository';
 import type { PostService, PostStatus } from './service';
 
-const isDraft = (status: PostStatus) => status === 'draft'
+const isDraft = (status: PostStatus) => status === 'draft';
 
 export class PostServiceImpl implements PostService {
 	constructor(private repository: PostRepository) {}
 
 	public async getAuthorPosts(
-		{ offset, limit, authorId }: GetAuthorPostsPayload,
+		payload: GetAuthorPostsPayload,
 		status: PostStatus
-	): Promise<PostEntity[]> {
+	): Promise<DetailedPostEntity[]> {
 		return this.repository.fetchPosts({
-			draft: isDraft(status),
-			offset,
-			limit,
-			authorId
+			...payload,
+			draft: isDraft(status)
 		});
 	}
 
@@ -30,7 +33,7 @@ export class PostServiceImpl implements PostService {
 		address,
 		zipcode,
 		query
-	}: SearchPostsPayload): Promise<PostEntity[]> {
+	}: SearchPostsPayload): Promise<DetailedPostEntity[]> {
 		return this.repository.fetchPosts({
 			title: query,
 			description: query,
@@ -45,23 +48,26 @@ export class PostServiceImpl implements PostService {
 		});
 	}
 
-	public async createPost({
-		title,
-		authorId,
-		zipcode,
-		address,
-		phone,
-		description = '',
-		imagePath = '',
-		maxAge = MAX_AGE,
-		minAge = MIN_AGE,
-		price = null,
-		category = null
-	}: CreatePostPayload, status: PostStatus): Promise<void> {
+	public async createPost(
+		{
+			title,
+			author,
+			zipcode,
+			address,
+			phone,
+			description = '',
+			imagePath = '',
+			maxAge = MAX_AGE,
+			minAge = MIN_AGE,
+			price = null,
+			category = null
+		}: CreatePostPayload,
+		status: PostStatus
+	): Promise<void> {
 		return this.repository.createPost({
 			draft: isDraft(status),
 			title,
-			authorId,
+			author,
 			zipcode,
 			address,
 			phone,
@@ -70,11 +76,15 @@ export class PostServiceImpl implements PostService {
 			imagePath,
 			price,
 			maxAge,
-			minAge,
+			minAge
 		});
 	}
 
-	public async editPost(postId: PostId, request: EditPostPayload, status: PostStatus): Promise<void> {
+	public async editPost(
+		postId: PostId,
+		request: EditPostPayload,
+		status: PostStatus
+	): Promise<void> {
 		return this.repository.updatePost(postId, {
 			...request,
 			draft: isDraft(status)

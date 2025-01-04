@@ -9,15 +9,12 @@ import type {
 } from '$lib/application/post';
 import { db } from '../db';
 import type { PostId } from '$lib/domain/common/repository';
-import type { PostEntity } from '$lib/domain/post';
+import type { DetailedPostEntity } from '$lib/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
-import type { SupabaseClient } from '@supabase/supabase-js';
 
 @injectable()
 export class RemotePostRepositoryImpl implements PostRepository {
-	constructor(
-		private db: SupabaseClient
-	) {}
+	constructor() {}
 
 	public async fetchPosts({
 		offset,
@@ -30,8 +27,8 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		description,
 		categories,
 		address
-	}: FetchPostsOptions): Promise<PostEntity[]> {
-		let q = this.db.from('post').select('*, author(*)');
+	}: FetchPostsOptions): Promise<DetailedPostEntity[]> {
+		let q = db.from('posts_with_author').select('*');
 
 		if (title) q = q.ilike('title', `%${title}%`);
 		if (description) q = q.ilike('description', `%${description}%`);
@@ -41,7 +38,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		if (draft) q = q.eq('draft', draft);
 		if (address) q = q.eq('address', address);
 		// TODO: Postcode or zipcode
-		if (zipcode) q = q.eq('postcodecode', zipcode);
+		if (zipcode) q = q.eq('postcode', zipcode);
 
 		const { data, error } = await q.range(
 			offset,
@@ -52,13 +49,13 @@ export class RemotePostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data == null ? [] : data.map(camelize as any);
+		return data == null ? [] : data.map((post) => camelize(post) as DetailedPostEntity);
 	}
 
-	public async fetchPostById(postId: PostId): Promise<PostEntity | null> {
+	public async fetchPostById(postId: PostId): Promise<DetailedPostEntity | null> {
 		const { data, error } = await db
-			.from('post')
-			.select('*, author(*)')
+			.from('posts_with_author')
+			.select('*')
 			.eq('id', postId)
 			.maybeSingle();
 
@@ -66,11 +63,11 @@ export class RemotePostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data != null ? (camelize(data) as PostEntity) : null;
+		return data != null ? (camelize(data) as DetailedPostEntity) : null;
 	}
 
 	public async createPost(post: CreatePostData): Promise<void> {
-		const { error } = await this.db.from('post').insert({
+		const { error } = await db.from('post').insert({
 			...snakecaseKeys(post),
 			author: post.author.id
 		});
@@ -92,7 +89,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 	}
 
 	public async deletePost(postId: PostId): Promise<void> {
-		const { error } = await this.db.from('post').delete().eq('id', postId);
+		const { error } = await db.from('post').delete().eq('id', postId);
 
 		if (error) {
 			throw error;

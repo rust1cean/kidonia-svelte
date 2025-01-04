@@ -1,5 +1,5 @@
 import type { PostId } from '$lib/domain/common/repository';
-import type { PostEntity } from '$lib/domain/post';
+import type { DetailedPostEntity } from '$lib/domain/post';
 import type {
 	CreatePostPayload,
 	GetAuthorPostsPayload,
@@ -10,8 +10,8 @@ import type {
 export type PostStatus = 'published' | 'draft';
 
 export interface PostService {
-	getAuthorPosts(payload: GetAuthorPostsPayload, status: PostStatus): Promise<PostEntity[]>;
-	searchPosts(payload: SearchPostsPayload): Promise<PostEntity[]>;
+	getAuthorPosts(payload: GetAuthorPostsPayload, status: PostStatus): Promise<DetailedPostEntity[]>;
+	searchPosts(payload: SearchPostsPayload): Promise<DetailedPostEntity[]>;
 	createPost(payload: CreatePostPayload, status: PostStatus): Promise<void>;
 	editPost(postId: PostId, payload: EditPostPayload, status: PostStatus): Promise<void>;
 	deletePost(postId: PostId): Promise<void>;

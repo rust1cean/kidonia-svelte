@@ -1,5 +1,4 @@
 import { Container } from 'inversify';
-import { db } from '$lib/infrastructure/db';
 import {
 	InMemoryPostRepository,
 	MemoryFirstPostRepositoryImpl,
@@ -16,7 +15,7 @@ const container = new Container();
 
 container
 	.bind<PostRepository>(TYPES.PostRepository)
-	.toConstantValue(new RemotePostRepositoryImpl(db))
+	.toConstantValue(new RemotePostRepositoryImpl())
 	.whenTargetNamed('remote');
 
 container

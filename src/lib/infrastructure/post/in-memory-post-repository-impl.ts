@@ -6,14 +6,14 @@ import type {
 	UpdatePostData
 } from '$lib/application/post';
 import type { PostId } from '$lib/domain/common/repository';
-import type { PostEntity } from '$lib/domain/post';
+import type { DetailedPostEntity } from '$lib/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
 
 @injectable()
 export class InMemoryPostRepository implements PostRepository {
-	constructor(private repository: { [key: PostId]: PostEntity } = {}) {}
+	constructor(private repository: { [key: PostId]: DetailedPostEntity } = {}) {}
 
-	public get allPosts(): Array<PostEntity> {
+	public get allPosts(): Array<DetailedPostEntity> {
 		return Object.values(this.repository);
 	}
 
@@ -28,7 +28,7 @@ export class InMemoryPostRepository implements PostRepository {
 		description,
 		categories,
 		address
-	}: FetchPostsOptions): Promise<Array<PostEntity>> {
+	}: FetchPostsOptions): Promise<Array<DetailedPostEntity>> {
 		const filteredPosts = this.allPosts
 			.filter((post) => {
 				const isDraft = draft == null || post.draft === draft;
@@ -56,7 +56,7 @@ export class InMemoryPostRepository implements PostRepository {
 		return filteredPosts;
 	}
 
-	public async fetchPostById(postId: PostId): Promise<PostEntity | null> {
+	public async fetchPostById(postId: PostId): Promise<DetailedPostEntity | null> {
 		return this.repository[postId];
 	}
 
