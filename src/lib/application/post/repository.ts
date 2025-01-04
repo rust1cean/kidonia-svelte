@@ -29,11 +29,7 @@ export type FetchPostsOptions = Identify<
 export type CreatePostData = {
 	title: string;
 	description: string;
-	author: {
-		id: AuthorId;
-		name: string;
-		avatarUrl?: string;
-	};
+	authorId: AuthorId;
 	address: string;
 	draft: boolean;
 	imagePath: string;
