@@ -1,9 +1,9 @@
 import type { PostId } from '$lib/domain/common/repository';
 import { MAX_AGE, MIN_AGE, type PostEntity } from '$lib/domain/post';
 import type { PostRepository } from './repository';
-import type { CreatePostRequest, GetAuthorDraftsRequest, GetAuthorPostsRequest, SearchPostsRequest, UpdatePostRequest } from './service';
+import type { CreatePostRequest, GetAuthorDraftsRequest, GetAuthorPostsRequest, PostService, SearchPostsRequest, UpdatePostRequest } from './service';
 
-export class PostService {
+export class PostServiceImpl implements PostService {
 	constructor(private repository: PostRepository) {}
 
 	public async getAuthorPosts({
