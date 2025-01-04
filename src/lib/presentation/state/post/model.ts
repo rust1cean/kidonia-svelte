@@ -19,7 +19,7 @@ export type PostVModel = {
 	draft?: boolean | null;
 	maxAge?: number | null;
 	minAge?: number | null;
-	postcode?: number | null;
+	zipcode?: number | null;
 	price?: number | null;
 	updatedAt?: string;
 };

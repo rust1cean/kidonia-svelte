@@ -1,4 +1,4 @@
-import type { Id } from '$lib/common/post';
+import type { Id } from '../common/repository';
 import type { PostCategory } from './constants';
 
 export type PostEntity = {
@@ -13,7 +13,7 @@ export type PostEntity = {
 	draft: boolean;
 	minAge: number;
 	maxAge: number;
-	postcode?: number | null;
+	zipcode?: number | null;
 	price: number;
 	updatedAt: string;
 };

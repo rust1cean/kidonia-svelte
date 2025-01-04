@@ -1,4 +1,4 @@
-import { MAX_AGE, MIN_AGE } from '$lib/common/post';
+import { MAX_AGE, MIN_AGE } from '$lib/presentation/greek_phone_regex';
 import type { PostModel } from './model';
 import type { PostEntity } from './entity';
 
@@ -18,7 +18,7 @@ export const entityToModel = (entity: PostEntity): PostModel => ({
 	minAge: entity.min_age ?? MIN_AGE,
 	maxAge: entity.max_age ?? MAX_AGE,
 	phone: entity.phone,
-	postcode: entity.postcode,
+	zipcode: entity.zipcode,
 	price: entity.price ?? 0,
 	updatedAt: new Date(Number(entity.updated_at!))
 });
@@ -40,7 +40,7 @@ export const modelToEntity = (model: PostModel): PostEntity => ({
 	max_age: model.maxAge ?? MAX_AGE,
 	min_age: model.minAge ?? MIN_AGE,
 	phone: model.phone,
-	postcode: model.postcode!,
+	zipcode: model.zipcode!,
 	price: model.price!,
 	updated_at: model.updatedAt.toString()
 });

@@ -33,7 +33,7 @@
 	"age": "Age",
 	"education": "Education",
 	"address": "Address",
-	"postcode": "Postcode",
+	"zipcode": "Postcode",
 	"phone": "Phone",
 	"price": "Price",
 	"modify_post": "Modify post",

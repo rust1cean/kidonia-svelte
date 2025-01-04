@@ -69,7 +69,7 @@ export type Database = {
 					max_age: number | null;
 					min_age: number;
 					phone: string;
-					postcode: number | null;
+					zipcode: number | null;
 					price: number | null;
 					title: string;
 					updated_at: string | null;
@@ -85,7 +85,7 @@ export type Database = {
 					max_age?: number | null;
 					min_age?: number;
 					phone: string;
-					postcode?: number | null;
+					zipcode?: number | null;
 					price?: number | null;
 					title: string;
 					updated_at?: string | null;
@@ -101,7 +101,7 @@ export type Database = {
 					max_age?: number | null;
 					min_age?: number;
 					phone?: string;
-					postcode?: number | null;
+					zipcode?: number | null;
 					price?: number | null;
 					title?: string;
 					updated_at?: string | null;

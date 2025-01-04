@@ -90,9 +90,9 @@
 				<TextField form={postForm} field="address" type="text" label={m.address()} />
 				<TextField
 					form={postForm}
-					field="postcode"
+					field="zipcode"
 					type="number"
-					label={m.postcode()}
+					label={m.zipcode()}
 					min={10_000}
 					max={99_999}
 				/>

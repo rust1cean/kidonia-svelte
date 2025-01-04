@@ -26,7 +26,7 @@ export const modifyPostFormSchema = v.pipe(
 				v.minLength(4, 'Address must be at least 4 characters'),
 				v.maxLength(80, 'Address must be less than 80 characters')
 			),
-			postcode: v.pipe(
+			zipcode: v.pipe(
 				v.number(),
 				v.minValue(10_000, 'Postal code must contain 5 digits'),
 				v.maxValue(99_999, 'Postal code must contain 5 digits')

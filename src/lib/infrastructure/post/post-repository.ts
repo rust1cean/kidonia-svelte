@@ -1,28 +1,22 @@
 import { injectable } from 'inversify';
 import type { Id } from '$lib/common';
-import { MAX_AGE, MIN_AGE } from '$lib/common/post';
+import { MAX_AGE, MIN_AGE } from '$lib/presentation/greek_phone_regex';
 import { db } from '..';
 import { POSTS_PER_ONCE } from './constants';
-import type { CreatePostPayload, EditPostPayload, FilterPostsPayload, PostEntity } from '../../domain/repository/post/payload';
+import type {
+	CreatePostPayload,
+	EditPostPayload,
+	FilterPostsPayload,
+	PostEntity
+} from '../../domain/repository/post/payload';
 
-
+export const POSTS_PER_REQUEST_LIMIT: number = 40;
 
 @injectable()
 export class PostRepository implements PostProvider {
 	constructor(private fetchOffset: number = 0) {}
 
-	public async fetchPosts({
-		offset,
-		limit = POSTS_PER_ONCE,
-		draft = false,
-		minAge = MIN_AGE,
-		maxAge = MAX_AGE,
-		categories = [],
-		authorId,
-		address,
-		postcode,
-		query
-	}: FilterPostsPayload): Promise<PostEntity[]> {
+	public async fetchPosts({}: FilterPostsPayload): Promise<PostEntity[]> {
 		let q = db
 			.from('post')
 			.select('*, author(*)')
@@ -35,7 +29,8 @@ export class PostRepository implements PostProvider {
 		if (draft) q = q.eq('draft', draft);
 		if (address) q = q.eq('address', address);
 		if (authorId) q = q.eq('author', authorId);
-		if (postcode) q = q.eq('postcode', postcode);
+		// TODO: Postcode or zipcode
+		if (zipcode) q = q.eq('zipcode', zipcode);
 
 		const { data, error } = await q;
 

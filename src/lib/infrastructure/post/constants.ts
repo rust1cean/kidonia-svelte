@@ -4,4 +4,3 @@ export const POST_TYPES = {
 	NotifiablePostProvider: Symbol.for('NotifiablePostProvider')
 };
 
-export const POSTS_PER_ONCE: number = 40;

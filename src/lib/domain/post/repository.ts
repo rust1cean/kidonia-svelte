@@ -1,53 +1,43 @@
-import type { Id } from '$lib/common/post';
+import type { FetchRange, Id } from '../common/repository';
 import type { PostCategory } from '$lib/domain/post/constants';
+import type { Identify } from '$lib/utils/types';
 import type { PostEntity } from './entity';
 
 export interface PostRepository {
-	fetchPosts(filters: FilterPosts): Promise<PostEntity[]>;
-	fetchPostById(id: Id): Promise<PostEntity | null>;
-	createPost(post: CreatePost): Promise<void | null>;
-	editPost(id: Id, post: EditPost): Promise<void | null>;
-	deletePostById(id: Id): Promise<void | Error>;
+	fetchPosts(options: FetchPostsOptions): Promise<PostEntity[]>;
+	fetchPostById(postId: Id): Promise<PostEntity | null>;
+	createPost(postData: CreatePostData): Promise<void>;
+	editPost(postId: Id, postData: EditPostData): Promise<void>;
+	deletePostById(postId: Id): Promise<void | Error>;
 }
 
-export type FilterPosts = {
-	query?: string | null;
-	authorId?: Id | null;
-	minAge?: number | null;
-	maxAge?: number | null;
-	address?: string | null;
-	price?: number | null;
-	draft?: boolean | null;
-	postcode?: number | null;
-	categories?: Array<PostCategory>;
-};
+export type FetchPostsOptions = Identify<
+	FetchRange & {
+		query?: string | null;
+		authorId?: Id | null;
+		minAge?: number | null;
+		maxAge?: number | null;
+		address?: string | null;
+		price?: number | null;
+		draft?: boolean | null;
+		zipcode?: number | null;
+		categories?: Array<PostCategory>;
+	}
+>;
 
-export type CreatePost = {
-	address?: string | null;
-	author: string;
-	category?: PostCategory | null;
-	description?: string | null;
-	draft?: boolean | null;
-	image_path?: string | null;
-	max_age?: number | null;
-	min_age?: number | null;
-	phone: string;
-	postcode?: number | null;
-	price?: number | null;
+export type CreatePostData = {
 	title: string;
-	updated_at?: string | null;
+	description: string;
+	authorId: Id;
+	address: string;
+	category?: PostCategory | null;
+	draft: boolean;
+	imagePath: string;
+	minAge: number;
+	maxAge: number;
+	phone: string;
+	zipcode?: number | null;
+	price: number;
 };
 
-export type EditPost = {
-	address?: string | null;
-	category?: PostCategory | null;
-	description?: string | null;
-	draft?: boolean | null;
-	image_path?: string | null;
-	max_age?: number | null;
-	min_age?: number | null;
-	phone?: string;
-	postcode?: number | null;
-	price?: number | null;
-	title?: string;
-};
+export type EditPostData = Partial<CreatePostData>;

@@ -19,7 +19,7 @@ export type PostModel = {
 	draft: boolean;
 	minAge: number;
 	maxAge: number;
-	postcode?: number | null;
+	zipcode?: number | null;
 	price: number;
 	updatedAt: Date;
 };
