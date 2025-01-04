@@ -1,11 +1,15 @@
-import type { Id } from '../common/repository';
+import type { AuthorId, PostId } from '../common/repository';
 import type { PostCategory } from './constants';
 
 export type PostEntity = {
-	id: Id;
-	author: Id;
+	id: PostId;
+	author: {
+		id: AuthorId;
+		name: string;
+		avatarUrl?: string | null;
+	};
 	title: string;
-	gallery: string;
+	imagePath: string;
 	phone: string;
 	description: string;
 	address: string;

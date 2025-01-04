@@ -1,5 +1,5 @@
 import type { Identify } from '$lib/utils/types';
-import type { FetchRange, Id } from '../common/repository';
+import type { FetchRange, PostId } from '../common/repository';
 import { MAX_AGE, MIN_AGE, type PostCategory } from './constants';
 import type { PostEntity } from './entity';
 import type { PostRepository } from './repository';
@@ -7,7 +7,7 @@ import type { PostRepository } from './repository';
 export class PostService {
 	constructor(private repository: PostRepository) {}
 
-	public async getPosts({ offset, limit, authorId }: GetPostsRequest): Promise<PostEntity[]> {
+	public async getAuthorPosts({ offset, limit, authorId }: GetAuthorPostsRequest): Promise<PostEntity[]> {
 		return this.repository.fetchPosts({
 			draft: false,
 			offset,
@@ -16,7 +16,7 @@ export class PostService {
 		});
 	}
 
-	public async getDrafts({ offset, limit, authorId }: GetPostsRequest): Promise<PostEntity[]> {
+	public async getAuthorDrafts({ offset, limit, authorId }: GetAuthorPostsRequest): Promise<PostEntity[]> {
 		return this.repository.fetchPosts({
 			draft: true,
 			offset,
@@ -36,6 +36,8 @@ export class PostService {
 		query
 	}: SearchPostsRequest): Promise<PostEntity[]> {
 		return this.repository.fetchPosts({
+			title: query,
+			description: query,
 			draft: false,
 			offset,
 			limit,
@@ -44,7 +46,6 @@ export class PostService {
 			categories,
 			address,
 			zipcode,
-			query
 		});
 	}
 
@@ -106,28 +107,28 @@ export class PostService {
 		});
 	}
 
-	public async editPost(postId: Id, request: UpdatePostRequest): Promise<void> {
+	public async editPost(postId: PostId, request: UpdatePostRequest): Promise<void> {
 		return this.repository.updatePost(postId, {
 			...request,
 			draft: false
 		});
 	}
 
-	public async editDraft(postId: Id, request: UpdatePostRequest): Promise<void> {
+	public async editDraft(postId: PostId, request: UpdatePostRequest): Promise<void> {
 		return this.repository.updatePost(postId, {
 			...request,
 			draft: true
 		});
 	}
 
-	public async deletePost(postId: Id): Promise<void> {
+	public async deletePost(postId: PostId): Promise<void> {
 		return this.repository.deletePost(postId);
 	}
 }
 
-export type GetPostsRequest = Identify<
+export type GetAuthorPostsRequest = Identify<
 	FetchRange & {
-		authorId: Id;
+		authorId: PostId;
 	}
 >;
 

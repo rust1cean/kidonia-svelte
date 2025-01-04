@@ -1,4 +1,5 @@
-export type Id = number | string;
+export type PostId = string;
+export type AuthorId = string;
 
 export interface FetchRange {
 	offset: number;
