@@ -29,7 +29,11 @@ export type FetchPostsOptions = Identify<
 export type CreatePostData = {
 	title: string;
 	description: string;
-	authorId: AuthorId;
+	author: {
+		id: AuthorId;
+		name: string;
+		avatarUrl?: string;
+	};
 	address: string;
 	draft: boolean;
 	imagePath: string;
@@ -41,4 +45,4 @@ export type CreatePostData = {
 	category: PostCategory | null;
 };
 
-export type UpdatePostData = Partial<CreatePostData>;
+export type UpdatePostData = Partial<Omit<CreatePostData, 'author'>>;

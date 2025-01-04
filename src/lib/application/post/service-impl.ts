@@ -58,7 +58,7 @@ export class PostServiceImpl implements PostService {
 
 	public async createPost({
 		title,
-		authorId,
+		author,
 		zipcode,
 		address,
 		phone,
@@ -71,7 +71,7 @@ export class PostServiceImpl implements PostService {
 	}: CreatePostRequest): Promise<void> {
 		return this.repository.createPost({
 			title,
-			authorId,
+			author,
 			zipcode,
 			address,
 			phone,
@@ -87,7 +87,7 @@ export class PostServiceImpl implements PostService {
 
 	public async createDraft({
 		title,
-		authorId,
+		author,
 		zipcode,
 		address,
 		phone,
@@ -100,7 +100,7 @@ export class PostServiceImpl implements PostService {
 	}: CreatePostRequest): Promise<void> {
 		return this.repository.createPost({
 			title,
-			authorId,
+			author,
 			zipcode,
 			address,
 			phone,

@@ -1,4 +1,4 @@
-import type { FetchRange, PostId } from '$lib/domain/common/repository';
+import type { AuthorId, FetchRange, PostId } from '$lib/domain/common/repository';
 import { type PostCategory, type PostEntity } from '$lib/domain/post';
 import type { Identify } from '$lib/utils/types';
 
@@ -38,12 +38,15 @@ export type SearchPostsRequest = Identify<
 
 export type CreatePostRequest = {
 	title: string;
-	authorId: string;
+	author: {
+		id: AuthorId;
+		name: string;
+		avatarUrl?: string;
+	};
 	zipcode: number;
 	address: string;
 	phone: string;
 	description?: string;
-	draft?: boolean;
 	imagePath?: string;
 	maxAge?: number;
 	minAge?: number;
@@ -51,4 +54,16 @@ export type CreatePostRequest = {
 	category?: PostCategory | null;
 };
 
-export type UpdatePostRequest = Partial<CreatePostRequest>;
+export type UpdatePostRequest = {
+	title?: string;
+	zipcode?: number;
+	address?: string;
+	phone?: string;
+	draft?: boolean;
+	description?: string;
+	imagePath?: string;
+	maxAge?: number;
+	minAge?: number;
+	price?: number | null;
+	category?: PostCategory | null;
+};

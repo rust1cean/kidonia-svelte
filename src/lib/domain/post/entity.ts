@@ -13,11 +13,11 @@ export type PostEntity = {
 	phone: string;
 	description: string;
 	address: string;
-	category?: PostCategory | null;
 	draft: boolean;
 	minAge: number;
 	maxAge: number;
-	zipcode?: number | null;
-	price: number;
+	price: number | null;
 	updatedAt: string;
+	category?: PostCategory | null;
+	zipcode?: number | null;
 };

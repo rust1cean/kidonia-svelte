@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import camelize from 'camelize-ts';
+import snakecaseKeys from 'snakecase-keys';
 import type {
 	CreatePostData,
 	FetchPostsOptions,
@@ -9,12 +10,11 @@ import type {
 import { db } from '../db';
 import type { PostId } from '$lib/domain/common/repository';
 import type { PostEntity } from '$lib/domain/post';
-
-export const POSTS_PER_REQUEST_LIMIT: number = 40;
+import { POSTS_PER_REQUEST_LIMIT } from '.';
 
 @injectable()
 export class PostRepositoryImpl implements PostRepository {
-	constructor(private fetchOffset: number = 0) {}
+	constructor() {}
 
 	public async fetchPosts({
 		offset,
@@ -28,10 +28,7 @@ export class PostRepositoryImpl implements PostRepository {
 		categories,
 		address
 	}: FetchPostsOptions): Promise<PostEntity[]> {
-		let q = db
-			.from('post')
-			.select('*, author(*)')
-			.range(offset ?? this.fetchOffset, limit);
+		let q = db.from('post').select('*, author(*)');
 
 		if (title) q = q.ilike('title', `%${title}%`);
 		if (description) q = q.ilike('description', `%${description}%`);
@@ -43,19 +40,24 @@ export class PostRepositoryImpl implements PostRepository {
 		// TODO: Postcode or zipcode
 		if (zipcode) q = q.eq('postcodecode', zipcode);
 
-		const { data, error } = await q;
+		const { data, error } = await q.range(
+			offset,
+			limit > POSTS_PER_REQUEST_LIMIT ? POSTS_PER_REQUEST_LIMIT : limit
+		);
 
 		if (error) {
 			throw error;
 		}
 
-		this.fetchOffset += data.length;
-
 		return data == null ? [] : data.map(camelize as any);
 	}
 
-	public async fetchPostById(id: PostId): Promise<PostEntity | null> {
-		const { data, error } = await db.from('post').select('*, author(*)').eq('id', id).maybeSingle();
+	public async fetchPostById(postId: PostId): Promise<PostEntity | null> {
+		const { data, error } = await db
+			.from('post')
+			.select('*, author(*)')
+			.eq('id', postId)
+			.maybeSingle();
 
 		if (error) {
 			throw error;
@@ -65,7 +67,10 @@ export class PostRepositoryImpl implements PostRepository {
 	}
 
 	public async createPost(post: CreatePostData): Promise<void> {
-		const { error } = await db.from('post').insert(post as never);
+		const { error } = await db.from('post').insert({
+			...snakecaseKeys(post),
+			author: post.author.id
+		});
 
 		if (error) {
 			throw error;
