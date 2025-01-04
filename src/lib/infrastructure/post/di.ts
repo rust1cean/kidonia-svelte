@@ -1,14 +1,10 @@
 import { Container } from 'inversify';
 import { TYPES } from './constants';
-import { EventNotifier, type EventProvider } from '$lib/utils/notifier';
+import { PostRepositoryImpl } from './post-repository-impl';
+import type { PostRepository } from '$lib/domain/post';
 
 const container = new Container();
 
-container.bind<EventProvider<PostRepositoryEvent>>(TYPES.EventProvider).to(EventNotifier);
-container.bind<PostProvider>(TYPES.PostProvider).to(PostRepository).inSingletonScope();
-container
-	.bind<NotifiablePostProvider>(TYPES.NotifiablePostProvider)
-	.to(NotifiablePostRepository)
-	.inSingletonScope();
+container.bind<PostRepository>(TYPES.PostRepository).to(PostRepositoryImpl).inSingletonScope();
 
 export { container as postContainer };
