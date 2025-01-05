@@ -84,7 +84,7 @@
 	});
 </script>
 
-<!-- TODO: The observer must work only within the container. -->
+<!-- TODO: When scrolling the page observers react, this should not be the case. -->
 
 <div class="relative flex flex-col overflow-hidden {wrapperClassName}">
 	<div class="flex flex-col items-center overflow-auto {scrollAreaClassName}">
