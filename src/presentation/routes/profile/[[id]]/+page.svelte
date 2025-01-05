@@ -13,19 +13,21 @@
 <div class="flex flex-col gap-8">
 	<User />
 	<Sections class="size-full" tabs={['favorites', 'posts', 'drafts']} defaultTab="favorites">
-		<Tabs.Content value="favorites" class="size-full">
-			<PostList title="Favorites" />
-		</Tabs.Content>
-		<Tabs.Content value="posts" class="size-full">
-			<!-- TODO: Set editor mode only for author! -->
-			<PostList
-				editorMode={true}
-				title="Posts"
-				openModifyPostDialog={() => (openPostDialog = true)}
-			/>
-		</Tabs.Content>
-		<Tabs.Content value="drafts" class="size-full">
-			<PostList title="Drafts" />
-		</Tabs.Content>
+		<div class="size-full">
+			<Tabs.Content value="favorites">
+				<PostList title="Favorites" />
+			</Tabs.Content>
+			<Tabs.Content value="posts">
+				<!-- TODO: Set editor mode only for author! -->
+				<PostList
+					editorMode={true}
+					title="Posts"
+					openModifyPostDialog={() => (openPostDialog = true)}
+				/>
+			</Tabs.Content>
+			<Tabs.Content value="drafts">
+				<PostList title="Drafts" />
+			</Tabs.Content>
+		</div>
 	</Sections>
 </div>
