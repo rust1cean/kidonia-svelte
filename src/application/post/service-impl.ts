@@ -1,5 +1,5 @@
-import type { PostId } from '$lib/domain/common/repository';
-import { MAX_AGE, MIN_AGE, type DetailedPostEntity } from '$lib/domain/post';
+import type { PostId } from '@/domain/common/repository';
+import { MAX_AGE, MIN_AGE, type DetailedPostEntity } from '@/domain/post';
 import type {
 	CreatePostPayload,
 	GetAuthorPostsPayload,

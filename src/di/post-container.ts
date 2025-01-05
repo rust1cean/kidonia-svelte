@@ -3,7 +3,7 @@ import {
 	InMemoryPostRepository,
 	MemoryFirstPostRepositoryImpl,
 	RemotePostRepositoryImpl
-} from '$lib/infrastructure/post';
+} from '@/infrastructure/post';
 import {
 	CreateDraftUseCase,
 	CreatePostUseCase,
@@ -16,7 +16,7 @@ import {
 	type PostRepository,
 	type PostService,
 	PostServiceImpl
-} from '$lib/application/post';
+} from '@/application/post';
 
 export const TYPES = {
 	PostRepository: Symbol.for('PostRepository'),

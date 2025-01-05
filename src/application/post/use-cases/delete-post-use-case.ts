@@ -1,4 +1,4 @@
-import type { PostId } from '$lib/domain/common/repository';
+import type { PostId } from '@/domain/common/repository';
 import type { PostService } from '../service';
 
 export class DeletePostUseCase {

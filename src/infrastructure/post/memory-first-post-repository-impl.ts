@@ -1,6 +1,6 @@
-import type { CreatePostData, FetchPostsOptions, PostRepository, UpdatePostData } from '$lib/application/post';
-import type { PostId } from '$lib/domain/common/repository';
-import type { DetailedPostEntity } from '$lib/domain/post';
+import type { CreatePostData, FetchPostsOptions, PostRepository, UpdatePostData } from '@/application/post';
+import type { PostId } from '@/domain/common/repository';
+import type { DetailedPostEntity } from '@/domain/post';
 
 export class MemoryFirstPostRepositoryImpl implements PostRepository {
 	constructor(

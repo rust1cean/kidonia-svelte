@@ -1,6 +1,6 @@
-import type { AuthorId, FetchRange, PostId } from '$lib/domain/common/repository';
-import type { AuthorEntity, DetailedPostEntity } from '$lib/domain/post';
-import type { PostCategory } from '$lib/domain/post/constants';
+import type { AuthorId, FetchRange, PostId } from '@/domain/common/repository';
+import type { AuthorEntity, DetailedPostEntity } from '@/domain/post';
+import type { PostCategory } from '@/domain/post/constants';
 import type { Identify } from '$lib/utils/types';
 
 export interface PostRepository {

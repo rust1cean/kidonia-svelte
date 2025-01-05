@@ -1,4 +1,4 @@
-import type { PostEntity } from '$lib/domain/post';
+import type { PostEntity } from '@/domain/post';
 import type { GetAuthorPostsPayload } from '../payload';
 import type { PostService } from '../service';
 

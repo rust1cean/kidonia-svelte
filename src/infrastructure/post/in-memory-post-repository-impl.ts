@@ -4,9 +4,9 @@ import type {
 	FetchPostsOptions,
 	PostRepository,
 	UpdatePostData
-} from '$lib/application/post';
-import type { PostId } from '$lib/domain/common/repository';
-import type { DetailedPostEntity } from '$lib/domain/post';
+} from '@/application/post';
+import type { PostId } from '@/domain/common/repository';
+import type { DetailedPostEntity } from '@/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
 
 @injectable()
