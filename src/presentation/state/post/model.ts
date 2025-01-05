@@ -1,8 +1,6 @@
 import type { PostId } from '@/domain/common/repository';
 import type { PostCategory } from '@/domain/post';
 
-export type PostId = PostVModel['id'];
-
 export type PostVModel = {
 	id: PostId;
 	author: {

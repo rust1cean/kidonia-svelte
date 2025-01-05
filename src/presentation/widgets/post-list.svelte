@@ -7,12 +7,8 @@
 	import { Post } from '$lib/widgets/post';
 	import type { PostVModel } from '$lib/state/post';
 
-	// createPost({
-	// 	author: "7178b695-ef82-4688-915f-24f6f7535521",
-	// 	title: "It's a test title",
-	// 	description: '',
-	// 	phone: ''
-	// }).then(console.log);
+	import { postContainer, TYPES } from '@/di/post-container';
+	import type { GetPostsUseCase } from '@/application/post';
 
 	const genRandomPosts = async (count: number = 64): Promise<PostVModel[]> =>
 		Array.from(
@@ -46,22 +42,40 @@
 		title,
 		openModifyPostDialog,
 		editorMode = false,
-		posts = [],
 		requestPosts = genRandomPosts as any
 	}: {
 		editorMode?: boolean;
 		title?: string;
-		posts?: Array<PostVModel>;
-		requestPosts?: () => Promise<typeof posts>;
+		requestPosts?: () => Promise<PostVModel>;
 		openModifyPostDialog?: (post?: PostVModel) => any;
 	} = $props();
 
+	const posts = $state([]);
+
 	let loaded: boolean = $state(false);
 
-	const onPostsRequest = () =>
-		requestPosts()
-			.then((newPosts) => posts.push(...newPosts))
-			.catch(console.error);
+	const getPosts = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
+	const onPostsRequest = async (range: { offset: number; limit: number }) => {
+		if (posts.length === 0 || range.offset > posts.length) {
+			return getPosts
+				.execute(range)
+				.then((newPosts) => {
+					newPosts = newPosts.map((post) => {
+						return { ...post, gallery: [post.imagePath] };
+					});
+					fetch(newPosts[0].gallery[0])
+						.then((res) => {
+							return res.blob()
+						})
+						.then((blob) => {
+							console.log(URL.createObjectURL(blob))
+						})
+						.catch(console.warn);
+					posts.push(...newPosts);
+				})
+				.catch(console.error);
+		}
+	};
 </script>
 
 <section class="flex h-[85vh] min-w-full flex-col gap-6 rounded-3xl">
@@ -94,10 +108,11 @@
 		onRequestItems={onPostsRequest}
 		onLoad={() => (loaded = true)}
 	>
-		<!-- Gradient -->
 		<div
 			class="pointer-events-none absolute left-0 top-0 size-full bg-gradient-to-b from-transparent from-95% to-background"
-		></div>
+		>
+			<!-- Gradient -->
+		</div>
 		{#snippet component(postData)}
 			<Post {...postData} {editorMode} />
 		{/snippet}

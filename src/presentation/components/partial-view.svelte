@@ -10,15 +10,15 @@
 		wrapperClassName,
 		scrollAreaClassName,
 		itemsClassName,
-		onRequestItems = () => new Promise((res) => res(null)),
-		from = $bindable(0),
+		onRequestItems = (_: { offset: number; limit: number }) => new Promise((res) => res(null)),
+		offset = $bindable(0),
 		visibleCount = 16,
 		shift = visibleCount / 2
 	}: {
 		items: Array<Item>;
-		onRequestItems?: () => Promise<any>;
+		onRequestItems?: (range: { offset: number; limit: number }) => Promise<any>;
 		component: Snippet<[(typeof items)[number]]>;
-		from?: number;
+		offset?: number;
 		children?: Snippet;
 		onLoad?: () => void;
 		wrapperClassName?: string;
@@ -29,33 +29,33 @@
 	} = $props();
 
 	let pending = $state(false);
-	const to = $derived(from + visibleCount);
-	const partial = $derived(items.slice(from, to));
+	const limit = $derived(offset + visibleCount);
+	const partial = $derived(items.slice(offset, limit));
 
 	let topObserver: HTMLElement | undefined = $state();
 	let botObserver: HTMLElement | undefined = $state();
 
 	// Returns true if shift was successfully applied
 	// Otherwise returns false
-	const back = (): boolean | number => from > 0 && (from -= shift);
+	const back = (): boolean | number => offset > 0 && (offset -= shift);
 
 	// Returns true if the shift was successfully applied
 	// Otherwise returns false
-	const next = (): boolean | number => to + shift <= items.length - 1 && (from += shift);
+	const next = (): boolean | number => limit + shift <= items.length - 1 && (offset += shift);
 
-	const request = () => {
-		return new Promise((res) => {
-			if (!pending) {
-				pending = true;
-				onRequestItems()
-					.then(() => res((pending = false)))
-					.catch(console.error);
-			}
-		});
+	const request = async () => {
+		if (pending === false) {
+			pending = true;
+			return await onRequestItems({ offset, limit })
+				.then(() => (pending = false))
+				.catch(console.error);
+		}
 	};
 
 	onMount(() => {
-		if (items.length === 0) onRequestItems().then(onLoad).catch(console.error);
+		if (items.length === 0) {
+			request().then(onLoad).catch(console.error);
+		}
 
 		const onObserverIntersecting = (
 			entries: IntersectionObserverEntry[],
@@ -92,7 +92,7 @@
 		{#if pending}
 			<Loader />
 		{/if}
-		<div class={itemsClassName}>
+		<div class="size-full {itemsClassName}">
 			{#each partial as item (item.id)}
 				{@render component(item)}
 			{/each}

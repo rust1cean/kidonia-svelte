@@ -3,4 +3,3 @@
 </script>
 
 <PostList title="Test category 1" />
-<PostList title="Test category 2" />

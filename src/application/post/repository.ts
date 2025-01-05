@@ -1,7 +1,7 @@
-import type { AuthorId, FetchRange, PostId } from '@/domain/common/repository';
+import type { FetchRange, PostId } from '@/domain/common/repository';
 import type { AuthorEntity, DetailedPostEntity } from '@/domain/post';
 import type { PostCategory } from '@/domain/post/constants';
-import type { Identify } from '$lib/utils/types';
+import type { Identify } from '@/utils/types';
 
 export interface PostRepository {
 	fetchPosts(options: FetchPostsOptions): Promise<DetailedPostEntity[]>;

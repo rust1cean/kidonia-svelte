@@ -4,5 +4,5 @@ export { EditPostUseCase } from './edit-post-use-case';
 export { EditDraftUseCase } from './edit-draft-use-case';
 export { GetAuthorPostsUseCase } from './get-author-posts-use-case';
 export { GetAuthorDraftsUseCase } from './get-author-drafts-use-case';
-export { SearchPostsUseCase } from './search-posts-use-case';
+export { GetPostsUseCase } from './get-posts-use-case';
 export { DeletePostUseCase } from './delete-post-use-case';

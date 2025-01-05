@@ -28,11 +28,13 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		categories,
 		address
 	}: FetchPostsOptions): Promise<DetailedPostEntity[]> {
-		let q = db.from('posts_with_author').select('*');
+		// TODO: DETAILED SQL VIEW
+		// let q = db.from('posts_with_author').select('*');
+		let q = db.from('post').select('*, author(*)');
 
 		if (title) q = q.ilike('title', `%${title}%`);
 		if (description) q = q.ilike('description', `%${description}%`);
-		if (categories) q = q.in('category', categories);
+		if (categories && categories.length > 0) q = q.in('category', categories);
 		if (minAge) q = q.gte('min_age', minAge);
 		if (maxAge) q = q.lte('max_age', maxAge);
 		if (draft) q = q.eq('draft', draft);

@@ -12,7 +12,7 @@ import {
 	EditPostUseCase,
 	GetAuthorDraftsUseCase,
 	GetAuthorPostsUseCase,
-	SearchPostsUseCase,
+	GetPostsUseCase,
 	type PostRepository,
 	type PostService,
 	PostServiceImpl
@@ -28,7 +28,7 @@ export const TYPES = {
 	EditPostUseCase: Symbol.for('EditPostUseCase'),
 	GetAuthorDraftsUseCase: Symbol.for('GetAuthorDraftsUseCase'),
 	GetAuthorPostsUseCase: Symbol.for('GetAuthorPostsUseCase'),
-	SearchPostsUseCase: Symbol.for('SearchPostsUseCase')
+	GetPostsUseCase: Symbol.for('GetPostsUseCase')
 };
 
 const container = new Container();
@@ -36,21 +36,9 @@ const container = new Container();
 // Repositories
 container
 	.bind<PostRepository>(TYPES.PostRepository)
-	.toConstantValue(new RemotePostRepositoryImpl())
-	.whenTargetNamed('remote');
-container
-	.bind<PostRepository>(TYPES.PostRepository)
-	.toConstantValue(new InMemoryPostRepository())
-	.whenTargetNamed('in-memory');
-container
-	.bind<PostRepository>(TYPES.PostRepository)
 	.toConstantValue(
-		new MemoryFirstPostRepositoryImpl(
-			container.getNamed<PostRepository>(TYPES.PostRepository, 'in-memory'),
-			container.getNamed<PostRepository>(TYPES.PostRepository, 'remote')
-		)
-	)
-	.whenTargetNamed('memory-first');
+		new MemoryFirstPostRepositoryImpl(new RemotePostRepositoryImpl(), new InMemoryPostRepository())
+	);
 
 // Services
 container
@@ -82,7 +70,7 @@ container
 	.bind<GetAuthorPostsUseCase>(TYPES.GetAuthorPostsUseCase)
 	.toConstantValue(new GetAuthorPostsUseCase(container.get<PostService>(TYPES.PostService)));
 container
-	.bind<SearchPostsUseCase>(TYPES.SearchPostsUseCase)
-	.toConstantValue(new SearchPostsUseCase(container.get<PostService>(TYPES.PostService)));
+	.bind<GetPostsUseCase>(TYPES.GetPostsUseCase)
+	.toConstantValue(new GetPostsUseCase(container.get<PostService>(TYPES.PostService)));
 
-export default container;
+export { container as postContainer };

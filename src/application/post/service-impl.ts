@@ -3,8 +3,8 @@ import { MAX_AGE, MIN_AGE, type DetailedPostEntity } from '@/domain/post';
 import type {
 	CreatePostPayload,
 	GetAuthorPostsPayload,
-	SearchPostsPayload,
-	EditPostPayload
+	GetPostsPayload,
+	EditPostPayload,
 } from './payload';
 import type { PostRepository } from './repository';
 import type { PostService, PostStatus } from './service';
@@ -24,7 +24,7 @@ export class PostServiceImpl implements PostService {
 		});
 	}
 
-	public async searchPosts({
+	public async getPosts({
 		offset,
 		limit,
 		minAge = MIN_AGE,
@@ -32,8 +32,8 @@ export class PostServiceImpl implements PostService {
 		categories = [],
 		address,
 		zipcode,
-		query
-	}: SearchPostsPayload): Promise<DetailedPostEntity[]> {
+		query = ''
+	}: GetPostsPayload): Promise<DetailedPostEntity[]> {
 		return this.repository.fetchPosts({
 			title: query,
 			description: query,
