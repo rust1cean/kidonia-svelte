@@ -19,9 +19,9 @@ export type PostEntity = {
 	zipcode?: number | null;
 };
 
-export type DetailedPostEntity = Merge<PostEntity, { author: AuthorEntity }>;
+export type DetailedPostModel = Merge<PostEntity, { author: Author }>;
 
-export type AuthorEntity = {
+export type Author = {
 	id: AuthorId;
 	name: string;
 	avatarUrl?: string;

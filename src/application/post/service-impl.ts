@@ -1,5 +1,5 @@
 import type { PostId } from '@/domain/common/repository';
-import { MAX_AGE, MIN_AGE, type DetailedPostEntity } from '@/domain/post';
+import { MAX_AGE, MIN_AGE, type DetailedPostModel } from '@/domain/post';
 import type {
 	CreatePostPayload,
 	GetAuthorPostsPayload,
@@ -17,7 +17,7 @@ export class PostServiceImpl implements PostService {
 	public async getAuthorPosts(
 		payload: GetAuthorPostsPayload,
 		status: PostStatus
-	): Promise<DetailedPostEntity[]> {
+	): Promise<DetailedPostModel[]> {
 		return this.repository.fetchPosts({
 			...payload,
 			draft: isDraft(status)
@@ -33,7 +33,7 @@ export class PostServiceImpl implements PostService {
 		address,
 		zipcode,
 		query = ''
-	}: GetPostsPayload): Promise<DetailedPostEntity[]> {
+	}: GetPostsPayload): Promise<DetailedPostModel[]> {
 		return this.repository.fetchPosts({
 			title: query,
 			description: query,
