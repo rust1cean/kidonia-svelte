@@ -1,12 +1,13 @@
 import * as v from 'valibot';
 import {
-	GREEK_PHONE_REGEXP,
 	MAX_AGE,
 	MIN_AGE,
 	PostCategories
-} from '$lib/repository/post/constants';
+} from '@/domain/post';
 
 export type ModifyPostFormSchema = typeof modifyPostFormSchema;
+
+export const GREEK_PHONE_REGEXP = /^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$/;
 
 export const modifyPostFormSchema = v.pipe(
 	v.partial(

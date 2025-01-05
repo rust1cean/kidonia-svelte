@@ -12,10 +12,10 @@
 	import ToggleField from '$lib/components/toggle-field.svelte';
 	import SelectField from '$lib/components/select-field.svelte';
 	import UploadField from '$lib/components/upload-field.svelte';
-	import { MAX_AGE, MIN_AGE, PostCategories } from '$lib/data/post';
+	import { MAX_AGE, MIN_AGE, PostCategories } from '@/domain/post';
 	import { Slider } from '$lib/components/ui/slider';
 	import { Label } from '$lib/components/ui/label';
-	import { modifyPostFormSchema } from '$lib/state/post/post-form-schema';
+	import { modifyPostFormSchema } from '$lib/state/post';
 
 	const {
 		open,

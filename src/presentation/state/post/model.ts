@@ -1,10 +1,10 @@
-import { type PostCategory } from '$lib/repository/post/constants';
-import type { Id } from '$lib/utils/types';
+import type { PostId } from '@/domain/common/repository';
+import type { PostCategory } from '@/domain/post';
 
 export type PostId = PostVModel['id'];
 
 export type PostVModel = {
-	id: Id;
+	id: PostId;
 	author: {
 		id: string | number;
 		name: string;
