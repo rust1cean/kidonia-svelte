@@ -1,13 +1,35 @@
-import { inject } from 'inversify';
-import { SvelteMap } from 'svelte/reactivity';
-import type { PostId, PostVModel } from './model';
-// import { POST_TYPES, type PostProvider } from '$lib/repository/post';
+import type { PostVModel } from './model';
+import { postContainer, TYPES } from '@/di/post-container';
+import type { GetPostsPayload, GetPostsUseCase } from '@/application/post';
+import { detailedPostDtoToPostVModel } from './mapper';
+import {
+	ReactiveLimitedArray,
+	type ReactiveStore
+} from '@/presentation/shared/reactive-collections';
 
-// export class ReactivePostStore {
-// 	constructor(
-// 		@inject(POST_TYPES.PostProvider) private store: PostProvider,
-// 		private posts: SvelteMap<PostId, PostVModel> = new SvelteMap()
-// 	) {
-// 		this.store.
-// 	}
-// }
+export const REACTIVE_POST_STORE_SIZE_LIMIT: number = 64;
+
+export class ReactivePostStore extends ReactiveLimitedArray<PostVModel> {
+  protected items = $state(new Array(REACTIVE_POST_STORE_SIZE_LIMIT));
+
+	constructor(
+		private getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase)
+	) {
+    super(REACTIVE_POST_STORE_SIZE_LIMIT)
+  }
+
+	public get allPosts(): PostVModel[] {
+		return Object.values(this.items);
+	}
+
+	public async requestPosts(options: GetPostsPayload): Promise<PostVModel[]> {
+		const postEntities = await this.getPosts.execute(options);
+		const postModels = postEntities.map(detailedPostDtoToPostVModel);
+
+		this.write(...postModels);
+
+		return postModels;
+	}
+}
+
+export const reactivePostStore = new ReactivePostStore();

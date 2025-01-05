@@ -1,6 +1,6 @@
 import type { CreatePostData, FetchPostsOptions, PostRepository, UpdatePostData } from '@/application/post';
 import type { PostId } from '@/domain/common/repository';
-import type { DetailedPostModel } from '@/domain/post';
+import type { DetailedPostDto } from '@/domain/post';
 
 export class MemoryFirstPostRepositoryImpl implements PostRepository {
 	constructor(
@@ -8,7 +8,7 @@ export class MemoryFirstPostRepositoryImpl implements PostRepository {
 		private remoteRepository: PostRepository
 	) {}
 
-	public async fetchPosts(options: FetchPostsOptions): Promise<DetailedPostModel[]> {
+	public async fetchPosts(options: FetchPostsOptions): Promise<DetailedPostDto[]> {
     let posts = await this.inMemoryRepository.fetchPosts(options);
 
     if (posts.length === 0) {
@@ -18,7 +18,7 @@ export class MemoryFirstPostRepositoryImpl implements PostRepository {
     return posts;
   }
 
-  public async fetchPostById(postId: PostId): Promise<DetailedPostModel | null> {
+  public async fetchPostById(postId: PostId): Promise<DetailedPostDto | null> {
     let post = await this.inMemoryRepository.fetchPostById(postId)
 
     if (!post) {

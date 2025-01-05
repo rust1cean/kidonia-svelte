@@ -15,13 +15,13 @@ export type PostEntity = {
 	maxAge: number;
 	price: number | null;
 	updatedAt: string;
+	zipcode: number;
 	category?: PostCategory | null;
-	zipcode?: number | null;
 };
 
-export type DetailedPostModel = Merge<PostEntity, { author: Author }>;
+export type DetailedPostDto = Merge<PostEntity, { author: PostAuthor }>;
 
-export type Author = {
+export type PostAuthor = {
 	id: AuthorId;
 	name: string;
 	avatarUrl?: string;

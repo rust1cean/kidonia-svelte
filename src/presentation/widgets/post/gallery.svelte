@@ -14,7 +14,7 @@
 		className?: string;
 	} = $props();
 
-	let imageExists = $state(gallery[0] != null);
+	let imageExists = $state(gallery && gallery[0] != null);
 </script>
 
 <button

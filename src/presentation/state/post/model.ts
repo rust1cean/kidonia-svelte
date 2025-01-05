@@ -6,18 +6,17 @@ export type PostVModel = {
 	author: {
 		id: string | number;
 		name: string;
-		avatar?: string | null;
+		avatarUrl?: string;
 	};
 	title: string;
-	gallery: string[];
 	phone: string;
-	description?: string | null;
-	address?: string | null;
+	description: string;
+	address: string;
 	category?: PostCategory | null;
-	draft?: boolean | null;
-	maxAge?: number | null;
-	minAge?: number | null;
-	zipcode?: number | null;
+	draft: boolean;
+	maxAge: number;
+	minAge: number;
+	zipcode: number;
 	price?: number | null;
-	updatedAt?: string;
+	updatedAt: Date;
 };

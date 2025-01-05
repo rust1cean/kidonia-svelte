@@ -1,11 +1,11 @@
 import type { FetchRange, PostId } from '@/domain/common/repository';
-import type { AuthorEntity, DetailedPostModel } from '@/domain/post';
+import type { PostAuthor, DetailedPostDto } from '@/domain/post';
 import type { PostCategory } from '@/domain/post/constants';
 import type { Identify } from '@/utils/types';
 
 export interface PostRepository {
-	fetchPosts(options: FetchPostsOptions): Promise<DetailedPostModel[]>;
-	fetchPostById(postId: PostId): Promise<DetailedPostModel | null>;
+	fetchPosts(options: FetchPostsOptions): Promise<DetailedPostDto[]>;
+	fetchPostById(postId: PostId): Promise<DetailedPostDto | null>;
 	createPost(postData: CreatePostData): Promise<void>;
 	updatePost(postId: PostId, postData: UpdatePostData): Promise<void>;
 	deletePost(postId: PostId): Promise<void>;
@@ -29,7 +29,7 @@ export type FetchPostsOptions = Identify<
 export type CreatePostData = {
 	title: string;
 	description: string;
-	author: AuthorEntity;
+	author: PostAuthor;
 	address: string;
 	draft: boolean;
 	imagePath: string;

@@ -9,7 +9,7 @@ import type {
 } from '@/application/post';
 import { db } from '../db';
 import type { PostId } from '@/domain/common/repository';
-import type { DetailedPostModel } from '@/domain/post';
+import type { DetailedPostDto } from '@/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
 
 @injectable()
@@ -27,7 +27,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		description,
 		categories,
 		address
-	}: FetchPostsOptions): Promise<DetailedPostModel[]> {
+	}: FetchPostsOptions): Promise<DetailedPostDto[]> {
 		// TODO: DETAILED SQL VIEW
 		// let q = db.from('posts_with_author').select('*');
 		let q = db.from('post').select('*, author(*)');
@@ -51,10 +51,10 @@ export class RemotePostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data == null ? [] : data.map((post) => camelize(post) as DetailedPostModel);
+		return data == null ? [] : data.map((post) => camelize(post) as DetailedPostDto);
 	}
 
-	public async fetchPostById(postId: PostId): Promise<DetailedPostModel | null> {
+	public async fetchPostById(postId: PostId): Promise<DetailedPostDto | null> {
 		const { data, error } = await db
 			.from('posts_with_author')
 			.select('*')
@@ -65,7 +65,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data != null ? (camelize(data) as DetailedPostModel) : null;
+		return data != null ? (camelize(data) as DetailedPostDto) : null;
 	}
 
 	public async createPost(post: CreatePostData): Promise<void> {
