@@ -9,13 +9,13 @@
 </script>
 
 <div class="flex flex-wrap gap-2">
-	{#if address}
+	{#if address != null && address.length > 0}
 		<Badge class="w-fit" variant="outline">
 			<MapPin size="16" class="text-red-400" />
 			<span>{address}</span>
 		</Badge>
 	{/if}
-	{#if minAge}
+	{#if minAge != null}
 		<Badge class="w-fit" variant="outline">
 			<User size="16" class="text-secondary-foreground" />
 			<span>{minAge ?? MIN_AGE}-{maxAge ?? MAX_AGE}</span>
