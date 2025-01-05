@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Menu, User, Settings, Languages, LogOut } from 'lucide-svelte';
-	import { i18n } from '$lib/i18n';
+	import { i18n } from '$lib/app/i18n';
 	import { page } from '$app/state';
 
-	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime';
-	import * as m from '$lib/paraglide/messages';
+	import { availableLanguageTags, languageTag } from '$lib/app/paraglide/runtime';
+	import * as m from '$lib/app/paraglide/messages';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as DropdownMenu from '../components/ui/dropdown-menu';
 	import { Button } from '../components/ui/button';

@@ -3,7 +3,7 @@
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client';
 	import type { SelectItemProps } from 'bits-ui';
 
-	import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/app/paraglide/messages';
 	import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
 

@@ -24,13 +24,11 @@ const config = {
 			lib: path.resolve("src/presentation"),
 			params: path.resolve("src/presentation/params"),
 			routes: path.resolve("src/presentation/routes"),
+			hooks: {
+				server: path.resolve("src/presentation/hooks/hooks.server"),
+				universal: path.resolve("src/presentation/hooks/hooks"),
+			},
 		},
-	},
-
-	hooks: {
-		client: "src/presentation/hooks",
-		server: "src/presentation/hooks",
-		universal: "src/presentation/hooks",
 	},
 
 	extensions: ['.svelte', '.svx']

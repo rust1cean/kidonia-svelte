@@ -1,2 +1,2 @@
-import { i18n } from '$lib/presentation/i18n';
+import { i18n } from '$lib/app/i18n';
 export const reroute = i18n.reroute();

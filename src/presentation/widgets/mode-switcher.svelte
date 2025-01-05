@@ -2,7 +2,7 @@
 	import { Moon, Sun } from 'lucide-svelte';
 	import { userPrefersMode, resetMode, setMode } from 'mode-watcher';
 
-	import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/app/paraglide/messages';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';

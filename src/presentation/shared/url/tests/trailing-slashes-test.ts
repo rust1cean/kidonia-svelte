@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { pushPath, justPushPath, removeTrailingSlashes, replacePath } from '$lib/utils/url';
+import { pushPath, justPushPath, removeTrailingSlashes, replacePath } from '$lib/shared/url';
 
 describe('trailing slashes', () => {
 	test('url expects trailing slashes to remain unchanged', () => {

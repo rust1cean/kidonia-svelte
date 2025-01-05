@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Drawer as DrawerPrimitive } from "vaul-svelte";
-	import { cn } from "$lib/shared/style-utils/style-utils.js";
+	import { cn } from "$lib/shared/style-utils";
 
 	let {
 		ref = $bindable(null),

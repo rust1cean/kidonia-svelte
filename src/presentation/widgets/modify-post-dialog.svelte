@@ -3,7 +3,7 @@
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 
-	import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/app/paraglide/messages';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import type { PostProps } from './post';

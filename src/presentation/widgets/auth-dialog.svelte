@@ -1,5 +1,5 @@
-<script lang="ts">
-	import * as m from '$lib/paraglide/messages';
+<!-- <script lang="ts">
+	import * as m from '$lib/app/paraglide/messages';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
@@ -112,4 +112,4 @@
 			{tab === 'signup' ? m.signup() : m.login()}
 		</Button>
 	</Dialog.Footer>
-{/snippet}
+{/snippet} -->

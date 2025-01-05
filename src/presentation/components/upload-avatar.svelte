@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/app/paraglide/messages';
 	import { User } from 'lucide-svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
 	import type { HTMLAttributes } from 'svelte/elements';

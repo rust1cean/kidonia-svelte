@@ -3,7 +3,7 @@
 
 	import { Badge } from '$lib/components/ui/badge';
 	import type { PostProps } from '.';
-	import { MAX_AGE, MIN_AGE } from '$lib/api/post/post-constants';
+	import { MAX_AGE, MIN_AGE } from '@/domain/post';
 
 	let { address, minAge, maxAge, phone, education }: PostProps = $props();
 </script>

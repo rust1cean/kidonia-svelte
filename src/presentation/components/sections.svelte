@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages';
+	import * as m from '$lib/app/paraglide/messages';
 	import { page } from '$app/stores';
 	import { pushState, replaceState } from '$app/navigation';
 	import type { Snippet } from 'svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { pushPath, replacePath } from '$lib/utils/url';
+	import { pushPath, replacePath } from '$lib/shared/url';
 
 	const {
 		tabs,
