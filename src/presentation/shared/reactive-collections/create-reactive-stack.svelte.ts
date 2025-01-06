@@ -1,16 +1,18 @@
 import type { ReactiveStore } from '.';
 
-export const createReactiveLimitedArray = <T>(
+export const createReactiveStack = <T>(
 	fixedSizeLimit: number,
 	index: number = 0
 ): ReactiveStore<T> => {
-	console.assert(fixedSizeLimit > 0, 'Fixed array size must be more than 0.');
+	if (fixedSizeLimit <= 0) {
+		throw new Error('Fixed array size must be more than 0.');
+	}
 
 	let items = $state<T[]>(new Array(fixedSizeLimit));
 
 	return {
 		get all(): T[] {
-			return items.filter(item => item != undefined);
+			return items.filter((item) => item != undefined);
 		},
 
 		write(...addtional: T[]) {

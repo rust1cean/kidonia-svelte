@@ -3,7 +3,7 @@ import type { PostVModel } from './model';
 import { postContainer, TYPES } from '@/di/post-container';
 import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
 import { detailedPostDtoToPostVModel } from './mapper';
-import { createReactiveLimitedArray } from '@/presentation/shared/reactive-collections';
+import { createReactiveQueue } from '@/presentation/shared/reactive-collections';
 import type { Identify } from '@/utils/types';
 import type { FetchRange } from '@/domain/common/repository';
 
@@ -15,11 +15,11 @@ export type ReactiveStoreConfig = Identify<Merge<GetPostsPayload, Partial<FetchR
 
 export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
 	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
-	const store = createReactiveLimitedArray<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
+	const store = createReactiveQueue<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
 
 	return {
 		get allPosts(): PostVModel[] {
-			return store.all;
+			return store.items;
 		},
 
 		async requestPosts(fetchRange: { offset: number; limit: number }): Promise<PostVModel[]> {
@@ -29,7 +29,7 @@ export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
 			});
 			const postModels = postEntities.map(detailedPostDtoToPostVModel);
 
-			store.write(...postModels);
+			store.pushBack(...postModels);
 
 			return postModels;
 		}

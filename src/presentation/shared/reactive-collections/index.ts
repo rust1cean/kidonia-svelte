@@ -4,4 +4,5 @@ export interface ReactiveStore<T> {
   clear(): void;
 }
 
-export * from "./create-reactive-limited-array.svelte"
+export * from "./create-reactive-stack.svelte"
+export * from "./create-reactive-queue.svelte"
