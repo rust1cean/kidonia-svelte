@@ -1,7 +1,7 @@
 export interface ReactiveStore<T> {
   all: T[];
-  write(...items: T[]): this;
-  clear(): this;
+  write(...items: T[]): void;
+  clear(): void;
 }
 
-export * from "./reactive-limited-array.svelte"
+export * from "./create-reactive-limited-array.svelte"

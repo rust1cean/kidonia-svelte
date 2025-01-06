@@ -26,7 +26,8 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		title,
 		description,
 		categories,
-		address
+		address,
+		orderBy
 	}: FetchPostsOptions): Promise<DetailedPostDto[]> {
 		// TODO: DETAILED SQL VIEW
 		// let q = db.from('posts_with_author').select('*');
@@ -41,6 +42,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 		if (address) q = q.eq('address', address);
 		// TODO: Postcode or zipcode
 		if (zipcode) q = q.eq('postcode', zipcode);
+		if (orderBy) q = q.order(orderBy.column, { ascending: orderBy.ascending });
 
 		const { data, error } = await q.range(
 			offset,
@@ -65,7 +67,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 			throw error;
 		}
 
-		return data != null ? (camelize(data) as DetailedPostDto) : null;
+		return data == null ? null : (camelize(data) as DetailedPostDto);
 	}
 
 	public async createPost(post: CreatePostData): Promise<void> {

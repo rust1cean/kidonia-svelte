@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PostList from '$lib/widgets/post-list.svelte';
+	import PostFeed from '@/presentation/widgets/post-feed.svelte';
 </script>
 
-<PostList title="Test category 1" />
+<PostFeed title="Recently posts" sortBy="recently" />

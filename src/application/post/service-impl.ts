@@ -5,10 +5,22 @@ import type {
 	GetAuthorPostsPayload,
 	GetPostsPayload,
 	EditPostPayload,
+	SortBy
 } from './payload';
-import type { PostRepository } from './repository';
+import type { OrderBy, PostRepository } from './repository';
 import type { PostService, PostStatus } from './service';
 
+const determineSortBy = (sort?: SortBy | null): OrderBy => {
+	if (sort === 'oldest')
+		return {
+			column: 'updated_at',
+			ascending: true
+		};
+	return {
+		column: 'updated_at',
+		ascending: false
+	};
+};
 const isDraft = (status: PostStatus) => status === 'draft';
 
 export class PostServiceImpl implements PostService {
@@ -20,6 +32,7 @@ export class PostServiceImpl implements PostService {
 	): Promise<DetailedPostDto[]> {
 		return this.repository.fetchPosts({
 			...payload,
+			orderBy: payload.sortBy ? determineSortBy(payload.sortBy) : null,
 			draft: isDraft(status)
 		});
 	}
@@ -32,12 +45,14 @@ export class PostServiceImpl implements PostService {
 		categories = [],
 		address,
 		zipcode,
+		sortBy,
 		query = ''
 	}: GetPostsPayload): Promise<DetailedPostDto[]> {
 		return this.repository.fetchPosts({
 			title: query,
 			description: query,
 			draft: false,
+			orderBy: sortBy ? determineSortBy(sortBy) : null,
 			offset,
 			limit,
 			minAge,

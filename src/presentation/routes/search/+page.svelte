@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import PostList from '$lib/widgets/post-list.svelte';
+	import PostFeed from '@/presentation/widgets/post-feed.svelte';
 </script>
 
-<PostList title={$page.url.searchParams.get('q') || ''} />
+<PostFeed title={$page.url.searchParams.get('q') || ''} />

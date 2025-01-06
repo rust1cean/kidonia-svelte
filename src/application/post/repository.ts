@@ -1,6 +1,7 @@
 import type { FetchRange, PostId } from '@/domain/common/repository';
 import type { PostAuthor, DetailedPostDto } from '@/domain/post';
 import type { PostCategory } from '@/domain/post/constants';
+import type { Tables } from '@/infrastructure/db';
 import type { Identify } from '@/utils/types';
 
 export interface PostRepository {
@@ -22,9 +23,15 @@ export type FetchPostsOptions = Identify<
 		price?: number | null;
 		draft?: boolean;
 		zipcode?: number;
-		categories?: Array<PostCategory>;
+		categories?: Array<PostCategory> | null;
+		orderBy?: OrderBy | null;
 	}
 >;
+
+export type OrderBy = {
+	column: keyof Tables<'post'>;
+	ascending: boolean;
+};
 
 export type CreatePostData = {
 	title: string;

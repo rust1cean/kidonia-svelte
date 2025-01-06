@@ -1,32 +1,37 @@
+import type { Merge } from 'type-fest';
 import type { PostVModel } from './model';
 import { postContainer, TYPES } from '@/di/post-container';
-import type { GetPostsPayload, GetPostsUseCase } from '@/application/post';
+import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
 import { detailedPostDtoToPostVModel } from './mapper';
-import { ReactiveLimitedArray } from '@/presentation/shared/reactive-collections';
+import { createReactiveLimitedArray } from '@/presentation/shared/reactive-collections';
+import type { Identify } from '@/utils/types';
+import type { FetchRange } from '@/domain/common/repository';
 
-export const REACTIVE_POST_STORE_SIZE_LIMIT: number = 64;
+export const REACTIVE_POST_STORE_SIZE_LIMIT: number = 32;
 
-export class ReactivePostStore extends ReactiveLimitedArray<PostVModel> {
-	protected items = $state(new Array(REACTIVE_POST_STORE_SIZE_LIMIT));
+export type ReactiveStoreConfig = Identify<Merge<GetPostsPayload, Partial<FetchRange> & {
+	sortBy?: SortBy | null
+}>>
 
-	constructor(
-		private getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase)
-	) {
-		super(REACTIVE_POST_STORE_SIZE_LIMIT);
-	}
+export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
+	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
+	const store = createReactiveLimitedArray<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
 
-	public get allPosts(): PostVModel[] {
-		return Object.values(this.items);
-	}
+	return {
+		get allPosts(): PostVModel[] {
+			return store.all;
+		},
 
-	public async requestPosts(options: GetPostsPayload): Promise<PostVModel[]> {
-		const postEntities = await this.getPosts.execute(options);
-		const postModels = postEntities.map(detailedPostDtoToPostVModel);
+		async requestPosts(fetchRange: { offset: number; limit: number }): Promise<PostVModel[]> {
+			const postEntities = await getPosts.execute({
+				...fetchOptions,
+				...fetchRange
+			});
+			const postModels = postEntities.map(detailedPostDtoToPostVModel);
 
-		this.write(...postModels);
+			store.write(...postModels);
 
-		return postModels;
-	}
-}
-
-export const reactivePostStore = new ReactivePostStore();
+			return postModels;
+		}
+	};
+};

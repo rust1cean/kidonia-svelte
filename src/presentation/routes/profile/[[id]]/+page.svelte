@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
 	import ModifyPostDialog from '$lib/widgets/modify-post-dialog.svelte';
-	import PostList from '$lib/widgets/post-list.svelte';
+	import PostFeed from '@/presentation/widgets/post-feed.svelte';
 	import User from '$lib/components/user.svelte';
 	import Sections from '$lib/components/sections.svelte';
 
@@ -15,18 +15,18 @@
 	<Sections class="size-full" tabs={['favorites', 'posts', 'drafts']} defaultTab="favorites">
 		<div class="size-full">
 			<Tabs.Content value="favorites">
-				<PostList title="Favorites" />
+				<PostFeed title="Favorites" />
 			</Tabs.Content>
 			<Tabs.Content value="posts">
 				<!-- TODO: Set editor mode only for author! -->
-				<PostList
+				<PostFeed
 					editorMode={true}
 					title="Posts"
 					openModifyPostDialog={() => (openPostDialog = true)}
 				/>
 			</Tabs.Content>
 			<Tabs.Content value="drafts">
-				<PostList title="Drafts" />
+				<PostFeed title="Drafts" />
 			</Tabs.Content>
 		</div>
 	</Sections>

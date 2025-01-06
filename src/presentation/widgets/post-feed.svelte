@@ -5,21 +5,23 @@
 	import PartialView from '$lib/components/partial-view.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Post } from '$lib/widgets/post';
-	import type { PostVModel } from '$lib/state/post';
-	import { reactivePostStore } from '$lib/state/post';
+	import type { PostVModel, ReactiveStoreConfig } from '$lib/state/post';
+	import { createReactivePostStore } from '$lib/state/post';
 
 	let {
 		title,
 		openModifyPostDialog,
 		editorMode = false,
+		...remaindPostStoreConfig
 	}: {
 		editorMode?: boolean;
 		title?: string;
-		requestPosts?: () => Promise<PostVModel>;
 		openModifyPostDialog?: (post?: PostVModel) => any;
-	} = $props();
+	} & ReactiveStoreConfig = $props();
 
 	let loaded: boolean = $state(false);
+
+	const store = createReactivePostStore(remaindPostStoreConfig);
 </script>
 
 <section class="flex h-[85vh] min-w-full flex-col gap-6 rounded-3xl">
@@ -48,8 +50,8 @@
 		wrapperClassName="size-full rounded-2xl"
 		scrollAreaClassName="pr-2"
 		itemsClassName="grid xl:grid-cols-4 grid-cols-2 gap-4"
-		items={reactivePostStore.allPosts}
-		onRequestItems={(range) => reactivePostStore.requestPosts(range)}
+		items={store.allPosts}
+		onRequestItems={(range) => store.requestPosts(range)}
 		onLoad={() => (loaded = true)}
 	>
 		<div
