@@ -1,9 +1,4 @@
-import type { ReactiveStore } from '.';
-
-export const createReactiveStack = <T>(
-	fixedSizeLimit: number,
-	index: number = 0
-): ReactiveStore<T> => {
+export const createReactiveStack = <T>(fixedSizeLimit: number, index: number = 0) => {
 	if (fixedSizeLimit <= 0) {
 		throw new Error('Fixed array size must be more than 0.');
 	}

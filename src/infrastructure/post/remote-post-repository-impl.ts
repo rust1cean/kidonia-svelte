@@ -46,7 +46,7 @@ export class RemotePostRepositoryImpl implements PostRepository {
 
 		const { data, error } = await q.range(
 			offset,
-			limit > POSTS_PER_REQUEST_LIMIT ? POSTS_PER_REQUEST_LIMIT : limit
+			offset + (limit > POSTS_PER_REQUEST_LIMIT ? POSTS_PER_REQUEST_LIMIT : limit) - 1
 		);
 
 		if (error) {
