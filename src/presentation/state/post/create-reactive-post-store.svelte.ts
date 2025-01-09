@@ -28,8 +28,7 @@ export const defaultFetchOptionsIfNeeded = (
 });
 
 export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
-	fetchOptions = defaultFetchOptionsIfNeeded(fetchOptions);
-
+	const options = defaultFetchOptionsIfNeeded(fetchOptions);
 	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
 	const store = createReactiveQueue<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
 
@@ -43,17 +42,17 @@ export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
 		},
 
 		async requestPosts(fetchRange: Partial<FetchRange> = {}): Promise<PostVModel[]> {
-			fetchRange.offset ??= fetchOptions.offset;
-			fetchRange.limit ??= fetchOptions.limit;
+			fetchRange.offset ??= options.offset;
+			fetchRange.limit ??= options.limit;
 
 			const postEntities = await getPosts.execute({
-				...(fetchOptions as FetchRange),
+				...(options as FetchRange),
 				...fetchRange
 			});
 			const postModels = postEntities.map(detailedPostDtoToPostVModel);
 
 			store.pushFront(...postModels);
-			fetchOptions.offset! += postModels.length;
+			options.offset! += postModels.length;
 
 			return postModels;
 		}
