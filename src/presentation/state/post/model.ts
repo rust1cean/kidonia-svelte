@@ -8,6 +8,7 @@ export type PostVModel = {
 		name: string;
 		avatarUrl?: string;
 	};
+	gallery: string[];
 	title: string;
 	phone: string;
 	description: string;

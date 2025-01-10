@@ -30,14 +30,14 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       infinite-scroll-svelte:
-        specifier: ^0.1.5
-        version: 0.1.5(svelte@5.16.5)
+        specifier: ^0.3.4
+        version: 0.3.4(svelte@5.16.5)
       inversify:
         specifier: ^6.2.1
         version: 6.2.1(reflect-metadata@0.2.2)
       lucide:
-        specifier: 0.469.0
-        version: 0.469.0
+        specifier: 0.470.0
+        version: 0.470.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -94,8 +94,8 @@ importers:
         specifier: 4.0.4
         version: 4.0.4
       lucide-svelte:
-        specifier: 0.469.0
-        version: 0.469.0(svelte@5.16.5)
+        specifier: 0.470.0
+        version: 0.470.0(svelte@5.16.5)
       mdsvex:
         specifier: 0.12.3
         version: 0.12.3(svelte@5.16.5)
@@ -1814,8 +1814,8 @@ packages:
     resolution: {integrity: sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==}
     engines: {node: '>=8'}
 
-  infinite-scroll-svelte@0.1.5:
-    resolution: {integrity: sha512-54lY/qkTW9YN8RoSs0Mvnu56SC2FaTbKR/aslsY4uONpGz/wiXw7UNW1YSynN9nLxWhc7Z4ncXJlSHopRkO0JQ==}
+  infinite-scroll-svelte@0.3.4:
+    resolution: {integrity: sha512-Gp1eVMRf+wJWGjCzCeTxTDQLLDlDD5kHQm0tnuwPkqXmtbgIrNcezEJoIa+ebMi3Sdb96vcn5TD5pkVUd20ZkQ==}
     peerDependencies:
       svelte: 5.16.5
 
@@ -1994,13 +1994,13 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  lucide-svelte@0.469.0:
-    resolution: {integrity: sha512-PMIJ8jrFqVUsXJz4d1yfAQplaGhNOahwwkzbunha8DhpiD73xqX24n8dE1dPpUk3vcrdWVsHc1y/liHHotOnGQ==}
+  lucide-svelte@0.470.0:
+    resolution: {integrity: sha512-tCFCbVZAGqFCMB23Abx6jgXJACM+sVU9NqmKDnNs1RVhpkh4BvehZUOL+84LFfPzI3NOn7u2gZWkTxVBbDXEWg==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
-  lucide@0.469.0:
-    resolution: {integrity: sha512-ZmMtOekJ6g1UFqTvV9aWbkk+u/QxpfDpgUrbNj8jJEK+CtBdHVQ4akCA0TcTyeOvnL8RWo271UzFTimBRT0gKw==}
+  lucide@0.470.0:
+    resolution: {integrity: sha512-btC7BMJQYzBGVM0hkwh9c0y3ZzAEv+q0nTKvPWIAZwXUEErUIzLTXA5pBe6jFitKVx5QCxaZ/aDjzC6/CgGumQ==}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -4714,9 +4714,8 @@ snapshots:
 
   indent-string@4.0.0: {}
 
-  infinite-scroll-svelte@0.1.5(svelte@5.16.5):
+  infinite-scroll-svelte@0.3.4(svelte@5.16.5):
     dependencies:
-      clsx: 2.1.1
       svelte: 5.16.5
 
   inflight@1.0.6:
@@ -4903,11 +4902,11 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lucide-svelte@0.469.0(svelte@5.16.5):
+  lucide-svelte@0.470.0(svelte@5.16.5):
     dependencies:
       svelte: 5.16.5
 
-  lucide@0.469.0: {}
+  lucide@0.470.0: {}
 
   magic-string@0.30.17:
     dependencies:

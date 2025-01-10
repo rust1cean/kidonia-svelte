@@ -23,7 +23,7 @@
 	let loading = $state(false);
 
 	const store = createReactivePostStore(remaindPostStoreConfig);
-	store.requestPosts();
+	store.nextChunk().catch(console.error);
 </script>
 
 <section class="flex h-[85vh] min-w-full flex-col gap-6 rounded-3xl">
@@ -54,12 +54,15 @@
 			<Loader />
 		{/if}
 		<InfiniteScroll
-			class="grid size-full grid-cols-2 gap-4 overflow-y-auto pr-2 xl:grid-cols-4"
-			onNextChunk={async () => {
-				loading = true;
-				await store.requestPosts();
-			}}
-			onFinally={() => (loading = false)}
+			class="grid size-full grid-cols-2 gap-4 pb-2 overflow-y-auto pr-2 xl:grid-cols-4"
+			onPrev={async () => await store.prevChunk()}
+			onNext={async () => await store.nextChunk()}
+			onLock={() => (loading = true)}
+			onUnlock={() => (loading = false)}
+			thresholdPrev={120}
+			thresholdNext={120}
+			throttleInMs={200}
+			promiseRejectTimeoutInSecs={10}
 		>
 			{#each store.allPosts as postData (postData.id)}
 				<Post {...postData} {editorMode} />

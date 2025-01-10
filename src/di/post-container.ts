@@ -37,7 +37,7 @@ const container = new Container();
 container
 	.bind<PostRepository>(TYPES.PostRepository)
 	.toConstantValue(
-		new MemoryFirstPostRepositoryImpl(new RemotePostRepositoryImpl(), new InMemoryPostRepository())
+		new MemoryFirstPostRepositoryImpl(new InMemoryPostRepository(), new RemotePostRepositoryImpl())
 	);
 
 // Services
