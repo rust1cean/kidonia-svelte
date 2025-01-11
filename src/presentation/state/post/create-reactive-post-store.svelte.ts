@@ -3,7 +3,7 @@ import type { PostVModel } from './model';
 import { postContainer, TYPES } from '@/di/post-container';
 import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
 import { detailedPostDtoToPostVModel } from './mapper';
-import { createReactiveQueue } from '@/presentation/shared/reactive-collections';
+import { createReactiveKeyedQueue, createReactiveQueue } from '@/presentation/shared/reactive-collections';
 import type { Identify } from '@/utils/types';
 import type { FetchRange } from '@/domain/common/repository';
 
@@ -28,7 +28,7 @@ export const defaultFetchOptionsIfNeeded = (fetchOptions: ReactiveStoreConfig) =
 export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
 	const options = defaultFetchOptionsIfNeeded(fetchOptions);
 	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
-	const store = createReactiveQueue<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
+	const store = createReactiveKeyedQueue<PostVModel>("id", REACTIVE_POST_STORE_SIZE_LIMIT);
 
 	const reduceOffset = (by: number = options.limit) => {
 		const newOffset = options.offset - by;
