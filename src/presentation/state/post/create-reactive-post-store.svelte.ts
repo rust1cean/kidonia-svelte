@@ -3,9 +3,10 @@ import type { PostVModel } from './model';
 import { postContainer, TYPES } from '@/di/post-container';
 import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
 import { detailedPostDtoToPostVModel } from './mapper';
-import { createReactiveKeyedQueue, createReactiveQueue } from '@/presentation/shared/reactive-collections';
+import { createReactiveQueue } from '@/presentation/shared/reactive-collections';
 import type { Identify } from '@/utils/types';
 import type { FetchRange } from '@/domain/common/repository';
+import { Pagination } from '@/utils/pagination';
 
 export const REACTIVE_POST_STORE_SIZE_LIMIT: number = 24;
 export const POSTS_FETCH_LIMIT: number = 12;
@@ -19,28 +20,13 @@ export type ReactiveStoreConfig = Identify<
 	>
 >;
 
-export const defaultFetchOptionsIfNeeded = (fetchOptions: ReactiveStoreConfig) => ({
-	...fetchOptions,
-	limit: fetchOptions.limit ?? POSTS_FETCH_LIMIT,
-	offset: fetchOptions.offset ?? 0
-});
-
-export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
-	const options = defaultFetchOptionsIfNeeded(fetchOptions);
+export const createReactivePostStore = (cfg: ReactiveStoreConfig) => {
+	const pagination = new Pagination(cfg.limit ?? POSTS_FETCH_LIMIT);
 	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
-	const store = createReactiveKeyedQueue<PostVModel>("id", REACTIVE_POST_STORE_SIZE_LIMIT);
+	const store = createReactiveQueue<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
 
-	const reduceOffset = (by: number = options.limit) => {
-		const newOffset = options.offset - by;
-		options.offset = newOffset < 0 ? 0 : newOffset;
-	}
-
-	const increaseOffset = (by: number) => {
-		options.offset += by;
-	}
-
-	const request = async (): Promise<PostVModel[]> => {
-		const postEntities = await getPosts.execute(options);
+	const request = async (range: FetchRange, cfg: GetPostsPayload): Promise<PostVModel[]> => {
+		const postEntities = await getPosts.execute(range, cfg);
 		const postModels = postEntities.map(detailedPostDtoToPostVModel);
 
 		return postModels;
@@ -56,17 +42,29 @@ export const createReactivePostStore = (fetchOptions: ReactiveStoreConfig) => {
 		},
 
 		async prevChunk(): Promise<PostVModel[]> {
-			reduceOffset();
-			const postModels = await request();
+			if (pagination.prevOffset <= 0) {
+				return Promise.resolve([]);
+			}
+
+			const postModels = await request(
+				{
+					offset: pagination.prevOffset,
+					limit: pagination.prevLimit
+				},
+				cfg
+			);
+
 			store.pushBack(...postModels);
+			pagination.prev(postModels.length);
 
 			return postModels;
 		},
 
 		async nextChunk(): Promise<PostVModel[]> {
-			const postModels = await request();
+			const postModels = await request(pagination, cfg);
+
 			store.pushFront(...postModels);
-			increaseOffset(postModels.length)
+			pagination.next(postModels.length);
 
 			return postModels;
 		}

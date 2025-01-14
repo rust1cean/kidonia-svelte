@@ -1,11 +1,9 @@
-import type { FetchRange, PostId } from '@/domain/common/repository';
+import type { PostId } from '@/domain/common/repository';
 import { type PostAuthor, type PostCategory } from '@/domain/post';
-import type { Identify } from '@/utils/types';
 
-export type GetAuthorPostsPayload = Identify<FetchRange & { authorId: PostId; sortBy?: SortBy }>;
+export type GetAuthorPostsPayload = { authorId: PostId; sortBy?: SortBy };
 
-export type GetPostsPayload = Identify<
-FetchRange & {
+export type GetPostsPayload = {
 	query?: string;
 	sortBy?: SortBy | null;
 	minAge?: number | null;
@@ -13,8 +11,7 @@ FetchRange & {
 	categories?: PostCategory[] | null;
 	address?: string;
 	zipcode?: number;
-}
->;
+};
 export type SortBy = 'recently' | 'oldest' | 'popularity';
 
 export type CreatePostPayload = {

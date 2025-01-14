@@ -54,14 +54,14 @@
 			<Loader />
 		{/if}
 		<InfiniteScroll
-			class="grid size-full grid-cols-2 gap-4 pb-2 overflow-y-auto pr-2 xl:grid-cols-4"
+			class="grid size-full grid-cols-2 gap-4 overflow-y-auto pb-2 pr-2 xl:grid-cols-4"
 			onPrev={async () => await store.prevChunk()}
 			onNext={async () => await store.nextChunk()}
 			onLock={() => (loading = true)}
 			onUnlock={() => (loading = false)}
-			thresholdPrev={120}
-			thresholdNext={120}
-			throttleInMs={200}
+			thresholdPrevInPx={90}
+			thresholdNextInPx={90}
+			throttleInMs={50}
 			promiseRejectTimeoutInSecs={10}
 		>
 			{#each store.allPosts as postData (postData.id)}

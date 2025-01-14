@@ -30,8 +30,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       infinite-scroll-svelte:
-        specifier: ^0.3.4
-        version: 0.3.4(svelte@5.16.5)
+        specifier: ^0.3.6
+        version: 0.3.6(svelte@5.16.5)
       inversify:
         specifier: ^6.2.1
         version: 6.2.1(reflect-metadata@0.2.2)
@@ -1814,8 +1814,8 @@ packages:
     resolution: {integrity: sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==}
     engines: {node: '>=8'}
 
-  infinite-scroll-svelte@0.3.4:
-    resolution: {integrity: sha512-Gp1eVMRf+wJWGjCzCeTxTDQLLDlDD5kHQm0tnuwPkqXmtbgIrNcezEJoIa+ebMi3Sdb96vcn5TD5pkVUd20ZkQ==}
+  infinite-scroll-svelte@0.3.6:
+    resolution: {integrity: sha512-F1XFG7RhH/SVa/LwU6b6sl/mGZTFF0ZG7jzUR2KNZtD5tfKf6NE+BLdH0r8gRaJQgP8yoDW/qMAXZJfuo/XPOg==}
     peerDependencies:
       svelte: 5.16.5
 
@@ -4714,7 +4714,7 @@ snapshots:
 
   indent-string@4.0.0: {}
 
-  infinite-scroll-svelte@0.3.4(svelte@5.16.5):
+  infinite-scroll-svelte@0.3.6(svelte@5.16.5):
     dependencies:
       svelte: 5.16.5
 

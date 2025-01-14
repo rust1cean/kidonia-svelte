@@ -1,4 +1,4 @@
-import type { PostId } from '@/domain/common/repository';
+import type { FetchRange, PostId } from '@/domain/common/repository';
 import { MAX_AGE, MIN_AGE, type DetailedPostDto } from '@/domain/post';
 import type {
 	CreatePostPayload,
@@ -8,7 +8,7 @@ import type {
 	SortBy
 } from './payload';
 import type { OrderBy, PostRepository } from './repository';
-import type { PostService, PostStatus } from './service';
+import type { PostService, PostState } from './service';
 
 const determineSortBy = (sort?: SortBy | null): OrderBy => {
 	if (sort === 'oldest')
@@ -21,40 +21,42 @@ const determineSortBy = (sort?: SortBy | null): OrderBy => {
 		ascending: false
 	};
 };
-const isDraft = (status: PostStatus) => status === 'draft';
+const isDraft = (state: PostState) => state === 'draft';
 
 export class PostServiceImpl implements PostService {
 	constructor(private repository: PostRepository) {}
 
 	public async getAuthorPosts(
+		range: FetchRange,
 		payload: GetAuthorPostsPayload,
-		status: PostStatus
+		state: PostState
 	): Promise<DetailedPostDto[]> {
 		return this.repository.fetchPosts({
+			...range,
 			...payload,
 			orderBy: payload.sortBy ? determineSortBy(payload.sortBy) : null,
-			draft: isDraft(status)
+			draft: isDraft(state)
 		});
 	}
 
-	public async getPosts({
-		offset,
-		limit,
-		minAge = MIN_AGE,
-		maxAge = MAX_AGE,
-		categories = [],
-		address,
-		zipcode,
-		sortBy,
-		query = ''
-	}: GetPostsPayload): Promise<DetailedPostDto[]> {
+	public async getPosts(
+		range: FetchRange,
+		{
+			minAge = MIN_AGE,
+			maxAge = MAX_AGE,
+			categories = [],
+			address,
+			zipcode,
+			sortBy,
+			query = ''
+		}: GetPostsPayload
+	): Promise<DetailedPostDto[]> {
 		return this.repository.fetchPosts({
+			...range,
 			title: query,
 			description: query,
 			draft: false,
 			orderBy: sortBy ? determineSortBy(sortBy) : null,
-			offset,
-			limit,
 			minAge,
 			maxAge,
 			categories,
@@ -77,10 +79,10 @@ export class PostServiceImpl implements PostService {
 			price = null,
 			category = null
 		}: CreatePostPayload,
-		status: PostStatus
+		state: PostState
 	): Promise<void> {
 		return this.repository.createPost({
-			draft: isDraft(status),
+			draft: isDraft(state),
 			title,
 			author,
 			zipcode,
@@ -95,14 +97,10 @@ export class PostServiceImpl implements PostService {
 		});
 	}
 
-	public async editPost(
-		postId: PostId,
-		request: EditPostPayload,
-		status: PostStatus
-	): Promise<void> {
+	public async editPost(postId: PostId, request: EditPostPayload, state: PostState): Promise<void> {
 		return this.repository.updatePost(postId, {
 			...request,
-			draft: isDraft(status)
+			draft: isDraft(state)
 		});
 	}
 
