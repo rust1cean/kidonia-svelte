@@ -46,13 +46,7 @@ export const createReactivePostStore = (cfg: ReactiveStoreConfig) => {
 				return Promise.resolve([]);
 			}
 
-			const postModels = await request(
-				{
-					offset: pagination.prevOffset,
-					limit: pagination.prevLimit
-				},
-				cfg
-			);
+			const postModels = await request(pagination.prevPagination, cfg);
 
 			store.pushBack(...postModels);
 			pagination.prev(postModels.length);

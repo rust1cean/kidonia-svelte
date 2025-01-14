@@ -4,20 +4,24 @@ export class Pagination {
 		public offset: number = 0
 	) {}
 
-	get prevOffset(): number {
+	public get prevPagination(): Pagination {
+		return new Pagination(this.prevLimit, this.prevOffset)
+	}
+
+	public get prevOffset(): number {
 		return this.offset - (this.limit - 1);
 	}
 
-	get prevLimit(): number {
+	public get prevLimit(): number {
 		const { prevOffset, limit } = this;
 		return prevOffset < limit ? prevOffset + 1 : limit;
 	}
 
-	prev(by: number) {
+	public prev(by: number) {
 		this.offset -= by;
 	}
 
-	next(by: number) {
+	public next(by: number) {
 		this.offset += by;
 	}
 }
