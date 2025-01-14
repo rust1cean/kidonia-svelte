@@ -1,11 +1,11 @@
 import type { Merge } from 'type-fest';
 import type { PostVModel } from './model';
-import { postContainer, TYPES } from '@/di/post-container';
+import type { FetchRange } from '@/domain/common/repository';
 import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
+import type { Identify } from '@/utils/types';
+import { postContainer, TYPES } from '@/di/post-container';
 import { detailedPostDtoToPostVModel } from './mapper';
 import { createReactiveQueue } from '@/presentation/shared/reactive-collections';
-import type { Identify } from '@/utils/types';
-import type { FetchRange } from '@/domain/common/repository';
 import { Pagination } from '@/utils/pagination';
 
 export const REACTIVE_POST_STORE_SIZE_LIMIT: number = 24;
