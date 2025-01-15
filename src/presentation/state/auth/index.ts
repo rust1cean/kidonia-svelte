@@ -1,2 +1,2 @@
 export * from './form-schema';
-export * from './store';
+export * from './actions';
