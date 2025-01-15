@@ -4,16 +4,15 @@ import snakecaseKeys from 'snakecase-keys';
 import type {
 	CreatePostData,
 	FetchPostsOptions,
-	PostRepository,
 	UpdatePostData
 } from '@/application/post';
-import { db } from '../db';
 import type { PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
-import { POSTS_PER_REQUEST_LIMIT } from '.';
+import { db } from '@/data/db';
+import { POSTS_PER_REQUEST_LIMIT } from '../post-constants';
 
 @injectable()
-export class RemotePostRepositoryImpl implements PostRepository {
+export class RemotePostDatasource {
 	constructor() {}
 
 	public async fetchPosts({

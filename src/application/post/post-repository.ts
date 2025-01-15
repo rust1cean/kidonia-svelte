@@ -1,7 +1,7 @@
 import type { FetchRange, PostId } from '@/domain/common';
 import type { PostAuthor, DetailedPostDto } from '@/domain/post';
 import type { PostCategory } from '@/domain/post/post-constants';
-import type { Tables } from '@/infrastructure/db';
+import type { Tables } from '@/data/db';
 import type { Identify } from '@/utils/types';
 
 export interface PostRepository {

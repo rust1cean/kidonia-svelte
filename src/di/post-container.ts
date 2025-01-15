@@ -1,9 +1,5 @@
 import { Container } from 'inversify';
-import {
-	InMemoryPostRepository,
-	MemoryFirstPostRepositoryImpl,
-	RemotePostRepositoryImpl
-} from '@/infrastructure/post';
+import { PostRepositoryImpl } from '@/data/post';
 import {
 	CreateDraftUseCase,
 	CreatePostUseCase,
@@ -34,11 +30,7 @@ export const TYPES = {
 const container = new Container();
 
 // Repositories
-container
-	.bind<PostRepository>(TYPES.PostRepository)
-	.toConstantValue(
-		new MemoryFirstPostRepositoryImpl(new InMemoryPostRepository(), new RemotePostRepositoryImpl())
-	);
+container.bind<PostRepository>(TYPES.PostRepository).to(PostRepositoryImpl);
 
 // Services
 container

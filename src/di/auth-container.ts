@@ -5,7 +5,7 @@ import {
 	SignUpUseCase,
 	type AuthRepository
 } from '@/application/auth';
-import { AuthRepositoryImpl } from '@/infrastructure/auth';
+import { AuthRepositoryImpl } from '@/data/auth';
 import { Container } from 'inversify';
 
 export const TYPES = {
