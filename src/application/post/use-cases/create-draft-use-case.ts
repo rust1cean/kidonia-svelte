@@ -1,5 +1,5 @@
 import type { CreatePostPayload } from '../payload';
-import type { PostService } from '../service';
+import type { PostService } from '../post-service';
 
 export class CreateDraftUseCase {
 	constructor(private service: PostService) {}

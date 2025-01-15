@@ -1,6 +1,6 @@
 import type { PostId } from '@/domain/common/repository';
 import type { EditPostPayload } from '../payload';
-import type { PostService } from '../service';
+import type { PostService } from '../post-service';
 
 export class EditPostUseCase {
 	constructor(private service: PostService) {}

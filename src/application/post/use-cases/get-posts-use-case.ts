@@ -1,6 +1,6 @@
 import type { DetailedPostDto } from '@/domain/post';
 import type { GetPostsPayload } from '../payload';
-import type { PostService } from '../service';
+import type { PostService } from '../post-service';
 import type { FetchRange } from '@/domain/common/repository';
 
 export class GetPostsUseCase {

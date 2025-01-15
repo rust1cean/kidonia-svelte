@@ -7,8 +7,8 @@ import type {
 	EditPostPayload,
 	SortBy
 } from './payload';
-import type { OrderBy, PostRepository } from './repository';
-import type { PostService, PostState } from './service';
+import type { OrderBy, PostRepository } from './post-repository';
+import type { PostService, PostState } from './post-service';
 
 const determineSortBy = (sort?: SortBy | null): OrderBy => {
 	if (sort === 'oldest')

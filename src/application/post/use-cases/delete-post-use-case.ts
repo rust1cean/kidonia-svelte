@@ -1,5 +1,5 @@
 import type { PostId } from '@/domain/common/repository';
-import type { PostService } from '../service';
+import type { PostService } from '../post-service';
 
 export class DeletePostUseCase {
   constructor(private service: PostService) {}
