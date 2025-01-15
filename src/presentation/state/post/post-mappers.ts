@@ -1,5 +1,5 @@
 import type { DetailedPostDto } from "@/domain/post";
-import type { PostVModel } from "./model";
+import type { PostVModel } from "./post-model";
 
 export const detailedPostDtoToPostVModel = (dto: DetailedPostDto): PostVModel => ({
   ...dto,

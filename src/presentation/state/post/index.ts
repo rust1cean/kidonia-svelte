@@ -1,4 +1,4 @@
-export * from './model';
-export * from './form-schema';
+export * from './post-model';
+export * from './post-form-schema';
 export * from "./create-reactive-post-store.svelte"
-export * from "./mapper"
+export * from "./post-mappers"
