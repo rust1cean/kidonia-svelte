@@ -1,6 +1,6 @@
-import type { FetchRange, PostId } from '@/domain/common/repository';
+import type { FetchRange, PostId } from '@/domain/common';
 import type { PostAuthor, DetailedPostDto } from '@/domain/post';
-import type { PostCategory } from '@/domain/post/constants';
+import type { PostCategory } from '@/domain/post/post-constants';
 import type { Tables } from '@/infrastructure/db';
 import type { Identify } from '@/utils/types';
 

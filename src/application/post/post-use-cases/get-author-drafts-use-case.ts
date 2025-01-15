@@ -1,5 +1,5 @@
 import type { DetailedPostDto } from '@/domain/post';
-import type { GetAuthorPostsPayload } from '../payload';
+import type { GetAuthorPostsPayload } from '../post-payload';
 import type { PostService } from '../post-service';
 
 export class GetAuthorDraftsUseCase {

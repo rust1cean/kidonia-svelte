@@ -1,4 +1,4 @@
-import type { PostId } from '@/domain/common/repository';
+import type { PostId } from '@/domain/common';
 import type { PostCategory } from '@/domain/post';
 
 export type PostVModel = {

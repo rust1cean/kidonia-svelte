@@ -1,7 +1,7 @@
 import type { DetailedPostDto } from '@/domain/post';
-import type { GetPostsPayload } from '../payload';
+import type { GetPostsPayload } from '../post-payload';
 import type { PostService } from '../post-service';
-import type { FetchRange } from '@/domain/common/repository';
+import type { FetchRange } from '@/domain/common';
 
 export class GetPostsUseCase {
 	constructor(private service: PostService) {}

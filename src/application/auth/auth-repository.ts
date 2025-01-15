@@ -1,4 +1,4 @@
-import type { LogInPayload, SignUpPayload } from './payload';
+import type { LogInPayload, SignUpPayload } from './auth-payload';
 
 export interface AuthRepository {
 	logIn(payload: LogInPayload): Promise<any>;

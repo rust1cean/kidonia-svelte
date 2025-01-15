@@ -1,10 +1,10 @@
-import type { CreatePostPayload } from '../payload';
+import type { CreatePostPayload } from '../post-payload';
 import type { PostService } from '../post-service';
 
-export class CreateDraftUseCase {
+export class CreatePostUseCase {
 	constructor(private service: PostService) {}
 
 	public async execute(payload: CreatePostPayload): Promise<void> {
-		return this.service.createPost(payload, 'draft');
+		return this.service.createPost(payload, 'published');
 	}
 }

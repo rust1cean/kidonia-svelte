@@ -5,7 +5,7 @@ import type {
 	PostRepository,
 	UpdatePostData
 } from '@/application/post';
-import type { PostId } from '@/domain/common/repository';
+import type { PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
 import { POSTS_PER_REQUEST_LIMIT } from '.';
 

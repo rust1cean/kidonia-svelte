@@ -1,4 +1,4 @@
-import type { PostId } from '@/domain/common/repository';
+import type { PostId } from '@/domain/common';
 import { type PostAuthor, type PostCategory } from '@/domain/post';
 
 export type GetAuthorPostsPayload = { authorId: PostId; sortBy?: SortBy };

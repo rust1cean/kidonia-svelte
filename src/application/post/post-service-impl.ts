@@ -1,4 +1,4 @@
-import type { FetchRange, PostId } from '@/domain/common/repository';
+import type { FetchRange, PostId } from '@/domain/common';
 import { MAX_AGE, MIN_AGE, type DetailedPostDto } from '@/domain/post';
 import type {
 	CreatePostPayload,
@@ -6,7 +6,7 @@ import type {
 	GetPostsPayload,
 	EditPostPayload,
 	SortBy
-} from './payload';
+} from './post-payload';
 import type { OrderBy, PostRepository } from './post-repository';
 import type { PostService, PostState } from './post-service';
 

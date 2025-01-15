@@ -1,6 +1,6 @@
 import type { Merge } from 'type-fest';
-import type { AuthorId, PostId } from '../common/repository';
-import type { PostCategory } from './constants';
+import type { AuthorId, PostId } from '../common';
+import type { PostCategory } from './post-constants';
 
 export type PostEntity = {
 	id: PostId;

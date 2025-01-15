@@ -1,5 +1,5 @@
 import type { AuthService } from '../auth-service';
-import type { SignUpPayload } from '../payload';
+import type { SignUpPayload } from '../auth-payload';
 
 export class SignUpUseCase {
 	constructor(private service: AuthService) {}

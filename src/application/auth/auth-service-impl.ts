@@ -1,6 +1,6 @@
 import type { AuthRepository } from './auth-repository';
 import type { AuthService } from './auth-service';
-import type { LogInPayload, SignUpPayload } from './payload';
+import type { LogInPayload, SignUpPayload } from './auth-payload';
 
 export class AuthServiceImpl implements AuthService {
 	constructor(private repository: AuthRepository) {}

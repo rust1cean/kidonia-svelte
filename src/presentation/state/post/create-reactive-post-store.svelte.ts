@@ -1,6 +1,6 @@
 import type { Merge } from 'type-fest';
 import type { PostVModel } from './post-model';
-import type { FetchRange } from '@/domain/common/repository';
+import type { FetchRange } from '@/domain/common';
 import type { GetPostsPayload, GetPostsUseCase, SortBy } from '@/application/post';
 import type { Identify } from '@/utils/types';
 import { postContainer, TYPES } from '@/di/post-container';

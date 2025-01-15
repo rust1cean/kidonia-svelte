@@ -11,7 +11,7 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { logIn, loginFormSchema, signupFormSchema, signUp } from '@/presentation/state/account';
+	import { logIn, loginFormSchema, signupFormSchema, signUp } from '@/presentation/state/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
 

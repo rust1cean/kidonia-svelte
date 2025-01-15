@@ -8,7 +8,7 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as DropdownMenu from '../components/ui/dropdown-menu';
 	import { Button } from '../components/ui/button';
-	import { logOut } from '../state/account';
+	import { logOut } from '../state/auth';
 
 	const {
 		user = {

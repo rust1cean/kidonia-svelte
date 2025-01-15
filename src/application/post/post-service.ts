@@ -1,11 +1,11 @@
-import type { FetchRange, PostId } from '@/domain/common/repository';
+import type { FetchRange, PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
 import type {
 	CreatePostPayload,
 	GetAuthorPostsPayload,
 	EditPostPayload,
 	GetPostsPayload
-} from './payload';
+} from './post-payload';
 
 export type PostState = 'published' | 'draft';
 
