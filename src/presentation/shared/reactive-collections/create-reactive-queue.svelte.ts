@@ -1,3 +1,5 @@
+import { Segment } from '@/utils/segment';
+
 export const createReactiveQueue = <T>(size: number) => {
 	const queue = $state<T[]>([]);
 
@@ -10,36 +12,36 @@ export const createReactiveQueue = <T>(size: number) => {
 			return queue.length;
 		},
 
-		pushBack(...items: T[]) {
+		pushBack(...items: T[]): Segment | null {
 			const iLen = items.length;
 			const qLen = queue.length;
 			const diff = Math.abs(size - qLen - iLen);
 
-			let range;
+			let segment: Segment | null = null;
 
 			if (diff > 0 && diff !== qLen) {
-				range = { from: qLen - diff, to: qLen };
-				queue.splice(range.from, range.to);
+				segment = new Segment(qLen - diff, qLen);
+				queue.splice(segment.start, segment.end);
 			}
 			queue.unshift(...items);
 
-			return range;
+			return segment;
 		},
 
-		pushFront(...items: T[]) {
+		pushFront(...items: T[]): Segment | null {
 			const iLen = items.length;
 			const qLen = queue.length;
 			const diff = Math.abs(size - qLen - iLen);
 
-			let range;
+			let segment: Segment | null = null;
 
 			if (diff > 0 && diff !== qLen) {
-				range = { from: 0, to: diff };
-				queue.splice(range.from, range.to);
+				segment = new Segment(0, diff);
+				queue.splice(segment.start, segment.end);
 			}
 			queue.push(...items);
 
-			return range;
+			return segment;
 		}
 	};
 };

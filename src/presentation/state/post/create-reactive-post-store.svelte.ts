@@ -21,7 +21,9 @@ export type ReactiveStoreConfig = Identify<
 >;
 
 export const createReactivePostStore = (cfg: ReactiveStoreConfig) => {
-	const pagination = new Pagination(cfg.limit ?? POSTS_FETCH_LIMIT);
+	const limit = cfg.limit ?? POSTS_FETCH_LIMIT;
+	const pagination = new Pagination(limit);
+
 	const getPosts: GetPostsUseCase = postContainer.get<GetPostsUseCase>(TYPES.GetPostsUseCase);
 	const store = createReactiveQueue<PostVModel>(REACTIVE_POST_STORE_SIZE_LIMIT);
 
@@ -42,20 +44,22 @@ export const createReactivePostStore = (cfg: ReactiveStoreConfig) => {
 		},
 
 		async prevChunk(): Promise<PostVModel[]> {
-			if (pagination.prevOffset <= 0) {
+			const prevPage = pagination.prevPage(store.len);
+
+			if (prevPage.limit <= 0) {
 				return Promise.resolve([]);
 			}
 
-			const postModels = await request(pagination.prevPagination, cfg);
+			const postModels = await request(prevPage, cfg);
 
 			store.pushBack(...postModels);
-			pagination.prev(postModels.length);
+			pagination.back(postModels.length);
 
 			return postModels;
 		},
 
 		async nextChunk(): Promise<PostVModel[]> {
-			const postModels = await request(pagination, cfg);
+			const postModels = await request(pagination.fromCurrPage, cfg);
 
 			store.pushFront(...postModels);
 			pagination.next(postModels.length);
