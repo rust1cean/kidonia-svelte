@@ -50,27 +50,27 @@ container
 // Use-cases
 container
 	.bind<CreateDraftUseCase>(TYPES.CreateDraftUseCase)
-	.toConstantValue(new CreateDraftUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new CreateDraftUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<CreatePostUseCase>(TYPES.CreatePostUseCase)
-	.toConstantValue(new CreatePostUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new CreatePostUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<DeletePostUseCase>(TYPES.DeletePostUseCase)
-	.toConstantValue(new DeletePostUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new DeletePostUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<EditDraftUseCase>(TYPES.EditDraftUseCase)
-	.toConstantValue(new EditDraftUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new EditDraftUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<EditPostUseCase>(TYPES.EditPostUseCase)
-	.toConstantValue(new EditPostUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new EditPostUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<GetAuthorDraftsUseCase>(TYPES.GetAuthorDraftsUseCase)
-	.toConstantValue(new GetAuthorDraftsUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new GetAuthorDraftsUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<GetAuthorPostsUseCase>(TYPES.GetAuthorPostsUseCase)
-	.toConstantValue(new GetAuthorPostsUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new GetAuthorPostsUseCase(container.get<PostService>(TYPES.PostService)));
 container
 	.bind<GetPostsUseCase>(TYPES.GetPostsUseCase)
-	.toConstantValue(new GetPostsUseCase(container.get<PostService>(TYPES.PostService)));
+	.toDynamicValue(() => new GetPostsUseCase(container.get<PostService>(TYPES.PostService)));
 
 export { container as postContainer };

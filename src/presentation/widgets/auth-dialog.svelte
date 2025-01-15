@@ -1,4 +1,4 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import * as m from '$lib/app/paraglide/messages';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
@@ -11,7 +11,7 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { signIn, loginFormSchema, signupFormSchema, signUp } from '$lib/state/auth';
+	import { logIn, loginFormSchema, signupFormSchema, signUp } from '$lib/state/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
 
@@ -20,7 +20,7 @@
 		resetForm: true,
 		validators: valibot(loginFormSchema),
 		onSubmit({ formData }) {
-			signIn({ formData, form: loginForm })
+			logIn({ formData, form: loginForm })
 				.then((_) => toast.message(m.login_successful()))
 				.catch((error) => toast.error(error.toString()));
 		}
@@ -112,4 +112,4 @@
 			{tab === 'signup' ? m.signup() : m.login()}
 		</Button>
 	</Dialog.Footer>
-{/snippet} -->
+{/snippet}

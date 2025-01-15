@@ -8,6 +8,7 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as DropdownMenu from '../components/ui/dropdown-menu';
 	import { Button } from '../components/ui/button';
+	import { logOut } from '../state/auth';
 
 	const {
 		user = {
@@ -91,7 +92,7 @@
 
 			<DropdownMenu.Separator />
 
-			<DropdownMenu.Item>
+			<DropdownMenu.Item onclick={logOut}>
 				<LogOut size="16" />
 				<span>{m.logout()}</span>
 			</DropdownMenu.Item>

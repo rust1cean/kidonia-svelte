@@ -5,6 +5,6 @@ export class LogInUseCase {
 	constructor(private service: AuthService) {}
 
 	public async execute(payload: LogInPayload): Promise<void> {
-		this.service.logIn(payload);
+		return this.service.logIn(payload);
 	}
 }

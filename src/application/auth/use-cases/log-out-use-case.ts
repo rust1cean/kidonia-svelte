@@ -4,6 +4,6 @@ export class LogOutUseCase {
 	constructor(private service: AuthService) {}
 
 	public async execute(): Promise<void> {
-		this.service.logOut();
+		return this.service.logOut();
 	}
 }
