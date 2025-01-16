@@ -8,7 +8,8 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as DropdownMenu from '../components/ui/dropdown-menu';
 	import { Button } from '../components/ui/button';
-	import { logOut } from '../state/auth';
+	import { authStore } from '../state/auth';
+	import { toast } from 'svelte-sonner';
 
 	const {
 		user = {
@@ -26,6 +27,11 @@
 	} = $props();
 
 	let menuOpen = $state(false);
+
+	const logOut = async () => {
+		await authStore.logOut();
+		toast.message(m.logout_successful());
+	};
 </script>
 
 <DropdownMenu.Root>
@@ -51,12 +57,14 @@
 				</a>
 			{/if}
 
-			<DropdownMenu.Separator />
+			{#if authStore.isNotLogged}
+				<DropdownMenu.Separator />
 
-			<DropdownMenu.Item onclick={onShowAuthDialog}>
-				<User />
-				<span>{m.login()}</span>
-			</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={onShowAuthDialog}>
+					<User />
+					<span>{m.login()}</span>
+				</DropdownMenu.Item>
+			{/if}
 
 			<DropdownMenu.Separator />
 
@@ -90,12 +98,14 @@
 				</DropdownMenu.Item>
 			</a>
 
-			<DropdownMenu.Separator />
+			{#if authStore.isLogged}
+				<DropdownMenu.Separator />
 
-			<DropdownMenu.Item onclick={logOut}>
-				<LogOut size="16" />
-				<span>{m.logout()}</span>
-			</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={logOut}>
+					<LogOut size="16" />
+					<span>{m.logout()}</span>
+				</DropdownMenu.Item>
+			{/if}
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

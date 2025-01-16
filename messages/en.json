@@ -11,6 +11,7 @@
 	"dark": "Dark",
 	"system": "System",
 	"login_successful": "Authorization completed",
+	"logout_successful": "Logout was successful",
 	"signup_successful": "Registration was successful",
 	"email": "Email",
 	"password": "Password",

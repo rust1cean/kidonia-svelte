@@ -1,9 +1,9 @@
 <script lang="ts">
-	import * as m from '$lib/app/paraglide/messages';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 
+	import * as m from '$lib/app/paraglide/messages';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
@@ -11,18 +11,24 @@
 	import AppleIcon from '$lib/components/icons/AppleIcon.svelte';
 	import UploadAvatar from '$lib/components/upload-avatar.svelte';
 	import TextField from '$lib/components/text-field.svelte';
-	import { logIn, loginFormSchema, signupFormSchema, signUp } from '@/presentation/state/auth';
+	import { authStore, loginFormSchema, signupFormSchema } from '@/presentation/state/auth';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
+
+	const closeDialog = () => (open = false);
 
 	const loginForm = superForm(defaults(valibot(loginFormSchema)), {
 		SPA: true,
 		resetForm: true,
 		validators: valibot(loginFormSchema),
-		onSubmit({ formData }) {
-			logIn({ formData, form: loginForm })
-				.then((_) => toast.message(m.login_successful()))
-				.catch((error) => toast.error(error.toString()));
+		async onSubmit({ formData }) {
+			try {
+				await authStore.logIn({ formData, form: loginForm });
+				toast.message(m.login_successful());
+				closeDialog();
+			} catch (error: any) {
+				toast.error(error.toString());
+			}
 		}
 	});
 
@@ -30,10 +36,14 @@
 		SPA: true,
 		resetForm: true,
 		validators: valibot(signupFormSchema),
-		onSubmit({ formData }) {
-			signUp({ formData, form: loginForm })
-				.then((_) => toast.message(m.signup_successful()))
-				.catch((error) => toast.error(error.toString()));
+		async onSubmit({ formData }) {
+			try {
+				await authStore.signUp({ formData, form: loginForm });
+				toast.message(m.signup_successful());
+				closeDialog();
+			} catch (error: any) {
+				toast.error(error.toString());
+			}
 		}
 	});
 

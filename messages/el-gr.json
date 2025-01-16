@@ -11,6 +11,7 @@
 	"dark": "Σκοτάδι",
 	"system": "Σύστημα",
 	"login_successful": "Η εξουσιοδότηση ολοκληρώθηκε",
+	"logout_successful": "Η αποσύνδεση ήταν επιτυχής",
 	"signup_successful": "Η εγγραφή ήταν επιτυχής",
 	"email": "Ταχυδρομείο",
 	"password": "Σύνθημα",

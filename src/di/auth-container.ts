@@ -3,6 +3,7 @@ import {
 	LogInUseCase,
 	LogOutUseCase,
 	SignUpUseCase,
+	GetSessionUseCase,
 	type AuthRepository
 } from '@/application/auth';
 import {
@@ -19,6 +20,7 @@ export const TYPES = {
 	AuthDatasource: Symbol.for('AuthDatasource'),
 	AuthRepository: Symbol.for('AuthRepository'),
 	AuthService: Symbol.for('AuthService'),
+	GetSessionUseCase: Symbol.for('GetSessionUseCase'),
 	LogInUseCase: Symbol.for('LogInUseCase'),
 	LogOutUseCase: Symbol.for('LogOutUseCase'),
 	SignUpUseCase: Symbol.for('SignUpUseCase')
@@ -44,6 +46,9 @@ container
 	.toDynamicValue(() => new AuthServiceImpl(container.get<AuthRepository>(TYPES.AuthRepository)));
 
 // Use-cases
+container
+	.bind<GetSessionUseCase>(TYPES.GetSessionUseCase)
+	.toDynamicValue(() => new GetSessionUseCase(container.get<AuthServiceImpl>(TYPES.AuthService)));
 container
 	.bind<LogInUseCase>(TYPES.LogInUseCase)
 	.toDynamicValue(() => new LogInUseCase(container.get<AuthServiceImpl>(TYPES.AuthService)));
