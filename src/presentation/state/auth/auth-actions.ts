@@ -21,12 +21,10 @@ export const logIn = async ({ formData, form }: FormInfo): Promise<void> => {
 
 	const logInUseCase = authContainer.get<LogInUseCase>(TYPES.LogInUseCase);
 
-	await logInUseCase
-		.execute({
-			email: formData.get('email') as string,
-			password: formData.get('password') as string
-		})
-		.then(console.log);
+	await logInUseCase.execute({
+		email: formData.get('email') as string,
+		password: formData.get('password') as string
+	});
 };
 
 export const logOut = async (): Promise<void> => {

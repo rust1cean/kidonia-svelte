@@ -30,8 +30,6 @@
 			<Form.Label>{label}</Form.Label>
 			<Select.Root type="single" bind:value={$value} name={props.name}>
 				<Select.Trigger {...props}>
-					<!-- {console.log($value)}
-					{label} -->
 					{(m as any)[$value]?.() || label}
 				</Select.Trigger>
 				<Select.Content>

@@ -1,6 +1,6 @@
 import type { UserId } from '@/domain/common';
 import type { ProfileEntity } from '@/domain/profile';
-import type { ProfileDatasource } from './profile-datasource';
+import type { ProfileDatasource } from './interfaces';
 import type { CreateProfilePayload, UpdateProfilePayload } from '@/application/profile';
 
 type Profiles = { [key: UserId]: ProfileEntity };

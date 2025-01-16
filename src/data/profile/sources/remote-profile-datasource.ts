@@ -2,7 +2,7 @@ import camelize from 'camelize-ts';
 import snakecaseKeys from 'snakecase-keys';
 import type { UserId } from '@/domain/common';
 import type { ProfileEntity } from '@/domain/profile';
-import type { ProfileDatasource } from './profile-datasource';
+import type { ProfileDatasource } from './interfaces';
 import { db } from '@/data/db';
 import type { CreateProfilePayload, UpdateProfilePayload } from '@/application/profile';
 

@@ -5,10 +5,18 @@ import {
 	SignUpUseCase,
 	type AuthRepository
 } from '@/application/auth';
-import { AuthRepositoryImpl } from '@/data/auth';
+import {
+	AuthRepositoryImpl,
+	LocalAuthDatasource,
+	RemoteAuthDatasource,
+	type AuthDatasource,
+	type SessionDatasource
+} from '@/data/auth';
 import { Container } from 'inversify';
 
 export const TYPES = {
+	SessionDatasource: Symbol.for('SessionDatasource'),
+	AuthDatasource: Symbol.for('AuthDatasource'),
 	AuthRepository: Symbol.for('AuthRepository'),
 	AuthService: Symbol.for('AuthService'),
 	LogInUseCase: Symbol.for('LogInUseCase'),
@@ -18,8 +26,17 @@ export const TYPES = {
 
 const container = new Container();
 
+// Datasources
+container.bind<SessionDatasource>(TYPES.SessionDatasource).to(LocalAuthDatasource);
+container.bind<AuthDatasource>(TYPES.AuthDatasource).to(RemoteAuthDatasource);
+
 // Repositories
-container.bind<AuthRepository>(TYPES.AuthRepository).to(AuthRepositoryImpl);
+container.bind<AuthRepository>(TYPES.AuthRepository).toDynamicValue(() => {
+	const local = container.get<SessionDatasource>(TYPES.SessionDatasource);
+	const remote = container.get<AuthDatasource>(TYPES.AuthDatasource);
+
+	return new AuthRepositoryImpl(local, remote);
+});
 
 // Services
 container
