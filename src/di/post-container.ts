@@ -1,5 +1,5 @@
 import { Container } from 'inversify';
-import { PostRepositoryImpl } from '@/data/post';
+import { PostRepositoryImpl, RemotePostDatasource, type PostDatasource } from '@/data/post';
 import {
 	CreateDraftUseCase,
 	CreatePostUseCase,
@@ -13,8 +13,10 @@ import {
 	type PostService,
 	PostServiceImpl
 } from '@/application/post';
+import { LocalPostDatasource } from '@/data/post/sources/local-post-datasource';
 
 export const TYPES = {
+	PostDatasource: Symbol.for('PostDatasource'),
 	PostRepository: Symbol.for('PostRepository'),
 	PostService: Symbol.for('PostService'),
 	CreateDraftUseCase: Symbol.for('CreateDraftUseCase'),
@@ -29,14 +31,23 @@ export const TYPES = {
 
 const container = new Container();
 
+// Datasources
+container.bind<PostDatasource>(TYPES.PostDatasource).to(LocalPostDatasource).whenTargetNamed("local")
+container.bind<PostDatasource>(TYPES.PostDatasource).to(RemotePostDatasource).whenTargetNamed("remote")
+
 // Repositories
-container.bind<PostRepository>(TYPES.PostRepository).to(PostRepositoryImpl);
+container.bind<PostRepository>(TYPES.PostRepository).toDynamicValue(() => {
+	const local = container.getNamed<PostDatasource>(TYPES.PostDatasource, 'local')
+	const remote = container.getNamed<PostDatasource>(TYPES.PostDatasource, 'remote')
+
+	return new PostRepositoryImpl(local, remote)
+});
 
 // Services
 container
 	.bind<PostService>(TYPES.PostService)
 	.toConstantValue(
-		new PostServiceImpl(container.getNamed<PostRepository>(TYPES.PostRepository, 'memory-first'))
+		new PostServiceImpl(container.get<PostRepository>(TYPES.PostRepository))
 	);
 
 // Use-cases

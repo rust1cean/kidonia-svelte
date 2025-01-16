@@ -6,13 +6,12 @@ import type {
 } from '@/application/post';
 import type { PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
-import { LocalPostDatasource } from './sources/local-post-datasource';
-import { RemotePostDatasource } from './sources/remote-post-datasource';
+import type { PostDatasource } from './sources/post-datasource';
 
 export class PostRepositoryImpl implements PostRepository {
 	constructor(
-		private local = new LocalPostDatasource(),
-		private remote = new RemotePostDatasource()
+		private local: PostDatasource,
+		private remote: PostDatasource
 	) {}
 
 	public async fetchPosts(options: FetchPostsOptions): Promise<DetailedPostDto[]> {
@@ -20,7 +19,7 @@ export class PostRepositoryImpl implements PostRepository {
 
 		if (posts.length === 0) {
 			posts = await this.remote.fetchPosts(options);
-			this.local.insertPosts(...posts)
+			this.local.createManyPosts(...posts)
 		}
 
 		return posts;

@@ -1,2 +1,3 @@
-export * from "./local-post-datasource"
+export * from "./post-datasource"
+export * from "./remote-post-datasource"
 export * from "./remote-post-datasource"
