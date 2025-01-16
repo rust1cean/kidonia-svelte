@@ -5,6 +5,6 @@ export type ProfileEntity = {
 	id: ProfileId;
 	name: string;
 	role: Role;
-	avatarUrl?: string;
+	avatarUrl?: string | null;
 	createdAt: string;
 };
