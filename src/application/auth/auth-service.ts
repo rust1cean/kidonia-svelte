@@ -1,7 +1,8 @@
 import type { LogInPayload, SignUpPayload } from './auth-payload';
 
 export interface AuthService {
-  logIn(payload: LogInPayload): Promise<any>;
-  logOut(): Promise<void>;
-  signUp(payload: SignUpPayload): Promise<any>;
+	getSession(): Promise<any>;
+	logIn(payload: LogInPayload): Promise<void>;
+	logOut(): Promise<void>;
+	signUp(payload: SignUpPayload): Promise<void>;
 }

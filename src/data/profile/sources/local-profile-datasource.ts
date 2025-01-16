@@ -1,9 +1,9 @@
-import type { ProfileId } from '@/domain/common';
+import type { UserId } from '@/domain/common';
 import type { ProfileEntity } from '@/domain/profile';
 import type { ProfileDatasource } from './profile-datasource';
 import type { CreateProfilePayload, UpdateProfilePayload } from '@/application/profile';
 
-type Profiles = { [key: ProfileId]: ProfileEntity };
+type Profiles = { [key: UserId]: ProfileEntity };
 
 const addCreatedAt = (profile: CreateProfilePayload | UpdateProfilePayload) => ({
 	...profile,
@@ -13,7 +13,7 @@ const addCreatedAt = (profile: CreateProfilePayload | UpdateProfilePayload) => (
 export class LocalProfileDatasource implements ProfileDatasource {
 	constructor(private profiles: Profiles) {}
 
-	public async get(id: ProfileId): Promise<ProfileEntity | null> {
+	public async get(id: UserId): Promise<ProfileEntity | null> {
 		return this.profiles[id];
 	}
 
@@ -35,7 +35,7 @@ export class LocalProfileDatasource implements ProfileDatasource {
 		return newEntities;
 	}
 
-	public async update(id: ProfileId, profile: UpdateProfilePayload): Promise<ProfileEntity | null> {
+	public async update(id: UserId, profile: UpdateProfilePayload): Promise<ProfileEntity | null> {
 		const entity = {
 			...this.profiles[id],
 			...addCreatedAt(profile)
@@ -46,7 +46,7 @@ export class LocalProfileDatasource implements ProfileDatasource {
 		return entity;
 	}
 
-	public async delete(id: ProfileId): Promise<void> {
+	public async delete(id: UserId): Promise<void> {
 		delete this.profiles[id];
 	}
 }

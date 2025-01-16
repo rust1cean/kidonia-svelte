@@ -1,10 +1,10 @@
 import type { Merge } from 'type-fest';
-import type { AuthorId, PostId } from '../common';
+import type { UserId, PostId } from '../common';
 import type { PostCategory } from './post-constants';
 
 export type PostEntity = {
 	id: PostId;
-	author: AuthorId;
+	author: UserId;
 	title: string;
 	imagePath?: string | null;
 	phone: string;
@@ -22,7 +22,7 @@ export type PostEntity = {
 export type DetailedPostDto = Merge<PostEntity, { author: PostAuthor }>;
 
 export type PostAuthor = {
-	id: AuthorId;
+	id: UserId;
 	name: string;
 	avatarUrl?: string;
 };

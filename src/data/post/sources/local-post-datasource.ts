@@ -1,23 +1,13 @@
-import { injectable } from 'inversify';
 import type { CreatePostData, FetchPostsOptions, UpdatePostData } from '@/application/post';
 import type { PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
-import type { PostDatasource } from './post-datasource';
+import type { PostDatasource } from './interfaces';
 
-@injectable()
 export class LocalPostDatasource implements PostDatasource {
 	constructor(private source: { [key: PostId]: DetailedPostDto } = {}) {}
 
 	public get allPosts(): Array<DetailedPostDto> {
 		return Object.values(this.source);
-	}
-
-	public insertPosts(...posts: DetailedPostDto[]) {
-		const { source } = this;
-
-		for (const post of posts) {
-			source[post.id] = post;
-		}
 	}
 
 	public async fetchPosts({
@@ -65,7 +55,7 @@ export class LocalPostDatasource implements PostDatasource {
 
 	public async createPost(post: CreatePostData): Promise<DetailedPostDto> {
 		const date = new Date();
-		const id = Number(date).toString();
+		const id = String(Math.random() * 100_000);
 		const entity = {
 			...post,
 			id,

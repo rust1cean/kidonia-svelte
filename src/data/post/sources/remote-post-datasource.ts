@@ -1,4 +1,3 @@
-import { injectable } from 'inversify';
 import camelize from 'camelize-ts';
 import snakecaseKeys from 'snakecase-keys';
 import type {
@@ -11,14 +10,13 @@ import type { PostId } from '@/domain/common';
 import type { DetailedPostDto, PostEntity } from '@/domain/post';
 import { db } from '@/data/db';
 import { POSTS_PER_REQUEST_LIMIT } from '../post-constants';
-import type { PostDatasource } from './post-datasource';
+import type { PostDatasource } from './interfaces';
 
 const toDto = (post: CreatePostPayload) => ({
 	...snakecaseKeys(post),
 	author: post.author.id
 });
 
-@injectable()
 export class RemotePostDatasource implements PostDatasource {
 	constructor() {}
 

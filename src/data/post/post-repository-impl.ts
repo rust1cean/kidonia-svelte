@@ -6,7 +6,7 @@ import type {
 } from '@/application/post';
 import type { PostId } from '@/domain/common';
 import type { DetailedPostDto } from '@/domain/post';
-import type { PostDatasource } from './sources/post-datasource';
+import type { PostDatasource } from './sources/interfaces';
 
 export class PostRepositoryImpl implements PostRepository {
 	constructor(
@@ -19,7 +19,7 @@ export class PostRepositoryImpl implements PostRepository {
 
 		if (posts.length === 0) {
 			posts = await this.remote.fetchPosts(options);
-			this.local.createManyPosts(...posts)
+			this.local.createManyPosts(...posts);
 		}
 
 		return posts;

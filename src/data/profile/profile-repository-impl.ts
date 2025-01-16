@@ -3,7 +3,7 @@ import type {
 	ProfileRepository,
 	UpdateProfilePayload
 } from '@/application/profile';
-import type { ProfileId } from '@/domain/common';
+import type { UserId } from '@/domain/common';
 import type { ProfileEntity } from '@/domain/profile';
 import type { ProfileDatasource } from './sources';
 
@@ -13,7 +13,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 		private remote: ProfileDatasource
 	) {}
 
-	public async getProfile(id: ProfileId): Promise<ProfileEntity | null> {
+	public async getProfile(id: UserId): Promise<ProfileEntity | null> {
 		const local = this.local.get(id);
 		const remote = this.remote.get(id);
 
@@ -28,7 +28,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 	}
 
 	public async updateProfile(
-		id: ProfileId,
+		id: UserId,
 		payload: UpdateProfilePayload
 	): Promise<ProfileEntity | null> {
 		const local = this.local.update(id, payload);
@@ -37,7 +37,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 		return Promise.race([local, remote]);
 	}
 
-	public async deleteProfile(id: ProfileId): Promise<void> {
+	public async deleteProfile(id: UserId): Promise<void> {
 		const local = this.local.delete(id);
 		const remote = this.remote.delete(id);
 

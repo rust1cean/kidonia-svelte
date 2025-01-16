@@ -5,7 +5,11 @@ import type { LogInPayload, SignUpPayload } from './auth-payload';
 export class AuthServiceImpl implements AuthService {
 	constructor(private repository: AuthRepository) {}
 
-	public async logIn(payload: LogInPayload): Promise<any> {
+	public async getSession(): Promise<any> {
+			return this.repository.getSession();
+	}
+
+	public async logIn(payload: LogInPayload): Promise<void> {
 		return this.repository.logIn(payload);
 	}
 
@@ -13,7 +17,7 @@ export class AuthServiceImpl implements AuthService {
 		return this.repository.logOut();
 	}
 
-	public async signUp(payload: SignUpPayload): Promise<any> {
+	public async signUp(payload: SignUpPayload): Promise<void> {
 		return this.repository.signUp(payload);
 	}
 }

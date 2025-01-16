@@ -1,6 +1,5 @@
 export type PostId = string;
-export type AuthorId = string;
-export type ProfileId = string;
+export type UserId = string;
 
 export interface FetchRange {
 	offset: number;

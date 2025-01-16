@@ -1,34 +1,25 @@
-import { db } from '../db';
 import type { AuthRepository, LogInPayload, SignUpPayload } from '@/application/auth';
+import type { AuthDatasource, SessionDatasource } from './sources/interfaces';
 
 export class AuthRepositoryImpl implements AuthRepository {
-	constructor() {}
+	constructor(
+		private sessionSource: SessionDatasource,
+		private authSource: AuthDatasource
+	) {}
+
+	public async getSession(): Promise<any> {
+		return this.sessionSource.getSession();
+	}
 
 	public async logIn(payload: LogInPayload) {
-		const { data, error } = await db.auth.signInWithPassword(payload);
-
-		if (error) {
-			throw error;
-		}
-
-		return data
+		return this.authSource.logIn(payload);
 	}
 
 	public async logOut(): Promise<void> {
-		const { error } = await db.auth.signOut();
-
-		if (error) {
-			throw error;
-		}
+		return this.authSource.logOut();
 	}
 
 	public async signUp(payload: SignUpPayload) {
-		const { data, error } = await db.auth.signUp(payload);
-
-		if (error) {
-			throw error;
-		}
-
-		return data
+		return this.authSource.signUp(payload);
 	}
 }

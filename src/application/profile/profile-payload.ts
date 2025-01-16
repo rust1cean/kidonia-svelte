@@ -1,8 +1,8 @@
 import type { Role } from '@/data/profile';
-import type { ProfileId } from '@/domain/common';
+import type { UserId } from '@/domain/common';
 
 export type CreateProfilePayload = {
-	id: ProfileId;
+	id: UserId;
 	name: string;
 	role: Role;
 	avatarUrl?: string;

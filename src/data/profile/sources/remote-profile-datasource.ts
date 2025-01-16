@@ -1,6 +1,6 @@
 import camelize from 'camelize-ts';
 import snakecaseKeys from 'snakecase-keys';
-import type { ProfileId } from '@/domain/common';
+import type { UserId } from '@/domain/common';
 import type { ProfileEntity } from '@/domain/profile';
 import type { ProfileDatasource } from './profile-datasource';
 import { db } from '@/data/db';
@@ -9,7 +9,7 @@ import type { CreateProfilePayload, UpdateProfilePayload } from '@/application/p
 export class RemoteProfileDatasource implements ProfileDatasource {
 	constructor() {}
 
-	public async get(id: ProfileId): Promise<ProfileEntity | null> {
+	public async get(id: UserId): Promise<ProfileEntity | null> {
 		const { data, error } = await db.from('user').select('*').eq('id', id).maybeSingle();
 
 		if (error) {
@@ -41,7 +41,7 @@ export class RemoteProfileDatasource implements ProfileDatasource {
 		return data.map((profile) => camelize(profile));
 	}
 
-	public async update(id: ProfileId, profile: UpdateProfilePayload): Promise<ProfileEntity | null> {
+	public async update(id: UserId, profile: UpdateProfilePayload): Promise<ProfileEntity | null> {
 		const dto = snakecaseKeys(profile);
 		const { data, error } = await db
 			.from('user')
@@ -57,7 +57,7 @@ export class RemoteProfileDatasource implements ProfileDatasource {
 		return camelize(data);
 	}
 
-	public async delete(id: ProfileId): Promise<void> {
+	public async delete(id: UserId): Promise<void> {
 		const { error } = await db.from('user').delete().eq('id', id);
 
 		if (error) {
