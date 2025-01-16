@@ -3,16 +3,23 @@ import camelize from 'camelize-ts';
 import snakecaseKeys from 'snakecase-keys';
 import type {
 	CreatePostData,
+	CreatePostPayload,
 	FetchPostsOptions,
 	UpdatePostData
 } from '@/application/post';
 import type { PostId } from '@/domain/common';
-import type { DetailedPostDto } from '@/domain/post';
+import type { DetailedPostDto, PostEntity } from '@/domain/post';
 import { db } from '@/data/db';
 import { POSTS_PER_REQUEST_LIMIT } from '../post-constants';
+import type { PostDatasource } from './post-datasource';
+
+const toDto = (post: CreatePostPayload) => ({
+	...snakecaseKeys(post),
+	author: post.author.id
+});
 
 @injectable()
-export class RemotePostDatasource {
+export class RemotePostDatasource implements PostDatasource {
 	constructor() {}
 
 	public async fetchPosts({
@@ -52,7 +59,7 @@ export class RemotePostDatasource {
 			throw error;
 		}
 
-		return data == null ? [] : data.map((post) => camelize(post) as DetailedPostDto);
+		return data.map((post) => camelize(post) as DetailedPostDto);
 	}
 
 	public async fetchPostById(postId: PostId): Promise<DetailedPostDto | null> {
@@ -66,29 +73,45 @@ export class RemotePostDatasource {
 			throw error;
 		}
 
-		return data == null ? null : (camelize(data) as DetailedPostDto);
+		return camelize(data);
 	}
 
-	public async createPost(post: CreatePostData): Promise<void> {
-		const { error } = await db.from('post').insert({
-			...snakecaseKeys(post),
-			author: post.author.id
-		});
+	public async createPost(post: CreatePostData): Promise<DetailedPostDto> {
+		const { data, error } = await db.from('post').insert(toDto(post)).select().single();
 
 		if (error) {
 			throw error;
 		}
+
+		return camelize(data);
 	}
 
-	public async updatePost(postId: PostId, post: UpdatePostData): Promise<void> {
-		const { error } = await db
+	public async createManyPosts(...posts: CreatePostData[]): Promise<DetailedPostDto[]> {
+		const dtos = posts.map((post) => toDto(post));
+		const { data, error } = await db.from('post').insert(dtos).select();
+
+		if (error) {
+			throw error;
+		}
+
+		const entities = data.map((post) => camelize(post));
+
+		return entities;
+	}
+
+	public async updatePost(postId: PostId, post: UpdatePostData): Promise<DetailedPostDto | null> {
+		const { data, error } = await db
 			.from('post')
 			.update(post as never)
-			.eq('id', postId);
+			.eq('id', postId)
+			.select()
+			.single();
 
 		if (error) {
 			throw error;
 		}
+
+		return camelize(data);
 	}
 
 	public async deletePost(postId: PostId): Promise<void> {

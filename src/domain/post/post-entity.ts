@@ -6,13 +6,13 @@ export type PostEntity = {
 	id: PostId;
 	author: AuthorId;
 	title: string;
-	imagePath: string;
+	imagePath?: string | null;
 	phone: string;
 	description: string;
 	address: string;
 	draft: boolean;
-	minAge: number;
-	maxAge: number;
+	minAge: number | null;
+	maxAge: number | null;
 	price: number | null;
 	updatedAt: string;
 	zipcode: number;
