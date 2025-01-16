@@ -36,6 +36,7 @@
 	"zipcode": "Postcode",
 	"phone": "Phone",
 	"price": "Price",
+	"free": "Free",
 	"modify_post": "Modify post",
 	"create_post": "Create a post",
 	"update": "Update",

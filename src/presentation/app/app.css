@@ -6,7 +6,7 @@
 	:root {
 		color-scheme: light;
 		--background: 0 0% 92%;
-		--foreground: 233 18% 32%;
+		--foreground: 233 16% 24%;
 
 		--muted: 60 4.8% 86%;
 		--muted-foreground: 233 12% 40%;
@@ -43,7 +43,7 @@
 		--foreground: 232 48% 89%;
 
 		--muted: 12 6.5% 15.1%;
-		--muted-foreground: 24 5.4% 63.9%;
+		--muted-foreground: 224 10% 63.9%;
 
 		--popover: 240 14.3% 4.1%;
 		--popover-foreground: 60 9.1% 97.8%;

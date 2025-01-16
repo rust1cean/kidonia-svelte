@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="flex size-full min-w-[16vmin] flex-col gap-2 rounded-3xl bg-secondary duration-150 hover:shadow-lg"
+	class="duration-250 flex size-full min-w-[16vmin] flex-col gap-2 rounded-3xl bg-secondary hover:shadow-lg"
 >
 	<Drawer.Root>
 		<Drawer.Trigger>
@@ -22,13 +22,11 @@
 	</Drawer.Root>
 
 	<div class="flex h-full flex-col gap-6 p-3">
-		<div class="flex h-full flex-col gap-2">
-			<h6 class="overflow-hidden text-ellipsis whitespace-nowrap">{post.title}</h6>
-			{#if post.description}
-				<p class="line-clamp-3 text-sm">{post.description}</p>
-			{/if}
-			<PostBadges {...post} />
-		</div>
+		<h6 class="overflow-hidden text-ellipsis whitespace-nowrap">{post.title}</h6>
+		{#if post.description}
+			<p class="line-clamp-3 text-sm">{post.description}</p>
+		{/if}
+		<PostBadges {...post} />
 		<PostAuthor author={post.author} />
 		<PostBottomSheet price={post.price} editorMode={post.editorMode} />
 	</div>

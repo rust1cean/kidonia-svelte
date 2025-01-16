@@ -30,12 +30,12 @@
 	<header class="flex w-full items-center justify-between">
 		<div class="flex gap-4">
 			<h3>{title}</h3>
-			{#if editorMode}
+			<!-- {#if editorMode}
 				<Button variant="outline">
 					<Pencil />
 					{m.rename()}
 				</Button>
-			{/if}
+			{/if} -->
 		</div>
 
 		{#if editorMode}

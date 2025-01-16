@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Trash, Pencil, Heart } from 'lucide-svelte';
 
+	import * as m from '$lib/app/paraglide/messages';
 	import { Button } from '$lib/components/ui/button';
 	import type { PostProps } from '.';
 
@@ -13,7 +14,7 @@
 
 <div class="{className} flex w-full items-center justify-between">
 	<span class="text-sm font-semibold">
-		{price && parseInt(price as string) > 0 ? `€${price}` : 'free'}
+		{price && parseInt(price as string) > 0 ? `€${price}` : m.free()}
 	</span>
 	<div class="flex gap-2">
 		{#if editorMode}

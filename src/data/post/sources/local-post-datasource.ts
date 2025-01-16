@@ -40,8 +40,8 @@ export class LocalPostDatasource implements PostDatasource {
 				const descriptionBounds = description == null || post.description.includes(description);
 				const categoriesBounds = categories == null || post.category === categories[0];
 				const addressBounds = address == null || post.address === address;
-				const minAgeBounds = minAge == null || post.minAge >= minAge;
-				const maxAgeBounds = maxAge == null || post.maxAge <= maxAge;
+				const minAgeBounds = post.minAge == null || minAge == null || post.minAge >= minAge;
+				const maxAgeBounds = post.maxAge == null || maxAge == null || post.maxAge <= maxAge;
 
 				return (
 					isDraft ||
@@ -88,13 +88,16 @@ export class LocalPostDatasource implements PostDatasource {
 		return entities;
 	}
 
-	public async updatePost(postId: PostId, post: UpdatePostData): Promise<void> {
-		this.source[postId] = {
+	public async updatePost(postId: PostId, post: UpdatePostData): Promise<DetailedPostDto> {
+		const entity = {
 			...this.source[postId],
 			...post,
 			id: postId,
 			updatedAt: new Date().toString()
 		};
+		this.source[postId] = entity;
+
+		return entity;
 	}
 
 	public async deletePost(postId: PostId): Promise<void> {
