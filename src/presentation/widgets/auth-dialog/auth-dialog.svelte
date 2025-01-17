@@ -12,7 +12,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Tabs.Root bind:value={tabState.currentTab}>
+	<Tabs.Root value={tabState.currentTab}>
 		<Dialog.Content>
 			<Dialog.Title class="flex items-center">
 				{#if tabState.isMoreThanOneTab}
