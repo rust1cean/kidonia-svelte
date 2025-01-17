@@ -61,6 +61,7 @@
 	import TextField from '$lib/components/text-field.svelte';
 	import * as m from '$lib/app/paraglide/messages';
 	import AuthDialogFooter from '../auth-dialog-footer.svelte';
+	import { authDialogState } from '../state';
 
 	const signupForm = superForm(defaults(valibot(signupFormSchema)), {
 		SPA: true,
@@ -68,10 +69,13 @@
 		validators: valibot(signupFormSchema),
 		async onSubmit({ formData }) {
 			try {
+				authDialogState.changeToAwaiting()
 				await authStore.signUp({ formData, form: signupForm });
 				toast.message(m.signup_successful());
 			} catch (error: any) {
 				toast.error(error.toString());
+			} finally {
+				authDialogState.changeToIdle();
 			}
 		}
 	});

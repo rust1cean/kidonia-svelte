@@ -20,13 +20,15 @@
 </script>
 
 <script lang="ts">
-	import * as m from '$lib/app/paraglide/messages';
-	import { authStore } from '@/presentation/state/auth';
-	import AuthDialogFooter from '../auth-dialog-footer.svelte';
-	import TextField from '@/presentation/components/text-field.svelte';
-	import { toast } from 'svelte-sonner';
 	import { superForm, defaults } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
+	import { toast } from 'svelte-sonner';
+
+	import * as m from '$lib/app/paraglide/messages';
+	import { authStore } from '@/presentation/state/auth';
+	import TextField from '@/presentation/components/text-field.svelte';
+	import { AuthDialogFooter, tabState } from '..';
+	import { authDialogState } from '../state';
 
 	const loginForm = superForm(defaults(valibot(loginFormSchema)), {
 		SPA: true,
@@ -34,10 +36,13 @@
 		validators: valibot(loginFormSchema),
 		async onSubmit({ formData }) {
 			try {
+				authDialogState.changeToAwaiting()
 				await authStore.logIn({ formData, form: loginForm });
-				toast.message(m.login_successful());
+				tabState.openTab('confirmEmail');
 			} catch (error: any) {
 				toast.error(error.toString());
+			} finally {
+				authDialogState.changeToIdle();
 			}
 		}
 	});
@@ -46,5 +51,5 @@
 <form method="POST" class="flex flex-col gap-2" use:loginForm.enhance>
 	<TextField form={loginForm} field="email" type="email" label={m.email()} />
 	<TextField form={loginForm} field="password" type="password" label={m.password()} />
-  <AuthDialogFooter />
+	<AuthDialogFooter />
 </form>

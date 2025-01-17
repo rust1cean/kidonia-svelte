@@ -1,2 +1,3 @@
 export { default as AuthDialog } from './auth-dialog.svelte';
-export * from './auth-forms';
+export { default as AuthDialogFooter } from './auth-dialog-footer.svelte';
+export * from './state/tab-state.svelte';
