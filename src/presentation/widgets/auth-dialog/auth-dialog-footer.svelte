@@ -26,8 +26,6 @@
 
 <Dialog.Footer>
 	<div class="flex w-full gap-2">
-		<!-- <Tabs.List class="bg-transparent p-0"> -->
-		<!-- <Tabs.Trigger value={switchTo} class="p-0"> -->
 		<Button size="sm" variant="ghost" onclick={switchTab}>
 			{#if tabStore.currentTab === 'signup'}
 				<span class="text-primary">{m.login()}</span>
@@ -35,8 +33,6 @@
 				<span class="text-green-600">{m.signup()}</span>
 			{/if}
 		</Button>
-		<!-- </Tabs.Trigger> -->
-		<!-- </Tabs.List> -->
 
 		<Button size="icon" variant="outline">
 			<GoogleIcon />

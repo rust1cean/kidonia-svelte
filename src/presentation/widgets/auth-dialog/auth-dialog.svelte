@@ -1,12 +1,10 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { tabStore, type TabName } from './tab.svelte';
+	import { tabStore } from './tab.svelte';
 	import { SignupForm, LoginForm, EmailConfirmForm } from './forms/';
 
 	let { open = $bindable(false) }: { open: boolean } = $props();
-
-	const closeDialog = () => (open = false);
 </script>
 
 <Dialog.Root bind:open>
