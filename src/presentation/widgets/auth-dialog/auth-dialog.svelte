@@ -16,7 +16,7 @@
 		<Dialog.Content>
 			<Dialog.Title class="flex items-center">
 				{#if tabState.isMoreThanOneTab}
-					<div class='mr-4' transition:slide={{ axis: 'x', duration: 300 }}>
+					<div class='mr-4' transition:slide={{ axis: 'x', duration: 150 }}>
 						<Button variant="outline" onclick={() => tabState.closeTab('confirmEmail')}>
 							<Undo2 />
 						</Button>
