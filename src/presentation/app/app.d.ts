@@ -1,4 +1,4 @@
-import type { AvailableLanguageTag } from "$lib/presentation/paraglide/runtime"
+import type { AvailableLanguageTag } from "$lib/paraglide/runtime"
 import type { ParaglideLocals } from "@inlang/paraglide-sveltekit"
 
 // See https://svelte.dev/docs/kit/types#app.d.ts

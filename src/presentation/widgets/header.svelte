@@ -3,7 +3,7 @@
 	import Favorites from '$lib/components/favorites.svelte';
 	import Search from '$lib/widgets/search.svelte';
 	import Menu from '$lib/widgets/menu-bar.svelte';
-	import AuthDialog from '$lib/widgets/auth-dialog.svelte';
+	import AuthDialog from '@/presentation/widgets/auth-dialog/auth-dialog.svelte';
 
 	let authDialogOpen = $state(false);
 </script>

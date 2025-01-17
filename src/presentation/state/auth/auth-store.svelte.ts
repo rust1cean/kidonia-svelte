@@ -1,15 +1,16 @@
-import { LogInUseCase, type LogOutUseCase, type SignUpUseCase } from '@/application/auth';
-import type { GetSessionUseCase } from '@/application/auth/use-cases/get-session-use-case';
-import { authContainer, TYPES } from '@/di/auth-container';
 import type { Session } from '@supabase/supabase-js';
 import type { SuperForm } from 'sveltekit-superforms';
+
+import type { GetSessionUseCase } from '@/application/auth/use-cases/get-session-use-case';
+import { authContainer, TYPES } from '@/di/auth-container';
+import { LogInUseCase, type LogOutUseCase, type SignUpUseCase } from '@/application/auth';
 
 export type FormInfo = {
 	formData: FormData;
 	form: SuperForm<any, any>;
 };
 
-const validateForm = async (form: FormInfo['form']): Promise<any | Error> => {
+const validateForm = async (form: FormInfo['form']): Promise<void | Error> => {
 	const { valid, errors } = await form.validateForm();
 
 	if (!valid) {
